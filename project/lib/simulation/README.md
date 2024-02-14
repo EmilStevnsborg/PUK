@@ -6,18 +6,31 @@ In `src/` one finds all the source files (files of kind `.cpp`), and the headers
 
 ## imageReader
 
-## lineScanCall
+Functions used to read or snap images in the form of 
 
-with host
+```cpp
+cv::Mat
+```
 
-## snapshotCall
+## simulators
 
-with host
+Functions to store entire images in memory of form
 
-## lineScanStream
+```cpp
+cv::Mat
+```
+Copies the data and stores in memory as a long byte array
 
-datastream (message passing)
+### linescanSimulator
 
-## snapshotStream
+Includes function, which returns pointer for a designated line in memory
 
-datastream (message passing)
+### snapshotSimulator
+
+Includes function, which returns pointer to a beginning of byte array
+
+## host
+
+Calls simulator for data (whether that be a line or snapshot) and coordinates calls to functions in `../functionality/*/` such that correct data is received for computation.
+
+

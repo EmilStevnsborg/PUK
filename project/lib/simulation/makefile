@@ -7,7 +7,7 @@ CXXFLAGS := -Wall -g
 OPENCV_CFLAGS := $(shell pkg-config --cflags opencv4)
 OPENCV_LIBS := $(shell pkg-config --libs opencv4)
 
-LIBS := ImageReader LineScanStream SnapshotStream
+LIBS := util CamSimulator
 
 OBJECTS := $(foreach LIB, $(LIBS), obj/$(LIB).o)
 
@@ -23,5 +23,3 @@ obj/%.o: src/%.cpp
 clean:
 	rm -rf obj
 
-# asdf: src/ImageReader.cpp
-# 	$(CXX) $(CXXFLAGS) -o $@ $< $(OPENCV_CFLAGS) $(OPENCV_LIBS) -Iinclude/

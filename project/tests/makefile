@@ -18,3 +18,7 @@ OBJECTS := ../lib/simulation/obj/*.o
 all: 
 	$(CXX) -o program $(CXXFLAGS) $(OPENCV_CFLAGS) -I$(HEADERS) program.cpp $(OBJECTS) $(OPENCV_LIBS)
 
+
+# supress warnings from opemcv in terminal: export OPENCV_LOG_LEVEL=OFF
+
+# check for memory leaks: valgrind --leak-check=yes ./program
