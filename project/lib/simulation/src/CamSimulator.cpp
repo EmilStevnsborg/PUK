@@ -118,14 +118,14 @@ void CamSimulator::StoreData() {
 }
 
 // line scan
-void CamSimulator::Stream(byte* byteArray, int bytesAllocated, int line) {
+void CamSimulator::Stream(byte* byteArray, int line, int startIdx) {
     // Line index within bounds
     if (line > 0 && line < rows) {
         // Calculate the size of the line data in bytes
         int bytes = cols * channels;
 
-        // Fill the byte array with image data
-        fillByteArray(byteArray, image, line, bytes);
+        // Fill byte array partially with image line starting at flat index
+        fillByteArray(byteArray, image, line, startIdx, bytes);
     } else {
         std::runtime_error("Line requested out of bounds");
     }
@@ -133,13 +133,14 @@ void CamSimulator::Stream(byte* byteArray, int bytesAllocated, int line) {
 
 
 // snapshot
-void CamSimulator::Stream(byte* byteArray, int bytesAllocated) {
+void CamSimulator::Stream(byte* byteArray) {
     // Calculate the size of the line data in bytes
     int bytes = rows * cols * channels;
 
-    // Calculate start index of the line in the image byte array
+    // Start with line 0 and fill out entire bytearray
     int line = 0;
+    int startIdx = 0;
 
     // Fill the byte array with image data
-    fillByteArray(byteArray, image, line, bytes);
+    fillByteArray(byteArray, image, line, startIdx, bytes);
 }

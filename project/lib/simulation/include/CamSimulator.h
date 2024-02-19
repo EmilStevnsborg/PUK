@@ -21,9 +21,9 @@ private:
 
     cv::Mat image;
 
-    int channels = 0;
-    int rows = 0;
-    int cols = 0;
+    int channels;
+    int rows;
+    int cols;
 
 public:
     CamSimulator(int channels, int rows, int cols);
@@ -45,8 +45,8 @@ public:
     void StoreData();
     
     // line scan
-    void Stream(byte* byteArray, int bytesAllocated, int line);
+    void Stream(byte* byteArray, int line, int startIdx);
     // snapshot
-    void Stream(byte* byteArray, int bytesAllocated);
+    void Stream(byte* byteArray);
 
 };

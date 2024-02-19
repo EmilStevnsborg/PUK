@@ -13,7 +13,8 @@ void snapImage(cv::VideoCapture& cap, cv::Mat& imageRef);
 // read image from path into the intialized imageRef object
 void readImage(std::string& imagePath, cv::Mat& imageRef);
 int deviceIndex(cv::VideoCapture& cap);
-void fillByteArray(byte* byteArray, cv::Mat& imageRef, int start, int bytes);
+void fillByteArray(byte* byteArray, cv::Mat& imageRef, 
+                   int line, int startIdx, int bytes);
 void printByteArray(byte* byteArray, int channels, int rows, int cols);
 
 #endif // UTIL_H

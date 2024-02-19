@@ -50,17 +50,18 @@ int deviceIndex(cv::VideoCapture& cap) {
     return -1;
 }
 
-void fillByteArray(byte* byteArray, cv::Mat& imageRef, int line, int bytes) {
-    
-    int byteCount = 0;
+void fillByteArray(byte* byteArray, cv::Mat& imageRef, 
+                   int line, int startIdx, int bytes) {
+
+    int byteIdx = startIdx;
     int i = line;
-    while (byteCount < bytes) {
+    while ((byteIdx-startIdx) < bytes) {
         for (int j = 0; j < imageRef.cols; j++) {
             // Get the pixel
             cv::Vec3b pixel = imageRef.at<cv::Vec3b>(i, j);
 
             for (int c = 0; c < imageRef.channels(); c++) {
-                byteArray[byteCount++] = (byte) pixel[c];
+                byteArray[byteIdx++] = (byte) pixel[c];
             }
         }
         i += 1;
