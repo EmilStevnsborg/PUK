@@ -1,7 +1,9 @@
 #include <stdint.h>
-#include "CamSimulator.h"
 #include "Buffer.h"
 #include "CVfunctions.h"
+#include "Camera.h"
+#include <stdlib.h>
+#include <vector>
 
 typedef uint8_t byte;
 
@@ -11,11 +13,9 @@ class Host {
         int channels;
         int rows;
         int cols;
-        CamSimulator* camSensor; // Dependency injection
-        Buffer inputBuffer; //
-        Buffer outputBuffer; //
+        Camera* camSensor; // Dependency injection
     public:
-        Host(CamSimulator* camSimulator, int channels, int rows, int cols);
+        Host(Camera* cam, int channels, int rows, int cols);
         void CannyEdge(int kernelHeight, int kernelWidth);
-        void GaussianFilter(int kernelHeight, int kernelWidth);
-}
+        void GaussianFilter();
+};

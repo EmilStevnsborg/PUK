@@ -1,12 +1,12 @@
 #include "CVfunctions.h"
 
 void Convolution(byte* inputBuffer, byte* outputBuffer, 
-                 vector<vector<float>>& kernel, 
+                 std::vector<std::vector<float>>& kernel, 
                  int& kernelHeight, int& kernelWidth,
                  int& si, int& sj, int& inputStartLine, int& outputLine,
                  int& channels, int& cols, int& rows, 
-                 int& padHeight = 0, int& padWidth = 0,
-                 int& strideHeight = 1, int& strideWidth = 1) {
+                 int& padHeight, int& padWidth,
+                 int& strideHeight, int& strideWidth) {
     
     // indexer for line in cicular input buffer
     int inputLine = inputStartLine;

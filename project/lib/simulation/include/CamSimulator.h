@@ -2,10 +2,11 @@
 #include <opencv2/imgcodecs.hpp>
 #include <optional>
 #include <stdint.h>
+#include "Camera.h"
 
 typedef uint8_t byte;
 
-class CamSimulator {
+class CamSimulator : public Camera {
 private:
 
     // BEFORE READING DATA
@@ -48,5 +49,7 @@ public:
     void Stream(byte* byteArray, int line, int startIdx);
     // snapshot
     void Stream(byte* byteArray);
+
+    // virtual ~CamSimulator() = default;
 
 };

@@ -1,27 +1,11 @@
 #include "Host.h"
-#include <vector>
 
-Host::Host(CamSimulator* camSimulator, int channels, int rows, int cols) {
-    this->camSensor = camSimulator;
+Host::Host(Camera* cam, int channels, int rows, int cols) {
+    this->camSensor = cam;
     this->channels = channels;
     this->rows = rows;
     this->cols = cols;
-
-    if (camSimulator.Rows() != this->rows ||
-        camSimulator.Cols() != this->cols ||
-        camSimulator.channels() != this->channels) {
-
-            printf("Camera and host specifics\n"
-                   "camSimulator.Rows() %d == this->rows %d\n"
-                   "camSimulator.Cols() %d == this->cols %d\n"
-                   "camSimulator.Channels)= %d == this->channels %d\n", 
-                    camSimulator.Rows(), this->rows, camSimulator.Cols(),
-                    this->cols, camSimulator.Channels(), this->channels);
-            
-            throw std::runtime_error("Camera properties not equal to"
-                                     "while storing");
-    }
-}
+};
 
 void Host::CannyEdge(int kernelHeight, int kernelWidth) {
 
@@ -32,9 +16,11 @@ void Host::CannyEdge(int kernelHeight, int kernelWidth) {
 void Host::GaussianFilter() {
     int kernelHeight = 5;
     int kernelWidth = 5;
+    int strideHeight = 1;
+    int strideWidth = 1;
     int padHeight = kernelHeight/2;
     int padWidth = kernelWidth/2;
-    vector<vector<float>> kernel {
+    std::vector<std::vector<float>> kernel {
         {0.003, 0.013, 0.022, 0.013, 0.003},
         {0.013, 0.059, 0.097, 0.059, 0.013},
         {0.022, 0.097, 0.159, 0.097, 0.022},
@@ -47,18 +33,18 @@ void Host::GaussianFilter() {
     int lines = 5;
 
     // circular buffer
-    inputBuffer = Buffer(lines, bytesLine);
+    Buffer inputBuffer = Buffer(lines, bytesLine);
 
     int inputStartLine = 0;
 
     // stream inital 3 lines for 5x5 kernel (2 pad height)
     for (int line = 0; line < 3; line++) {
         int startIdx = line*bytesLine;
-        camSensor.Stream(inputBuffer.memory, line, startIdx);
+        camSensor->Stream(inputBuffer.memory, line, startIdx);
     }
     
     // buffers pixels for entire image
-    outputBuffer = Buffer(rows, bytesLine);
+    Buffer outputBuffer = Buffer(rows, bytesLine);
     
     int si = (-1)*padHeight;
     int sj = (-1)*padWidth;
@@ -75,7 +61,7 @@ void Host::GaussianFilter() {
                     kernelHeight, kernelWidth,
                     si, sj, inputStartLine, outputLine,
                     channels, cols, rows, 
-                    padHeight, padWidth);
+                    padHeight, padWidth, strideHeight, strideWidth);
         
         // next col (pixel in line)
         outputCol += 1;
@@ -88,6 +74,8 @@ void Host::GaussianFilter() {
 
             // kernel shifts with strideHeight
             inputStartLine += 1;
+            // stream next line into free line in inputBuffer
+            
         }
     }
 

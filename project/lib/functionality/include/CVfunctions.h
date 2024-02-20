@@ -4,7 +4,7 @@
 typedef uint8_t byte;
 
 void Convolution(byte* inputBuffer, byte* outputBuffer, 
-                 vector<vector<float>>& kernel, 
+                 std::vector<std::vector<float>>& kernel, 
                  int& kernelHeight, int& kernelWidth,
                  int& si, int& sj, int& inputStartLine, int& outputLine,
                  int& channels, int& cols, int& rows, 

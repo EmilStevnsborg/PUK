@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdlib.h>
 
 typedef uint8_t byte;
 
@@ -13,4 +14,4 @@ class Buffer {
 
         int GetBytesAllocted();
         void FreeMemory();
-}
+};
