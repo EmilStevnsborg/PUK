@@ -1,17 +1,14 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <vector>
-
-typedef uint8_t byte;
+#include "Buffer.h"
 
 // Abstract class for camera functionality
 class Camera {
     public:
-        virtual Camera() {};
-        virtual void Stream(byte* byteArray, int line, int startIdx);
-        virtual void Stream(byte* byteArray);
-        // virtual ~Camera() {}
+        virtual void Stream(Buffer* outputMemory, int line) = 0;
+        virtual void Stream(Buffer* outputMemory) = 0;
+        virtual ~Camera() {}
 };
 
 #endif // CAMERA_H

@@ -1,3 +1,6 @@
+#ifndef CAMSIMULATOR_H
+#define CAMSIMULATOR_H
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <optional>
@@ -7,49 +10,51 @@
 typedef uint8_t byte;
 
 class CamSimulator : public Camera {
-private:
+    private:
 
-    // BEFORE READING DATA
+        // BEFORE READING DATA
 
-    static std::optional<bool> deviceExists;
-    static bool deviceClaimed;
-    static int deviceIdx; // Index in `/dev/video*`
-    static cv::VideoCapture cap; // Cap instance shared by all instances
+        static std::optional<bool> deviceExists;
+        static bool deviceClaimed;
+        static int deviceIdx; // Index in `/dev/video*`
+        static cv::VideoCapture cap; // Cap instance shared by all instances
 
-    bool deviceUsed; // Is device used by current instance
+        bool deviceUsed; // Is device used by current instance
 
-    // AFTER READING DATA
+        // AFTER READING DATA
 
-    cv::Mat image;
+        cv::Mat image;
 
-    int channels;
-    int rows;
-    int cols;
+        int channels;
+        int rows;
+        int cols;
 
-public:
-    CamSimulator(int channels, int rows, int cols);
+    public:
+        CamSimulator(int channels, int rows, int cols);
 
-    // PROPERTIES
-    cv::Mat GetData();
-    int Channels();
-    int Rows();
-    int Cols();
+        // PROPERTIES
+        cv::Mat GetImage();
+        int Channels();
+        int Rows();
+        int Cols();
 
-    // METHODS
+        // METHODS
 
-    static void InitDevice();
-    void ClaimDevice();
+        static void InitDevice();
+        void ClaimDevice();
 
-    // Store image from file
-    void StoreData(std::string& imagePath);
-    // Store image from cam
-    void StoreData();
-    
-    // line scan
-    void Stream(byte* byteArray, int line, int startIdx);
-    // snapshot
-    void Stream(byte* byteArray);
+        // Store image from file
+        void StoreData(std::string& imagePath);
+        // Store image from cam
+        void StoreData();
+        
+        // line scan
+        void Stream(Buffer* outputBuffer, int line);
+        // snapshot
+        void Stream(Buffer* outputBuffer);
 
-    // virtual ~CamSimulator() = default;
+        virtual ~CamSimulator() = default;
 
 };
+
+#endif //CAMSIMULATOR_H

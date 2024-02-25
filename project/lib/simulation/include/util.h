@@ -1,4 +1,3 @@
-// util.h
 #ifndef UTIL_H
 #define UTIL_H
 
@@ -16,5 +15,6 @@ int deviceIndex(cv::VideoCapture& cap);
 void fillByteArray(byte* byteArray, cv::Mat& imageRef, 
                    int line, int startIdx, int bytes);
 void printByteArray(byte* byteArray, int channels, int rows, int cols);
+cv::Mat byteArrayToImg(byte* byteArray, int channels, int rows, int cols);
 
 #endif // UTIL_H

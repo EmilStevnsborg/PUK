@@ -70,15 +70,30 @@ void fillByteArray(byte* byteArray, cv::Mat& imageRef,
 
 void printByteArray(byte* byteArray, int channels, int rows, int cols) {
     
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
             printf("(");
-            for (int c = 0; c < channels; ++c) {
-                printf("%d", byteArray[i*cols+j*channels+c]);
+            for (int c = 0; c < channels; c++) {
+                int idx = i*cols*channels + j*channels + c;
+                printf("%hhu", byteArray[idx]);
                 if (c + 1 < channels) {printf(", ");}
             }
             printf(") ");
         }
         printf("\n");
     }
+}
+
+cv::Mat byteArrayToImg(byte* byteArray, int channels, int rows, int cols) {
+    cv::Mat image(rows, cols, CV_8UC(channels));
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            for (int c = 0; c < channels; c++) {
+                int idx = i*cols*channels + j*channels + c;
+                image.at<cv::Vec3b>(i, j)[c] = byteArray[idx];
+            }
+        }
+    }
+    return image;
 }

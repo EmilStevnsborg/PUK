@@ -1,12 +1,19 @@
+#ifndef CVFUNCTIONS_H
+#define CVFUNCTIONS_H
+
+#include "Buffer.h"
+
 #include <stdint.h>
+#include <stdlib.h>
 #include <vector>
 
 typedef uint8_t byte;
 
-void Convolution(byte* inputBuffer, byte* outputBuffer, 
-                 std::vector<std::vector<float>>& kernel, 
+void Convolution(Buffer* inputBuffer, Buffer* outputBuffer,
+                 int& outMemIdx,
+                 std::vector<std::vector<float>>& kernel,
                  int& kernelHeight, int& kernelWidth,
-                 int& si, int& sj, int& inputStartLine, int& outputLine,
-                 int& channels, int& cols, int& rows, 
-                 int& padHeight, int& padWidth,
-                 int& strideHeight, int& strideWidth);
+                 int& startLine, int& startCol, // padding embedded
+                 int& channels, int& cols);
+
+#endif // CVFUNCTIONS_H
