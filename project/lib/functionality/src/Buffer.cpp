@@ -24,9 +24,9 @@ Buffer::Buffer(int channels, int rows, int cols, int lines)
 }
 
 void Buffer::LineInserted() {
-    lineInserts += 1;
     int newMemoryMapIdx = this->lineInserts % this->lines;
     lineMemoryMap[newMemoryMapIdx] = lineInserts;
+    lineInserts += 1;
 }
 
 void Buffer::FreeMemory() {

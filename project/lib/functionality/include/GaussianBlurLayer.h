@@ -4,6 +4,9 @@
 #include "Layer.h"
 #include "CVfunctions.h"
 #include <vector>
+#include <cmath>
+#include <cstdio>
+#include <iostream>
 
 class GaussianBlurLayer : public Layer {
     private:
@@ -11,19 +14,26 @@ class GaussianBlurLayer : public Layer {
         int inputChannels;
         int inputRows;
         int inputCols;
-
-        std::vector<std::vector<float>> kernel;
     public:
+        Buffer inputBuffer;
+        
         int kernelHeight;
         int kernelWidth;
+
+        std::vector<std::vector<float>> kernel;
+
         int padHeight;
         int padWidth;
-        int strideHeight;
-        int strideWidth;
-
-        Buffer inputBuffer;
-        GaussianBlurLayer(int inputChannels, int inputRows, int inputCols);
         
+        double sigmaX;
+        double sigmaY;
+
+        GaussianBlurLayer(int inputChannels, int inputRows, int inputCols,
+                          int kernelHeight, int kernelWidth, 
+                          double sigmaX, double sigmaY);
+        
+        void GetKernel();
+
         // compute output line and stream into outputMemory
         void Stream(Buffer* outputBuffer, int line);
         ~GaussianBlurLayer() {};

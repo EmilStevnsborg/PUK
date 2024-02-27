@@ -1,5 +1,4 @@
 #include "Host.h"
-#include <cstdio>
 
 Host::Host(Camera* cam, int channels, int rows, int cols)
 {
@@ -15,9 +14,13 @@ void Host::CannyEdge(Buffer* outputBuffer) {}
 
 // Gaussian filter which blurs camera input and outputs an image of same size
 // The kernel is 5x5
-void Host::GaussianBlur(Buffer* outputBuffer) {
+void Host::GaussianBlur(Buffer* outputBuffer, 
+                        int kernelHeight, int kernelWidth, 
+                        double sigmaX, double sigmaY) {
     // init inputs for computation
-    GaussianBlurLayer gaussianBlurLayer(channels, rows, cols);
+    GaussianBlurLayer gaussianBlurLayer(channels, rows, cols, 
+                                        kernelHeight, kernelWidth, 
+                                        sigmaX, sigmaY);
 
     // stream intital lines from cam into first input
     for (int camLine = 0; camLine < gaussianBlurLayer.inputBuffer.lines; camLine++) {
@@ -26,26 +29,26 @@ void Host::GaussianBlur(Buffer* outputBuffer) {
         gaussianBlurLayer.inputBuffer.LineInserted();
     }
 
-    printf("bytes allocated %d\n", gaussianBlurLayer.inputBuffer.bytesAllocated);
-
     // compute each line in the outputBuffer
     for (int line = 0; line < outputBuffer->lines; line++) {
         // printf("line %d\n", line);
         gaussianBlurLayer.Stream(outputBuffer, line);
+        
+        int camLine = line + gaussianBlurLayer.padHeight + 1;
 
-        // for each new line (if `line - padHeight >= 0`) stream from cam
-        if (line - gaussianBlurLayer.padHeight >= 0) {
-            
-            // the next camline
-            if (line < rows) {
-                camSensor->Stream(&gaussianBlurLayer.inputBuffer, 
-                                  line);
+        // stream from cam if convolution is between top and bottom padding
+        if (line - gaussianBlurLayer.padHeight >= 0 && camLine < rows) {
+            camSensor->Stream(&gaussianBlurLayer.inputBuffer, 
+                                camLine);
 
-                gaussianBlurLayer.inputBuffer.LineInserted();
-            }
+            gaussianBlurLayer.inputBuffer.LineInserted();
         }
         outputBuffer->LineInserted();
     }
 
     gaussianBlurLayer.inputBuffer.FreeMemory();
+}
+
+void Host::NonMaxSuppression(Buffer* outputBuffer) {
+    NonMaxSuppressionLayer nonMaxSuppressionLayer(channels, rows, cols);
 }

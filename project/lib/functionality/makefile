@@ -3,7 +3,7 @@
 # Compiler and flags
 CXX := g++
 CXXFLAGS := -Wall -g
-LIBS := CVfunctions compression Host Buffer GaussianBlurLayer
+LIBS := CVfunctions compression Host Buffer GaussianBlurLayer NonMaxSuppressionLayer
 
 OBJECTS := $(foreach LIB, $(LIBS), obj/$(LIB).o)
 

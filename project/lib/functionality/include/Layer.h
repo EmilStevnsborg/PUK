@@ -14,12 +14,14 @@ class Layer {
         int inputCols;
     public:
         Buffer inputBuffer;
-        // Constructor with parameters
+
+        // Base constructor
         Layer(int inputChannels, int inputRows, int inputCols) : 
             inputChannels(inputChannels), 
             inputRows(inputRows), 
             inputCols(inputCols), 
             inputBuffer(0, 0, 0, 0) {}
+        
         virtual void Stream(Buffer* outputBuffer, int line) = 0;
         virtual ~Layer() {}
 };

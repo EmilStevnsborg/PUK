@@ -1,36 +1,88 @@
 #include "GaussianBlurLayer.h"
-#include <cstdio>
 
-GaussianBlurLayer::GaussianBlurLayer(int inputChannels, 
-                                     int inputRows, 
-                                     int inputCols) 
+GaussianBlurLayer::GaussianBlurLayer(int inputChannels, int inputRows, 
+                                     int inputCols,
+                                     int kernelHeight, int kernelWidth, 
+                                     double sigmaX, double sigmaY)
     
-    : Layer(inputChannels, inputRows, inputCols), 
-        inputBuffer(inputChannels, inputRows, inputCols, 5)
+    : Layer(inputChannels, inputRows, inputCols), // Initialize base class
+      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight),
+      kernelHeight(kernelHeight),
+      kernelWidth(kernelWidth)
 {
     this->inputChannels = inputChannels;
     this->inputRows = inputRows;
     this->inputCols = inputCols;
 
-    this->kernelHeight = 5;
-    this->kernelWidth = 5;
-    this->strideHeight = 1;
-    this->strideWidth = 1;
+    this->kernelHeight = kernelHeight;
+    this->kernelWidth = kernelWidth;
+    
+    this->sigmaX = sigmaX;
+    this->sigmaY = sigmaY;
+
+    // integer division is floored
     this->padHeight = kernelHeight/2;
     this->padWidth = kernelWidth/2;
-    this->kernel = {
-        {0.003, 0.013, 0.022, 0.013, 0.003},
-        {0.013, 0.059, 0.097, 0.059, 0.013},
-        {0.022, 0.097, 0.159, 0.097, 0.022},
-        {0.013, 0.059, 0.097, 0.059, 0.013},
-        {0.003, 0.013, 0.022, 0.013, 0.003},   
-    };
+    
+    // kernel
+    this->GetKernel();
 }
+
+void GaussianBlurLayer::GetKernel() {
+    // Initialize the kernel vector with appropriate size
+    this->kernel = std::vector<std::vector<float>>(kernelHeight,
+                                        std::vector<float>(kernelWidth));
+    
+    const float epsilon = 1e-5;
+
+    float sum_ = 0;
+
+    // If sigmaY is zero it is set equal to sigmaX
+    if (sigmaY < epsilon) {
+        sigmaY = sigmaX;
+    }
+
+    // If sigmaY and sigmaX are both zero, compute them from kernelHeight and kernelWidth
+    if (sigmaY < epsilon && sigmaX < epsilon) {
+        sigmaX = 0.3 * ((kernelWidth - 1) * 0.5 - 1) + 0.8;
+        sigmaY = 0.3 * ((kernelHeight - 1) * 0.5 - 1) + 0.8;
+    }
+    // If sigmaY is zero, set it equal to sigmaX
+    else if (sigmaY < epsilon) {
+        sigmaY = sigmaX;
+    }
+    
+    // Calculate the center of the kernel
+    int centerX = kernelWidth / 2;
+    int centerY = kernelHeight / 2;
+    
+
+    // Fill the kernel with Gaussian values
+    for (int i = 0; i < kernelHeight; i++) {
+        for (int j = 0; j < kernelWidth; j++) {
+            // Compute distance from center
+            int x = j - centerX;
+            int y = i - centerY;
+            // Calculate Gaussian value
+            float value = (exp((-(x * x / (2 * sigmaX * sigmaX) + 
+                                  y * y / (2 * sigmaY * sigmaY)))));
+            sum_ += value;
+            kernel[i][j] = value;
+        }
+    }
+
+    // normalize
+    for (int i = 0; i < kernelHeight; i++) {
+        for (int j = 0; j < kernelWidth; j++) {
+            kernel[i][j] /= sum_;
+        }
+    }
+}
+
 
 // stream a blurred line to output: necssarry lines already in buffer
 void GaussianBlurLayer::Stream(Buffer* outputBuffer, int line) {
 
-    // We are asked for line. 
     // Computation requires [line-padHeight,..., line+padHeight] from input
     int startLine = line-padHeight;
 
@@ -42,7 +94,7 @@ void GaussianBlurLayer::Stream(Buffer* outputBuffer, int line) {
     // iterate over pixels in output line
     for (int startCol = -padWidth; startCol < inputCols; startCol++) {
         // printf("startLine %d startCol %d\n", startLine, startCol);
-        Convolution(&inputBuffer, outputBuffer,
+        Convolution<float>(&inputBuffer, outputBuffer,
                     outMemIdx, kernel, kernelHeight, kernelWidth,
                     startLine, startCol,
                     inputChannels, inputCols);

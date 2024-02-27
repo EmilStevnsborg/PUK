@@ -124,10 +124,6 @@ void CamSimulator::Stream(Buffer* outputBuffer, int line) {
         int bytesLine = cols*channels;
         int startIdx = (line*bytesLine) % outputBuffer->bytesAllocated;
 
-        // printf("line %d startIdx %d bytesAllocated %d\n", 
-        //         line, startIdx, outputBuffer->bytesAllocated);
-
-        // Fill byte array partially with image line starting at flat index
         fillByteArray(outputBuffer->memory, image, line, startIdx, bytesLine);
     } else {
         std::runtime_error("Line requested out of bounds");

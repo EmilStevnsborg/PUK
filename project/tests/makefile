@@ -7,16 +7,32 @@ CXXFLAGS := -Wall -g
 OPENCV_CFLAGS := $(shell pkg-config --cflags opencv4)
 OPENCV_LIBS := $(shell pkg-config --libs opencv4)
 
-# all headers from simulation
-HEADERS := -I../lib/simulation/include/ -I../lib/functionality/include/
+LIBS := program testing
 
-OBJECTS := ../lib/simulation/obj/*.o ../lib/functionality/obj/*.o 
+HEADERS_TEST := -Iinclude/
 
-# implicit -I.
-# all headers current dir
+OBJECTS_TEST := $(foreach LIB, $(LIBS), obj/$(LIB).o)
 
-all: 
-	$(CXX) -o program $(CXXFLAGS) $(OPENCV_CFLAGS) $(HEADERS) program.cpp $(OBJECTS) $(OPENCV_LIBS)
+# functionality and simulation
+
+HEADERS_ := -I../lib/simulation/include/ -I../lib/functionality/include/
+
+OBJECTS_ := ../lib/simulation/obj/*.o ../lib/functionality/obj/*.o 
+
+# lib and local
+
+HEADERS :=  $(HEADERS_) $(HEADERS_TEST)
+
+OBJECTS := $(OBJECTS_) $(OBJECTS_TEST)
+
+all: $(OBJECTS_TEST)
+	$(CXX) -o program $(CXXFLAGS) $(OPENCV_CFLAGS) $(HEADERS) $(OBJECTS) $(OPENCV_LIBS)
+
+# bygge object filer
+# "$@ $<" (automatic variables OBJECT and SOURCE)
+obj/%.o: src/%.cpp
+	mkdir -p obj
+	$(CXX) $(CXXFLAGS) -c -o $@ $< $(OPENCV_CFLAGS)	$(OPENCV_LIBS) $(HEADERS)
 
 
 # supress warnings from opemcv in terminal: export OPENCV_LOG_LEVEL=OFF

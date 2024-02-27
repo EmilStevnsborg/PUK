@@ -1,7 +1,6 @@
 #ifndef HOST_H
 #define HOST_H
 
-#include <stdint.h>
 #include "Buffer.h"
 #include "CVfunctions.h"
 #include "Camera.h"
@@ -10,6 +9,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <vector>
+#include <cstdio>
+#include "NonMaxSuppressionLayer.h"
 
 typedef uint8_t byte;
 
@@ -24,7 +25,10 @@ class Host {
     public:
         Host(Camera* cam, int channels, int rows, int cols);
         void CannyEdge(Buffer* outputBuffer);
-        void GaussianBlur(Buffer* outputBuffer);
+        void GaussianBlur(Buffer* outputBuffer, 
+                          int kernelHeight, int kernelWidth, 
+                          double sigmaX, double sigmaY);
+        void NonMaxSuppression(Buffer* outputBuffer);
         ~Host() {}
 };
 

@@ -1,9 +1,9 @@
 #include "CVfunctions.h"
-#include <cstdio>
 
+template<typename KernelType>
 void Convolution(Buffer* inputBuffer, Buffer* outputBuffer,
                  int& outMemIdx,
-                 std::vector<std::vector<float>>& kernel,
+                 std::vector<std::vector<KernelType>>& kernel,
                  int& kernelHeight, int& kernelWidth,
                  int& startLine, int& startCol, // padding embedded
                  int& channels, int& cols) {
@@ -19,7 +19,7 @@ void Convolution(Buffer* inputBuffer, Buffer* outputBuffer,
 
     for (int c = 0; c < channels; c++) {
         
-        float conv = 0;
+        KernelType conv = 0;
         
         // lines used in matrixmult 
         for (int i = 0; i < inputBuffer->lines; i++) {
@@ -49,16 +49,25 @@ void Convolution(Buffer* inputBuffer, Buffer* outputBuffer,
 
                 inputIdx = i*(inputBuffer->bytesLine) + (startCol+j)*channels + c;
                 
-                // if (inputIdx >= (inputBuffer->lines)*(inputBuffer->bytesLine)) {
-                //     printf("inputIdx %d\n", inputIdx);
-                // }
-                
                 inputVal = (float) inputBuffer->memory[inputIdx];
                 conv += w * inputVal;
             }
         }
         int outIdx = outMemIdx+c;
-        outputBuffer->memory[outIdx] = (byte) (conv);
-        // printf("outbuffer memory at index %d\n", outIdx);
+        outputBuffer->memory[outIdx] = (byte) (std::floor(conv));
     }
 }
+
+template void Convolution(Buffer* inputBuffer, Buffer* outputBuffer,
+                 int& outMemIdx,
+                 std::vector<std::vector<float>>& kernel,
+                 int& kernelHeight, int& kernelWidth,
+                 int& startLine, int& startCol, // padding embedded
+                 int& channels, int& cols);
+
+template void Convolution(Buffer* inputBuffer, Buffer* outputBuffer,
+                 int& outMemIdx,
+                 std::vector<std::vector<byte>>& kernel,
+                 int& kernelHeight, int& kernelWidth,
+                 int& startLine, int& startCol, // padding embedded
+                 int& channels, int& cols);

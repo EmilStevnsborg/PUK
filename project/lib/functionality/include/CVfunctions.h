@@ -6,12 +6,15 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <vector>
+#include <cstdio>
+#include <cmath>
 
 typedef uint8_t byte;
 
+template<typename KernelType>
 void Convolution(Buffer* inputBuffer, Buffer* outputBuffer,
                  int& outMemIdx,
-                 std::vector<std::vector<float>>& kernel,
+                 std::vector<std::vector<KernelType>>& kernel,
                  int& kernelHeight, int& kernelWidth,
                  int& startLine, int& startCol, // padding embedded
                  int& channels, int& cols);
