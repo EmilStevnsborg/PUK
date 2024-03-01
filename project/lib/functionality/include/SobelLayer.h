@@ -1,10 +1,10 @@
-#ifndef NonMaxSuppressionLayer_H
-#define NonMaxSuppressionLayer_H
+#ifndef SobelLayer_H
+#define SobelLayer_H
 
 #include "Layer.h"
 #include "CVfunctions.h"
 
-class NonMaxSuppressionLayer : public Layer {
+class SobelLayer : public Layer {
     private:
         // image specifics
         int inputChannels;
@@ -15,22 +15,24 @@ class NonMaxSuppressionLayer : public Layer {
 
         int kernelHeight;
         int kernelWidth;
-        
+
+        std::vector<std::vector<float>> kernelX;
+        std::vector<std::vector<float>> kernelY;
+
         int padHeight;
         int padWidth;
 
-        NonMaxSuppressionLayer(int inputChannels, 
-                               int inputRows, 
-                               int inputCols,
-                               int kernelHeight, 
-                               int kernelWidth);
+        SobelLayer(int inputChannels, 
+                   int inputRows, 
+                   int inputCols,
+                   int kernelHeight, int kernelWidth);
 
         void Stream(Buffer* outputBuffer, int line);
 
         Buffer* InputBuffer() {return &this->inputBuffer;}
         int PadHeight() {return padHeight;}
 
-        ~NonMaxSuppressionLayer() {};
+        ~SobelLayer() {};
 };
 
-#endif // NonMaxSuppressionLayer_H
+#endif // SobelLayerLayer_H

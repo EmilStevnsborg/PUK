@@ -23,7 +23,8 @@ class Layer {
             inputBuffer(0, 0, 0, 0) {}
         
         virtual void Stream(Buffer* outputBuffer, int line) = 0;
+        virtual Buffer* InputBuffer() = 0;
+        virtual int PadHeight() = 0;
         virtual ~Layer() {}
 };
-
 #endif // LAYER_H

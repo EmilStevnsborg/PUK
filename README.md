@@ -4,5 +4,5 @@ This repo is ...
 
 # TODO
 
-- Create byte kernel convolution and verify convolution function
-- Figure out why gaussian kernel fails at sigmaX = 0 but not others
+- Generalise the streaming of layers stacked on each other (function wrapping)
+- Convert inputChannels*inputCols to bytesLine

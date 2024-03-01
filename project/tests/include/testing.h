@@ -12,4 +12,6 @@ bool checkCorrectness(cv::Mat& y, cv::Mat& yPrime);
 
 bool gaussianBlurTest();
 
+bool sobelTest();
+
 #endif // TESTING_H

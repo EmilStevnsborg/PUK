@@ -31,11 +31,15 @@ class GaussianBlurLayer : public Layer {
         GaussianBlurLayer(int inputChannels, int inputRows, int inputCols,
                           int kernelHeight, int kernelWidth, 
                           double sigmaX, double sigmaY);
-        
-        void GetKernel();
 
         // compute output line and stream into outputMemory
         void Stream(Buffer* outputBuffer, int line);
+
+        Buffer* InputBuffer() {return &this->inputBuffer;}
+        int PadHeight() {return padHeight;}
+
+        void GetKernel();
+
         ~GaussianBlurLayer() {};
 };
 

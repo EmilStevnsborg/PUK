@@ -4,11 +4,8 @@ GaussianBlurLayer::GaussianBlurLayer(int inputChannels, int inputRows,
                                      int inputCols,
                                      int kernelHeight, int kernelWidth, 
                                      double sigmaX, double sigmaY)
-    
-    : Layer(inputChannels, inputRows, inputCols), // Initialize base class
-      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight),
-      kernelHeight(kernelHeight),
-      kernelWidth(kernelWidth)
+    : Layer(inputChannels, inputRows, inputCols),
+      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight)
 {
     this->inputChannels = inputChannels;
     this->inputRows = inputRows;
@@ -28,8 +25,33 @@ GaussianBlurLayer::GaussianBlurLayer(int inputChannels, int inputRows,
     this->GetKernel();
 }
 
+// stream a blurred line to output: necssarry lines already in buffer
+void GaussianBlurLayer::Stream(Buffer* outputBuffer, int line) {
+
+    // Computation requires [line-padHeight,..., line+padHeight] from input
+    int startLine = line-padHeight;
+
+    // Where the line should be placed in the memory of the outputBuffer
+    int outMemIdx = (outputBuffer->lineInserts % outputBuffer->lines) * 
+                     outputBuffer->bytesLine;
+
+
+    for (int startCol = -padWidth; startCol < inputCols; startCol++) {
+        for (int c = 0; c < outputBuffer->channels; c++) {
+            
+            float conv = Convolution<float>(&inputBuffer, kernel, 
+                                            kernelHeight, kernelWidth,
+                                            startLine, startCol, c,
+                                            inputChannels, inputCols);
+            
+            outputBuffer->memory[outMemIdx+c] = (byte) (std::floor(conv));
+        }
+        outMemIdx += outputBuffer->channels;
+    }
+}
+
 void GaussianBlurLayer::GetKernel() {
-    // Initialize the kernel vector with appropriate size
+    // Initialize the kernel with appropriate size
     this->kernel = std::vector<std::vector<float>>(kernelHeight,
                                         std::vector<float>(kernelWidth));
     
@@ -76,29 +98,5 @@ void GaussianBlurLayer::GetKernel() {
         for (int j = 0; j < kernelWidth; j++) {
             kernel[i][j] /= sum_;
         }
-    }
-}
-
-
-// stream a blurred line to output: necssarry lines already in buffer
-void GaussianBlurLayer::Stream(Buffer* outputBuffer, int line) {
-
-    // Computation requires [line-padHeight,..., line+padHeight] from input
-    int startLine = line-padHeight;
-
-    // Where the line should be placed in the memory of the outputBuffer
-    int outMemIdx = (outputBuffer->lineInserts % outputBuffer->lines) * 
-                     outputBuffer->bytesLine;
-
-
-    // iterate over pixels in output line
-    for (int startCol = -padWidth; startCol < inputCols; startCol++) {
-        // printf("startLine %d startCol %d\n", startLine, startCol);
-        Convolution<float>(&inputBuffer, outputBuffer,
-                    outMemIdx, kernel, kernelHeight, kernelWidth,
-                    startLine, startCol,
-                    inputChannels, inputCols);
-        
-        outMemIdx += outputBuffer->channels;
     }
 }

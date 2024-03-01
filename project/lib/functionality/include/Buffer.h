@@ -22,6 +22,10 @@ class Buffer {
         
         byte* memory;
 
+        // specifically used for sobel
+        byte* extraMemory;
+        bool hasExtraMemory;
+
         // functionality specifics
 
         // what lines from input are stored where in buffer
@@ -30,7 +34,7 @@ class Buffer {
         int lineInserts;
         
         // circular buffer
-        Buffer(int channels, int rows, int cols, int lines);
+        Buffer(int channels, int rows, int cols, int lines, bool extraMemory = false);
 
         void FreeMemory();
         void LineInserted();

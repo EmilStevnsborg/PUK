@@ -33,8 +33,8 @@ bool gaussianBlurTest() {
     std::string path = "cases/Background_Subtraction_Tutorial_frame_1.png";
     camSimulator.StoreData(path);
 
-    int kernelHeight = 5; 
-    int kernelWidth = 5;
+    int kernelHeight = 3; 
+    int kernelWidth = 3;
 
     double sigmaX = 0;
     double sigmaY = 0;
@@ -58,4 +58,30 @@ bool gaussianBlurTest() {
     outputBuffer.FreeMemory();
     
     return result;
+}
+
+bool sobelTest() {
+    int channels = 3;
+    int rows = 576;
+    int cols = 768;    
+    CamSimulator camSimulator(channels, rows, cols);
+    std::string path = "cases/Background_Subtraction_Tutorial_frame_1.png";
+    camSimulator.StoreData(path);
+
+    int kernelHeight = 3; 
+    int kernelWidth = 3;
+
+    // predicate
+    Host host(&camSimulator, channels, rows, cols);
+    Buffer outputBuffer(channels, rows, cols, rows, true);
+    host.Sobel(&outputBuffer, kernelHeight, kernelWidth);
+    cv::Mat yPrime = byteArrayToImg(outputBuffer.memory, channels, rows, cols);
+
+    // Display the predicate image
+    cv::imshow("predicate image", yPrime);
+    cv::waitKey(0);
+
+    outputBuffer.FreeMemory();
+    
+    return false;
 }

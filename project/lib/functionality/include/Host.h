@@ -11,6 +11,9 @@
 #include <vector>
 #include <cstdio>
 #include "NonMaxSuppressionLayer.h"
+#include "SobelLayer.h"
+#include <functional>
+#include <memory>
 
 typedef uint8_t byte;
 
@@ -25,10 +28,19 @@ class Host {
     public:
         Host(Camera* cam, int channels, int rows, int cols);
         void CannyEdge(Buffer* outputBuffer);
+        
         void GaussianBlur(Buffer* outputBuffer, 
                           int kernelHeight, int kernelWidth, 
                           double sigmaX, double sigmaY);
-        void NonMaxSuppression(Buffer* outputBuffer);
+
+        void Sobel(Buffer* outputBuffer, 
+                   int kernelHeight, int kernelWidth);
+
+        void StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers, Buffer* outputBuffer);
+
+        void PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers, Buffer* outputBuffer, 
+                             int currentLayerIdx, int line);
+
         ~Host() {}
 };
 
