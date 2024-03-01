@@ -136,35 +136,4 @@ void Host::Sobel(Buffer* outputBuffer,
     // The first required lines for nmx's stream function exists in its input buffer
 
     StreamingPipeLine(layers, outputBuffer);
-
-    // // compute each line in the outputBuffer
-    // for (int line = 0; line < outputBuffer->lines; line++) {
-    //     nmxLayer.Stream(outputBuffer, line);
-
-    //     // next line that needs to be put into nmxLayer's input buffer
-    //     int newSobelLine = line + nmxLayer.padHeight + 1;
-
-    //     if ((line - nmxLayer.padHeight >= 0) &&
-    //         (newSobelLine < nmxLayer.inputBuffer.rows))
-    //     {
-    //         sobelLayer.Stream(&nmxLayer.inputBuffer, newSobelLine);
-
-    //         // sobelLayer needs new cam line
-    //         int newCamLine =  newSobelLine + sobelLayer.padHeight + 1;
-    //         if ((newSobelLine - sobelLayer.padHeight >= 0) && 
-    //             (newCamLine < sobelLayer.inputBuffer.rows)) 
-    //         {
-    //             camSensor->Stream(&sobelLayer.inputBuffer, 
-    //                               newCamLine);
-                
-    //             sobelLayer.inputBuffer.LineInserted();
-    //         }
-    //         nmxLayer.inputBuffer.LineInserted();
-    //     }
-    //     // one line inserted into output buffer
-    //     outputBuffer->LineInserted();
-    // }
-
-    // sobelLayer.inputBuffer.FreeMemory();
-    // nmxLayer.inputBuffer.FreeMemory();
 }
