@@ -18,70 +18,75 @@ bool checkCorrectness(cv::Mat& y, cv::Mat& yPrime) {
     cv::Mat diff;
     cv::absdiff(y, yPrime, diff);
 
-    // Show the difference image
-    cv::imshow("Difference Image", diff);
-    cv::waitKey(0); // Wait for a key press before closing
+    // // Show the difference image
+    // cv::imshow("Difference Image", diff);
+    // cv::waitKey(0); // Wait for a key press before closing
 
     return true;
 }
 
-bool gaussianBlurTest() {
+bool test(std::string functionType) {
+    // input
     int channels = 3;
     int rows = 576;
-    int cols = 768;    
+    int cols = 768;
     CamSimulator camSimulator(channels, rows, cols);
     std::string path = "cases/Background_Subtraction_Tutorial_frame_1.png";
     camSimulator.StoreData(path);
 
-    int kernelHeight = 3; 
-    int kernelWidth = 3;
 
-    double sigmaX = 0;
-    double sigmaY = 0;
-
-
-    // predicate
     Host host(&camSimulator, channels, rows, cols);
-    Buffer outputBuffer(channels, rows, cols, rows);
-    host.GaussianBlur(&outputBuffer, kernelHeight, kernelWidth, sigmaX, sigmaY);
-    cv::Mat yPrime = byteArrayToImg(outputBuffer.memory, channels, rows, cols);
 
-    // true
-    cv::Mat y;
-    cv::GaussianBlur(camSimulator.GetImage(), y, 
-                     cv::Size(kernelWidth, kernelWidth), 
-                     sigmaX, sigmaY,
-                     cv::BORDER_CONSTANT);
 
-    bool result = checkCorrectness(y, yPrime);
-
-    outputBuffer.FreeMemory();
+    // optimized functionality output
+    cv::Mat hostOutput;
+    Buffer* outputBufferPtr;
+    // cv implementation output
+    cv::Mat cvOutput;
     
-    return result;
-}
+    if (functionType == "sobel") {
 
-bool sobelTest() {
-    int channels = 3;
-    int rows = 576;
-    int cols = 768;    
-    CamSimulator camSimulator(channels, rows, cols);
-    std::string path = "cases/Background_Subtraction_Tutorial_frame_1.png";
-    camSimulator.StoreData(path);
+        int kernelSize = 3;
 
-    int kernelHeight = 3; 
-    int kernelWidth = 3;
+        Buffer outputBuffer(channels, rows, cols, rows, true);
+        outputBufferPtr = &outputBuffer;
 
-    // predicate
-    Host host(&camSimulator, channels, rows, cols);
-    Buffer outputBuffer(channels, rows, cols, rows, true);
-    host.Sobel(&outputBuffer, kernelHeight, kernelWidth);
-    cv::Mat yPrime = byteArrayToImg(outputBuffer.memory, channels, rows, cols);
+        host.Sobel(&outputBuffer);
+        hostOutput = byteArrayToImg(outputBuffer.memory, channels, rows, cols);
 
-    // Display the predicate image
-    cv::imshow("predicate image", yPrime);
-    cv::waitKey(0);
+        cvOutput = sobel(camSimulator.GetImage(), kernelSize);
+    } 
+    else if (functionType == "gaussianBlur") {
 
-    outputBuffer.FreeMemory();
-    
-    return false;
+        int kernelHeight = 3; 
+        int kernelWidth = 3;
+        double sigmaX = 0;
+        double sigmaY = 0;
+
+        Buffer outputBuffer(channels, rows, cols, rows);
+        outputBufferPtr = &outputBuffer;
+        
+        host.GaussianBlur(&outputBuffer, kernelHeight, kernelWidth, sigmaX, sigmaY);
+        hostOutput = byteArrayToImg(outputBuffer.memory, channels, rows, cols);
+
+        cvOutput = gaussianBlur(camSimulator.GetImage(), 
+                                kernelHeight, kernelWidth, 
+                                sigmaX, sigmaY);
+    }
+    else if (functionType == "cannyEdge") {
+
+        byte lowThreshold = 100;
+        byte highThreshold = 200;
+
+        Buffer outputBuffer(1, rows, cols, rows);
+        outputBufferPtr = &outputBuffer;
+        
+        host.CannyEdge(&outputBuffer, lowThreshold, highThreshold);
+
+        cvOutput = cannyEdge(camSimulator.GetImage(), lowThreshold, highThreshold);
+    }
+
+    checkCorrectness(cvOutput, hostOutput);
+
+    outputBufferPtr->FreeMemory();
 }

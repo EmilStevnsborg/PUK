@@ -1,9 +1,8 @@
 #include "program.h"
 
 int main() {
-    // gaussianBlurTest();
 
-    sobelTest();
+    test("sobel");
 
     // // camera tests: 3, 360, 640
     // int channels = 3;

@@ -12,6 +12,7 @@
 #include <cstdio>
 #include "NonMaxSuppressionLayer.h"
 #include "SobelLayer.h"
+#include "HysterisisLayer.h"
 #include <functional>
 #include <memory>
 
@@ -27,18 +28,20 @@ class Host {
         Camera* camSensor; // Dependency injection
     public:
         Host(Camera* cam, int channels, int rows, int cols);
-        void CannyEdge(Buffer* outputBuffer);
         
         void GaussianBlur(Buffer* outputBuffer, 
                           int kernelHeight, int kernelWidth, 
                           double sigmaX, double sigmaY);
+                          
+        void CannyEdge(Buffer* outputBuffer, byte lowThreshold, byte highThreshold);
 
-        void Sobel(Buffer* outputBuffer, 
-                   int kernelHeight, int kernelWidth);
+        void Sobel(Buffer* outputBuffer);
 
-        void StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers, Buffer* outputBuffer);
+        void StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers, 
+                             Buffer* outputBuffer);
 
-        void PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers, Buffer* outputBuffer, 
+        void PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers, 
+                             Buffer* outputBuffer, 
                              int currentLayerIdx, int line);
 
         ~Host() {}

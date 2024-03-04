@@ -19,11 +19,16 @@ class NonMaxSuppressionLayer : public Layer {
         int padHeight;
         int padWidth;
 
+        byte lowThreshold;
+        byte highThreshold;
+
         NonMaxSuppressionLayer(int inputChannels, 
                                int inputRows, 
                                int inputCols,
                                int kernelHeight, 
-                               int kernelWidth);
+                               int kernelWidth,
+                               byte lowThreshold,
+                               byte highThreshold);
 
         void Stream(Buffer* outputBuffer, int line);
 

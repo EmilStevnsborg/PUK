@@ -4,14 +4,11 @@
 #include "CamSimulator.h"
 #include "util.h"
 #include "Host.h"
-#include <opencv2/opencv.hpp>
-#include <opencv2/imgcodecs.hpp>
+#include "functionality.h"
 #include <optional>
 
 bool checkCorrectness(cv::Mat& y, cv::Mat& yPrime);
 
-bool gaussianBlurTest();
-
-bool sobelTest();
+bool test(std::string functionType);
 
 #endif // TESTING_H

@@ -4,11 +4,15 @@ NonMaxSuppressionLayer::NonMaxSuppressionLayer(int inputChannels,
                                                int inputRows, 
                                                int inputCols,
                                                int kernelHeight, 
-                                               int kernelWidth)     
+                                               int kernelWidth,
+											   byte lowThreshold,
+											   byte highThreshold)     
     : Layer(inputChannels, inputRows, inputCols),
       inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, true) 
 {
+	// this is 1 always
     this->inputChannels = inputChannels;
+
     this->inputRows = inputRows;
     this->inputCols = inputCols;
 
@@ -18,6 +22,9 @@ NonMaxSuppressionLayer::NonMaxSuppressionLayer(int inputChannels,
     // integer division is floored
     this->padHeight = kernelHeight/2;
     this->padWidth = kernelWidth/2;
+
+	this->lowThreshold = lowThreshold;
+	this->highThreshold = highThreshold;
 }
 
 // inputBuffer has extraMemory as well, where the gradient angle is
@@ -32,13 +39,13 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 	// for each pixel compute non-max uppression
     for (int j = 0; j < inputCols; j++) {
-        for (int c = 0; c < outputBuffer->channels; c++) {
-			int inputIdx = memoryLine*inputBuffer.bytesLine + j*inputChannels + c;
+		for (int c = 0; c < inputBuffer.channels; c++) {
+			int inputIdx = memoryLine*inputBuffer.bytesLine + j*inputBuffer.channels + c;
 
 			byte inputVal = inputBuffer.memory[inputIdx];
 			byte angle = inputBuffer.extraMemory[inputIdx];
 
-			byte max = inputVal;
+			byte val = inputVal;
 
 			// up down
 			if (angle == 0) {
@@ -51,11 +58,11 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 					// the index in memory
 					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									j*inputChannels+c);
+									j);
 
 					if (otherL >= 0 && otherL < inputRows && otherIdx != inputIdx) {
 						byte otherVal = inputBuffer.memory[otherIdx];
-						max = std::max(max, otherVal);
+						if (otherVal > inputVal) {val = 0; break;}
 					}
 				}
 			}
@@ -73,14 +80,14 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 					// the index in memory
 					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									otherJ*inputChannels+c);
+									otherJ);
 
 					if (((otherL >= 0 && otherL < inputRows) &&
-					     (otherJ >= 0 && otherJ < inputCols) && 
-						 (otherIdx != inputIdx))) 
+							(otherJ >= 0 && otherJ < inputCols) && 
+							(otherIdx != inputIdx))) 
 					{
 						byte otherVal = inputBuffer.memory[otherIdx];
-						max = std::max(max, otherVal);
+						if (otherVal > inputVal) {val = 0; break;}
 					}
 				}
 			}
@@ -96,11 +103,11 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 					// the index in memory
 					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									otherJ*inputChannels+c);
+									otherJ);
 
 					if (otherJ >= 0 && otherJ < inputCols && otherIdx != inputIdx) {
 						byte otherVal = inputBuffer.memory[otherIdx];
-						max = std::max(max, otherVal);
+						if (otherVal > inputVal) {val = 0; break;}
 					}
 				}
 			}
@@ -118,19 +125,24 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 					// the index in memory
 					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									otherJ*inputChannels+c);
+									otherJ);
 
 					if (((otherL >= 0 && otherL < inputRows) &&
-					     (otherJ >= 0 && otherJ < inputCols) && 
-						 (otherIdx != inputIdx))) 
+							(otherJ >= 0 && otherJ < inputCols) && 
+							(otherIdx != inputIdx))) 
 					{
 						byte otherVal = inputBuffer.memory[otherIdx];
-						max = std::max(max, otherVal);
+						if (otherVal > inputVal) {val = 0; break;}
 					}
 				}
 			}
-            outputBuffer->memory[outMemIdx+c] = max;
-        }
-        outMemIdx += outputBuffer->channels;
+			if (val >= highThreshold) {
+				val = 255;
+			} else if (val >= lowThreshold) {
+				val = 127;
+			}
+			outputBuffer->memory[outMemIdx+j*inputBuffer.channels+c] = val;
+		}
+		outMemIdx += outputBuffer->channels;
     }
 }

@@ -37,7 +37,7 @@ void SobelLayer::Stream(Buffer* outputBuffer, int line) {
 
     // Compute gradient and angle for each pixel
     for (int startCol = -padWidth; startCol < inputCols; startCol++) {
-        for (int c = 0; c < outputBuffer->channels; c++) {
+        for (int c = 0; c < inputBuffer.channels; c++) {
             
             float Gx = Convolution<float>(&inputBuffer, kernelX, 
                                           kernelHeight, kernelWidth,
@@ -50,32 +50,30 @@ void SobelLayer::Stream(Buffer* outputBuffer, int line) {
                                           inputChannels, inputCols);
             
             float gradientMagnitude = std::sqrt(Gx*Gx + Gy*Gy);
-            float radian = std::abs(std::atan(Gy/Gx));
             
+            // Convert radians to degrees
+            float degrees = std::atan2(Gy, Gx) * (180/M_PI);
+            if (degrees < 0) {degrees += 180;}
+
             // There are four directions {up, diagonal-up, horizontal, diagonal-down}
             byte angle;
 
             // up
-            if (radian < M_PI/8) {
+            if ((degrees >= 0 && degrees < 22.5) || (degrees >= 157.5)) {
                 angle = 0;
             }
-            // diagonal-up 
-            else if (radian >= M_PI/8 && radian < 3*M_PI/8) {
+            // diagonal-right 
+            else if (degrees >= 22.5 && degrees < 67.5) {
                 angle = 1;
             } 
             // horizontal
-            else if (radian >= 3*M_PI/8 && radian < 5*M_PI/8) {
+            else if (degrees >= 67.5 && degrees < 112.5) {
                 angle = 2;
             } 
-            // diagonal-down
-            else if (radian >= 5*M_PI/8 && radian < 7*M_PI/8) {
+            // diagonal-left
+            else if (degrees >= 112.5 && degrees < 157.5) {
                 angle = 3;
-            } 
-            // down (same as up)
-            else {
-                angle = 0;
             }
-            
             outputBuffer->memory[outMemIdx+c] = (byte) (std::floor(gradientMagnitude));
             outputBuffer->extraMemory[outMemIdx+c] = (angle);
         }

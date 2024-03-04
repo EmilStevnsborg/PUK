@@ -85,13 +85,18 @@ void printByteArray(byte* byteArray, int channels, int rows, int cols) {
 }
 
 cv::Mat byteArrayToImg(byte* byteArray, int channels, int rows, int cols) {
-    cv::Mat image(rows, cols, CV_8UC(channels));
+    cv::Mat image(rows, cols, channels == 1 ? CV_8UC1 : CV_8UC3);
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            for (int c = 0; c < channels; c++) {
-                int idx = i*cols*channels + j*channels + c;
-                image.at<cv::Vec3b>(i, j)[c] = byteArray[idx];
+            if (channels == 1) {
+                uchar intensity = byteArray[i * cols + j];
+                image.at<uchar>(i, j) = intensity;
+            } else {
+                for (int c = 0; c < channels; c++) {
+                    int idx = (i * cols + j) * channels + c;
+                    image.at<cv::Vec3b>(i, j)[c] = byteArray[idx];
+                }
             }
         }
     }
