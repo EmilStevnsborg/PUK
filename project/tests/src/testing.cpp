@@ -18,9 +18,17 @@ bool checkCorrectness(cv::Mat& y, cv::Mat& yPrime) {
     cv::Mat diff;
     cv::absdiff(y, yPrime, diff);
 
-    // // Show the difference image
-    // cv::imshow("Difference Image", diff);
-    // cv::waitKey(0); // Wait for a key press before closing
+    double absSum = cv::sum(diff)[0];
+
+    double minVal, maxVal;
+    cv::minMaxLoc(diff.reshape(1), &minVal, &maxVal);
+
+    printf("diff abs sum: %f\n", absSum);
+    printf("diff max %f\n", maxVal);
+
+    // Show the difference image
+    cv::imshow("Difference Image", diff);
+    cv::waitKey(0); // Wait for a key press before closing
 
     return true;
 }
@@ -48,19 +56,22 @@ bool test(std::string functionType) {
 
         int kernelSize = 3;
 
-        Buffer outputBuffer(channels, rows, cols, rows, true);
+        Buffer outputBuffer(1, rows, cols, rows, true);
         outputBufferPtr = &outputBuffer;
 
         host.Sobel(&outputBuffer);
-        hostOutput = byteArrayToImg(outputBuffer.memory, channels, rows, cols);
+        hostOutput = byteArrayToImg(outputBuffer.memory, 1, rows, cols);
 
-        cvOutput = sobel(camSimulator.GetImage(), kernelSize);
+        cv::Mat gray;
+        cv::cvtColor(camSimulator.GetImage(), gray, cv::COLOR_BGR2GRAY);
+
+        cvOutput = sobel(gray, kernelSize);
     } 
     else if (functionType == "gaussianBlur") {
 
         int kernelHeight = 3; 
         int kernelWidth = 3;
-        double sigmaX = 0;
+        double sigmaX = 1;
         double sigmaY = 0;
 
         Buffer outputBuffer(channels, rows, cols, rows);
@@ -78,10 +89,11 @@ bool test(std::string functionType) {
         byte lowThreshold = 100;
         byte highThreshold = 200;
 
-        Buffer outputBuffer(1, rows, cols, rows);
+        Buffer outputBuffer(1, rows, cols, rows, true);
         outputBufferPtr = &outputBuffer;
         
         host.CannyEdge(&outputBuffer, lowThreshold, highThreshold);
+        hostOutput = byteArrayToImg(outputBuffer.memory, 1, rows, cols);
 
         cvOutput = cannyEdge(camSimulator.GetImage(), lowThreshold, highThreshold);
     }

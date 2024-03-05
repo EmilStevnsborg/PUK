@@ -22,8 +22,8 @@ cv::Mat sobel(cv::Mat img, int ksize) {
 
     cv::Mat grad_x, grad_y;
     cv::Mat abs_grad_x, abs_grad_y;
-    cv::Sobel(img, grad_x, ddepth, 1, 0, ksize, scale, delta, cv::BORDER_DEFAULT );
-    cv::Sobel(img, grad_y, ddepth, 0, 1, ksize, scale, delta, cv::BORDER_DEFAULT );
+    cv::Sobel(img, grad_x, ddepth, 1, 0, ksize, scale, delta, cv::BORDER_DEFAULT);
+    cv::Sobel(img, grad_y, ddepth, 0, 1, ksize, scale, delta, cv::BORDER_DEFAULT);
     convertScaleAbs(grad_x, abs_grad_x);
     convertScaleAbs(grad_y, abs_grad_y);
     addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, cvOutput);
@@ -35,5 +35,13 @@ cv::Mat cannyEdge(cv::Mat img, int lowThreshold, int highThreshold) {
     cv::Mat cvOutput;
     cv::Canny(img, cvOutput, lowThreshold, highThreshold);
 
+    return cvOutput;
+}
+
+cv::Mat cannyEdgeManual(cv::Mat img, int lowThreshold, int highThreshold) {
+    cv::Mat gaussOutput = gaussianBlur(img, 5, 5, 0, 0);
+    cv::Mat sobelOutput = sobel(gaussOutput, 3);
+
+    cv::Mat cvOutput;
     return cvOutput;
 }

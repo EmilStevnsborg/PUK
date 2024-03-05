@@ -19,7 +19,6 @@ float Convolution(Buffer* inputBuffer,
                   int& channels, int& cols);
 
 bool Hysterisis(Buffer* inputBuffer, 
-                int& i, int& j,
-                int& rows, int& cols);
+                int c, int& i, int& j);
 
 #endif // CVFUNCTIONS_H

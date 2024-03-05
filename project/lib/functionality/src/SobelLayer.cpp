@@ -18,6 +18,8 @@ SobelLayer::SobelLayer(int inputChannels,
     this->padHeight = kernelHeight/2;
     this->padWidth = kernelWidth/2;
 
+
+    // generalise these kernels
     this->kernelX = {{-1, 0, 1}, 
                      {-2, 0, 2}, 
                      {-1, 0, 1}};
@@ -38,18 +40,35 @@ void SobelLayer::Stream(Buffer* outputBuffer, int line) {
     // Compute gradient and angle for each pixel
     for (int startCol = -padWidth; startCol < inputCols; startCol++) {
         for (int c = 0; c < inputBuffer.channels; c++) {
-            
-            float Gx = Convolution<float>(&inputBuffer, kernelX, 
-                                          kernelHeight, kernelWidth,
-                                          startLine, startCol, c,
-                                          inputChannels, inputCols);
 
-            float Gy = Convolution<float>(&inputBuffer, kernelY, 
-                                          kernelHeight, kernelWidth,
-                                          startLine, startCol, c,
-                                          inputChannels, inputCols);
+            float Gx = 0;
+            float Gy = 0;
+
+            // Sobel uses REFLECT_101 for padding: gradients at borders are 0
+            if (!((startCol == -padWidth || startCol == inputCols-2) ||
+                  (startLine == -padHeight || startLine == inputRows-2))) { 
             
-            float gradientMagnitude = std::sqrt(Gx*Gx + Gy*Gy);
+                Gx = Convolution<float>(&inputBuffer, kernelX, 
+                                        kernelHeight, kernelWidth,
+                                        startLine, startCol, c,
+                                        inputChannels, inputCols);
+                
+                if (Gx > 255) {Gx = 255;}
+                else if (Gx < -255) {Gx = -255;}
+                
+                Gy = Convolution<float>(&inputBuffer, kernelY, 
+                                        kernelHeight, kernelWidth,
+                                        startLine, startCol, c,
+                                        inputChannels, inputCols);
+                
+                if (Gy > 255) {Gy = 255;}
+                else if (Gy < -255) {Gy = -255;}
+            }
+            
+            // (min,max) = (0,361) which means the scale is roughly 1.42
+            float gradientMagnitude = std::sqrt(Gx*Gx + Gy*Gy)/1.42;
+
+            // if (gradientMagnitude > 255) {printf("Gx %f Gy %f grad mag %f\n", Gx, Gy, gradientMagnitude);}
             
             // Convert radians to degrees
             float degrees = std::atan2(Gy, Gx) * (180/M_PI);

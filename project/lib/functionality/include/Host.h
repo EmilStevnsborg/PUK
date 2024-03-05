@@ -13,6 +13,7 @@
 #include "NonMaxSuppressionLayer.h"
 #include "SobelLayer.h"
 #include "HysterisisLayer.h"
+#include "GrayScaleLayer.h"
 #include <functional>
 #include <memory>
 

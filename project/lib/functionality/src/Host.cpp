@@ -19,7 +19,7 @@ void Host::PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
     }
     
     // next line that needs to be put into layer's input buffer
-    int nextLine = line + layers[currentLayerIdx]->PadHeight() + 1;
+    int nextLine = line + layers[currentLayerIdx]->PadHeight()+1;
     
     // populate inputBuffer
     if ((line - layers[currentLayerIdx]->PadHeight() >= 0) &&
@@ -96,7 +96,21 @@ void Host::GaussianBlur(Buffer* outputBuffer,
     StreamingPipeLine(layers, outputBuffer);
 }
 
+void Host::Sobel(Buffer* outputBuffer) {
+    std::vector<std::unique_ptr<Layer>> layers;
 
+    auto gaussianBlurLayer = std::make_unique<GaussianBlurLayer>(channels, 
+                                    rows, cols, 3, 3, 0, 0);
+
+    auto grayScaleLayer = std::make_unique<GrayScaleLayer>(channels, rows, cols);
+
+    auto sobelLayer = std::make_unique<SobelLayer>(1, rows, cols, 3, 3);
+
+    layers.push_back(std::move(sobelLayer));
+    layers.push_back(std::move(grayScaleLayer));
+    
+    StreamingPipeLine(layers, outputBuffer);
+}
 
 
 void Host::CannyEdge(Buffer* outputBuffer, byte lowThreshold, byte highThreshold) 
@@ -108,7 +122,9 @@ void Host::CannyEdge(Buffer* outputBuffer, byte lowThreshold, byte highThreshold
     auto gaussianBlurLayer = std::make_unique<GaussianBlurLayer>(channels, 
                                     rows, cols, 5, 5, 0, 0);
 
-    auto sobelLayer = std::make_unique<SobelLayer>(channels, rows, cols, 3, 3);
+    auto grayScaleLayer = std::make_unique<GrayScaleLayer>(channels, rows, cols);
+
+    auto sobelLayer = std::make_unique<SobelLayer>(1, rows, cols, 3, 3);
 
     auto nmxLayer = std::make_unique<NonMaxSuppressionLayer>(1, rows, cols, 
                                                              3, 3, lowThreshold,
@@ -118,22 +134,10 @@ void Host::CannyEdge(Buffer* outputBuffer, byte lowThreshold, byte highThreshold
     layers.push_back(std::move(hysterisisLayer));
     layers.push_back(std::move(nmxLayer));
     layers.push_back(std::move(sobelLayer));
+    layers.push_back(std::move(grayScaleLayer));
     layers.push_back(std::move(gaussianBlurLayer));
 
     // The first required lines for nmx's stream function exists in its input buffer
 
-    StreamingPipeLine(layers, outputBuffer);
-}
-
-void Host::Sobel(Buffer* outputBuffer) {
-    std::vector<std::unique_ptr<Layer>> layers;
-
-    auto gaussianBlurLayer = std::make_unique<GaussianBlurLayer>(channels, 
-                                    rows, cols, 3, 3, 0, 0);
-    auto sobelLayer = std::make_unique<SobelLayer>(channels, rows, cols, 3, 3);
-
-    layers.push_back(std::move(sobelLayer));
-    layers.push_back(std::move(gaussianBlurLayer));
-    
     StreamingPipeLine(layers, outputBuffer);
 }

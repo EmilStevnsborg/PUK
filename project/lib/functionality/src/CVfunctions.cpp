@@ -67,53 +67,79 @@ template float Convolution(Buffer* inputBuffer,
 
 
 bool Hysterisis(Buffer* inputBuffer, 
-                int& i, int& j,
-                int& rows, int& cols)
+                int c, int& i, int& j)
 {
     int iMem = i % inputBuffer->lines;
+    int anchorIdx = iMem*inputBuffer->bytesLine+j*inputBuffer->channels+c;
+    int inputIdx = anchorIdx;
 
     // already strong
-    if (inputBuffer->memory[iMem*cols+j] == 255) {return true;}
+    if (inputBuffer->memory[inputIdx] == 255) {return true;}
     
     // already non relevant 
-    if (inputBuffer->memory[iMem*cols+j] == 0) {return false;}
+    if (inputBuffer->memory[inputIdx] == 0) {return false;}
 
     
     // up
+    inputIdx = (((i-1) % inputBuffer->lines)*
+                inputBuffer->bytesLine+j*inputBuffer->channels+c);
+
     if ((i-1 >= 0 &&
-         inputBuffer->memory[((i-1) % inputBuffer->lines)*cols+j] == 255))
+         inputBuffer->memory[inputIdx] == 255))
         {return true;}
 
     // down
-    if ((i+1 < rows && 
-         inputBuffer->memory[((i+1) % inputBuffer->lines)*cols+j] == 255))
+    inputIdx = (((i+1) % inputBuffer->lines)*
+                inputBuffer->bytesLine+j*inputBuffer->channels+c);
+
+    if ((i+1 < inputBuffer->rows && 
+         inputBuffer->memory[inputIdx] == 255))
         {return true;}
+    
     // left
+    inputIdx = iMem*inputBuffer->bytesLine+(j-1)*inputBuffer->channels+c;
     if ((j-1 >= 0 && 
-         inputBuffer->memory[iMem*cols+(j-1)] == 255))
+         inputBuffer->memory[inputIdx] == 255))
         {return true;}
+    
     // right
+    inputIdx = iMem*inputBuffer->bytesLine+(j+1)*inputBuffer->channels+c;
     if ((j+1 >= 0 && 
-         inputBuffer->memory[iMem*cols+(j+1)] == 255))
+         inputBuffer->memory[inputIdx] == 255))
         {return true;}
 
     // DIAGONALS
 
     // left up
+    inputIdx = (((i-1) % inputBuffer->lines)*
+                inputBuffer->bytesLine+(j-1)*inputBuffer->channels+c);
+    
     if ((i-1 >= 0 && j-1 >= 0 && 
-         inputBuffer->memory[((i-1) % inputBuffer->lines)*cols+(j-1)] == 255))
+         inputBuffer->memory[inputIdx] == 255))
         {return true;}
+    
     // right up
-    if ((i-1 >= 0 && j+1 < cols && 
-         inputBuffer->memory[((i-1) % inputBuffer->lines)*cols+(j+1)] == 255))
+    inputIdx = (((i-1) % inputBuffer->lines)*
+                inputBuffer->bytesLine+(j+1)*inputBuffer->channels+c);
+    
+    if ((i-1 >= 0 && j+1 < inputBuffer->cols && 
+         inputBuffer->memory[inputIdx] == 255))
         {return true;}
+    
     // left down
-    if ((i+1 < rows && j-1 >= 0 && 
-         inputBuffer->memory[((i+1) % inputBuffer->lines)*cols+(j-1)] == 255))
+    inputIdx = (((i+1) % inputBuffer->lines)*
+                inputBuffer->bytesLine+(j-1)*inputBuffer->channels+c);
+    
+    if ((i+1 < inputBuffer->rows && j-1 >= 0 && 
+         inputBuffer->memory[inputIdx] == 255))
         {return true;}
+    
     // right down
-    if ((i+1 < rows && j+1 < cols && 
-         inputBuffer->memory[((i+1) % inputBuffer->lines)*cols+(j+1)] == 255))
+    inputIdx = (((i+1)%inputBuffer->lines)*
+                inputBuffer->bytesLine+(j+1)*inputBuffer->channels+c);
+    
+    if ((i+1 < inputBuffer->rows && j+1 < inputBuffer->cols && 
+         inputBuffer->memory[inputIdx] == 255))
         {return true;}
 
     return false;

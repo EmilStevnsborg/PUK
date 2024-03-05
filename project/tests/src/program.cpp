@@ -2,7 +2,7 @@
 
 int main() {
 
-    test("sobel");
+    test("cannyEdge");
 
     // // camera tests: 3, 360, 640
     // int channels = 3;

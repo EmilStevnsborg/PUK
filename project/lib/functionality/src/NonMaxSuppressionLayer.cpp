@@ -58,7 +58,7 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 					// the index in memory
 					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									j);
+									j*inputBuffer.channels + c);
 
 					if (otherL >= 0 && otherL < inputRows && otherIdx != inputIdx) {
 						byte otherVal = inputBuffer.memory[otherIdx];
@@ -80,7 +80,7 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 					// the index in memory
 					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									otherJ);
+									otherJ*inputBuffer.channels + c);
 
 					if (((otherL >= 0 && otherL < inputRows) &&
 							(otherJ >= 0 && otherJ < inputCols) && 
@@ -103,7 +103,7 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 					// the index in memory
 					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									otherJ);
+									otherJ*inputBuffer.channels + c);
 
 					if (otherJ >= 0 && otherJ < inputCols && otherIdx != inputIdx) {
 						byte otherVal = inputBuffer.memory[otherIdx];
@@ -125,11 +125,11 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 					// the index in memory
 					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									otherJ);
+									otherJ*inputBuffer.channels + c);
 
 					if (((otherL >= 0 && otherL < inputRows) &&
-							(otherJ >= 0 && otherJ < inputCols) && 
-							(otherIdx != inputIdx))) 
+						 (otherJ >= 0 && otherJ < inputCols) && 
+						 (otherIdx != inputIdx))) 
 					{
 						byte otherVal = inputBuffer.memory[otherIdx];
 						if (otherVal > inputVal) {val = 0; break;}
@@ -141,7 +141,7 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 			} else if (val >= lowThreshold) {
 				val = 127;
 			}
-			outputBuffer->memory[outMemIdx+j*inputBuffer.channels+c] = val;
+			outputBuffer->memory[outMemIdx+c] = val;
 		}
 		outMemIdx += outputBuffer->channels;
     }

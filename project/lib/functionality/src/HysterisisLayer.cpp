@@ -8,9 +8,7 @@ HysterisisLayer::HysterisisLayer(int inputChannels,
     : Layer(inputChannels, inputRows, inputCols),
       inputBuffer(inputChannels, inputRows, inputCols, kernelHeight) 
 {
-	// this is 1 always
     this->inputChannels = inputChannels;
-
     this->inputRows = inputRows;
     this->inputCols = inputCols;
 
@@ -31,11 +29,13 @@ void HysterisisLayer::Stream(Buffer* outputBuffer, int line) {
 
 	// for each pixel compute hysterisis
     for (int j = 0; j < inputCols; j++) {
-        bool keep = Hysterisis(&inputBuffer, line, j, inputRows, inputCols);
-        if (keep) {
-            outputBuffer->memory[outMemIdx+j] = 255;
-        } else {
-            outputBuffer->memory[outMemIdx+j] = 0;
+        for (int c = 0; c < inputChannels; c++) {
+            bool keep = Hysterisis(&inputBuffer, c, line, j);
+            if (keep) {
+                outputBuffer->memory[outMemIdx+j*outputBuffer->channels+c] = 255;
+            } else {
+                outputBuffer->memory[outMemIdx+j*outputBuffer->channels+c] = 0;
+            }
         }
     }
 }
