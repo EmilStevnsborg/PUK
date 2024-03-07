@@ -5,11 +5,6 @@
 #include "CVfunctions.h"
 
 class HysterisisLayer : public Layer {
-    private:
-        // image specifics
-        int inputChannels;
-        int inputRows;
-        int inputCols;
     public:
         Buffer inputBuffer;
 

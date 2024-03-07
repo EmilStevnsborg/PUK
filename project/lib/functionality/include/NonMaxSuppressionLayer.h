@@ -5,11 +5,6 @@
 #include "CVfunctions.h"
 
 class NonMaxSuppressionLayer : public Layer {
-    private:
-        // image specifics
-        int inputChannels;
-        int inputRows;
-        int inputCols;
     public:
         Buffer inputBuffer;
 
@@ -19,16 +14,16 @@ class NonMaxSuppressionLayer : public Layer {
         int padHeight;
         int padWidth;
 
-        byte lowThreshold;
-        byte highThreshold;
+        float lowThreshold;
+        float highThreshold;
 
         NonMaxSuppressionLayer(int inputChannels, 
                                int inputRows, 
                                int inputCols,
                                int kernelHeight, 
                                int kernelWidth,
-                               byte lowThreshold,
-                               byte highThreshold);
+                               float lowThreshold,
+                               float highThreshold);
 
         void Stream(Buffer* outputBuffer, int line);
 

@@ -12,13 +12,12 @@
 typedef uint8_t byte;
 
 template<typename KernelType>
-float Convolution(Buffer* inputBuffer,
-                  std::vector<std::vector<KernelType>>& kernel,
-                  int& kernelHeight, int& kernelWidth,
-                  int& startLine, int& startCol, int c,
-                  int& channels, int& cols);
+float MatMul(Buffer* inputBuffer,
+             std::vector<std::vector<KernelType>>& kernel,
+             int& kernelHeight, int& kernelWidth,
+             int& ai, int& aj, int& c);
 
-bool Hysterisis(Buffer* inputBuffer, 
-                int c, int& i, int& j);
+bool Hysterisis(Buffer* inputBuffer,
+                int& ai, int& aj, int& c);
 
 #endif // CVFUNCTIONS_H

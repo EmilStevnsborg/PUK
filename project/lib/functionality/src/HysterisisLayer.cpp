@@ -6,12 +6,8 @@ HysterisisLayer::HysterisisLayer(int inputChannels,
                                  int kernelHeight, 
                                  int kernelWidth)     
     : Layer(inputChannels, inputRows, inputCols),
-      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight) 
+      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, false, 1) 
 {
-    this->inputChannels = inputChannels;
-    this->inputRows = inputRows;
-    this->inputCols = inputCols;
-
     this->kernelHeight = kernelHeight;
     this->kernelWidth = kernelWidth;
 
@@ -23,18 +19,20 @@ HysterisisLayer::HysterisisLayer(int inputChannels,
 
 void HysterisisLayer::Stream(Buffer* outputBuffer, int line) {
 
-    // Where the line should be placed in the memory of the outputBuffer
-    int outMemIdx = (line % outputBuffer->lines) * 
-                     outputBuffer->bytesLine;
+    // the line index in the memory of the outputBuffer
+    int outLineMemIdx = outputBuffer->LineMemoryIndex(line);
 
-	// for each pixel compute hysterisis
-    for (int j = 0; j < inputCols; j++) {
-        for (int c = 0; c < inputChannels; c++) {
-            bool keep = Hysterisis(&inputBuffer, c, line, j);
+    for (int j = 0; j < outputBuffer->cols; j++) {
+        for (int c = 0; c < outputBuffer->channels; c++) {
+            
+            int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;
+            
+            bool keep = Hysterisis(&inputBuffer, line, j, c);
+            
             if (keep) {
-                outputBuffer->memory[outMemIdx+j*outputBuffer->channels+c] = 255;
+                outputBuffer->memory[outIdx] = 255;
             } else {
-                outputBuffer->memory[outMemIdx+j*outputBuffer->channels+c] = 0;
+                outputBuffer->memory[outIdx] = 0;
             }
         }
     }

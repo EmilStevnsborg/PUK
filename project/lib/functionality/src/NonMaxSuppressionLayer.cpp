@@ -5,17 +5,11 @@ NonMaxSuppressionLayer::NonMaxSuppressionLayer(int inputChannels,
                                                int inputCols,
                                                int kernelHeight, 
                                                int kernelWidth,
-											   byte lowThreshold,
-											   byte highThreshold)     
+											   float lowThreshold,
+											   float highThreshold)     
     : Layer(inputChannels, inputRows, inputCols),
-      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, true) 
+      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, true, 1) 
 {
-	// this is 1 always
-    this->inputChannels = inputChannels;
-
-    this->inputRows = inputRows;
-    this->inputCols = inputCols;
-
     this->kernelHeight = kernelHeight;
     this->kernelWidth = kernelWidth;
 
@@ -30,17 +24,20 @@ NonMaxSuppressionLayer::NonMaxSuppressionLayer(int inputChannels,
 // inputBuffer has extraMemory as well, where the gradient angle is
 void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
-    // Where the line should be placed in the memory of the outputBuffer
-    int outMemIdx = (line % outputBuffer->lines) * 
-                     outputBuffer->bytesLine;
+    // the line index in the memory of the outputBuffer
+    int outLineMemIdx = outputBuffer->LineMemoryIndex(line);
     
-    // the line is located at
-    int memoryLine = line % inputBuffer.lines;
+    // anchor line
+    int inLineMemIdx = inputBuffer.LineMemoryIndex(line);
+
+	int i = line;
 
 	// for each pixel compute non-max uppression
-    for (int j = 0; j < inputCols; j++) {
-		for (int c = 0; c < inputBuffer.channels; c++) {
-			int inputIdx = memoryLine*inputBuffer.bytesLine + j*inputBuffer.channels + c;
+
+    for (int j = 0; j < outputBuffer->cols; j++) {
+        for (int c = 0; c < outputBuffer->channels; c++) {
+
+			int inputIdx = inLineMemIdx + j*inputBuffer.channels + c;
 
 			byte inputVal = inputBuffer.memory[inputIdx];
 			byte angle = inputBuffer.extraMemory[inputIdx];
@@ -49,100 +46,99 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 			// up down
 			if (angle == 0) {
-				int half = padHeight;
-				// gradient direction values
-				for (int otherL = line-half; otherL < line+1+half; otherL++) {
 
-					// the line in memory
-					int otherMemoryLine = otherL % inputBuffer.lines;
+				int qi = i-1;
+				int qj = j;
+				
+				int ri = i+1;
+				int rj = j;
 
-					// the index in memory
-					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									j*inputBuffer.channels + c);
-
-					if (otherL >= 0 && otherL < inputRows && otherIdx != inputIdx) {
-						byte otherVal = inputBuffer.memory[otherIdx];
-						if (otherVal > inputVal) {val = 0; break;}
-					}
+				if (qi >= 0 && qj >= 0) {
+					int qIdx = (inputBuffer.LineMemoryIndex(qi) + 
+								qj*inputBuffer.channels + 
+								c);
+					if (inputBuffer.memory[qIdx] > inputVal) {val = 0;}
+				}
+				if (ri < inputBuffer.rows && rj < inputBuffer.cols) {
+					int rIdx = (inputBuffer.LineMemoryIndex(ri) + 
+								rj*inputBuffer.channels + 
+								c);
+					if (inputBuffer.memory[rIdx] > inputVal) {val = 0;}
 				}
 			}
 			// diagonal up 
 			else if (angle == 1) {
 
-				int half = padWidth;
-				// gradient direction values
-				for (int k = -half; k < 1+half; k++) {
-					
-					int otherL = line+k;
-					int otherJ = j+k;
-					// the line in memory
-					int otherMemoryLine = otherL % inputBuffer.lines;
+				int qi = i+1;
+				int qj = j-1;
+				
+				int ri = i-1;
+				int rj = j+1;
 
-					// the index in memory
-					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									otherJ*inputBuffer.channels + c);
-
-					if (((otherL >= 0 && otherL < inputRows) &&
-							(otherJ >= 0 && otherJ < inputCols) && 
-							(otherIdx != inputIdx))) 
-					{
-						byte otherVal = inputBuffer.memory[otherIdx];
-						if (otherVal > inputVal) {val = 0; break;}
-					}
+				if (qi >= 0 && qj >= 0) {
+					int qIdx = (inputBuffer.LineMemoryIndex(qi) + 
+								qj*inputBuffer.channels + 
+								c);
+					if (inputBuffer.memory[qIdx] > inputVal) {val = 0;}
+				}
+				if (ri < inputBuffer.rows && rj < inputBuffer.cols) {
+					int rIdx = (inputBuffer.LineMemoryIndex(ri) + 
+								rj*inputBuffer.channels + 
+								c);
+					if (inputBuffer.memory[rIdx] > inputVal) {val = 0;}
 				}
 			}
 			// horizontal
 			else if (angle == 2) {
 
-				int half = kernelWidth/2;
-				// gradient direction values
-				for (int otherJ = line-half; otherJ < line+1+half; otherJ++) {
+				int qi = i;
+				int qj = j-1;
+				
+				int ri = i;
+				int rj = j+1;
 
-					// the line in memory
-					int otherMemoryLine = memoryLine;
-
-					// the index in memory
-					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									otherJ*inputBuffer.channels + c);
-
-					if (otherJ >= 0 && otherJ < inputCols && otherIdx != inputIdx) {
-						byte otherVal = inputBuffer.memory[otherIdx];
-						if (otherVal > inputVal) {val = 0; break;}
-					}
+				if (qi >= 0 && qj >= 0) {
+					int qIdx = (inputBuffer.LineMemoryIndex(qi) + 
+								qj*inputBuffer.channels + 
+								c);
+					if (inputBuffer.memory[qIdx] > inputVal) {val = 0;}
+				}
+				if (ri < inputBuffer.rows && rj < inputBuffer.cols) {
+					int rIdx = (inputBuffer.LineMemoryIndex(ri) + 
+								rj*inputBuffer.channels + 
+								c);
+					if (inputBuffer.memory[rIdx] > inputVal) {val = 0;}
 				}
 			}
 			// diagonal down
 			else {
 
-				int half = kernelHeight/2;
-				// gradient direction values
-				for (int k = -half; k < 1+half; k++) {
-					
-					int otherL = line-k;
-					int otherJ = j+k;
-					// the line in memory
-					int otherMemoryLine = otherL % inputBuffer.lines;
+				int qi = i-1;
+				int qj = j-1;
+				
+				int ri = i+1;
+				int rj = j+1;
 
-					// the index in memory
-					int otherIdx = (otherMemoryLine*inputBuffer.bytesLine+
-									otherJ*inputBuffer.channels + c);
-
-					if (((otherL >= 0 && otherL < inputRows) &&
-						 (otherJ >= 0 && otherJ < inputCols) && 
-						 (otherIdx != inputIdx))) 
-					{
-						byte otherVal = inputBuffer.memory[otherIdx];
-						if (otherVal > inputVal) {val = 0; break;}
-					}
+				if (qi >= 0 && qj >= 0) {
+					int qIdx = (inputBuffer.LineMemoryIndex(qi) + 
+								qj*inputBuffer.channels + 
+								c);
+					if (inputBuffer.memory[qIdx] > inputVal) {val = 0;}
+				}
+				if (ri < inputBuffer.rows && rj < inputBuffer.cols) {
+					int rIdx = (inputBuffer.LineMemoryIndex(ri) + 
+								rj*inputBuffer.channels + 
+								c);
+					if (inputBuffer.memory[rIdx] > inputVal) {val = 0;}
 				}
 			}
-			if (val >= highThreshold) {
+			if (val >= (byte) highThreshold) {
 				val = 255;
-			} else if (val >= lowThreshold) {
+			} else if (val >= (byte) lowThreshold) {
 				val = 127;
 			}
-			outputBuffer->memory[outMemIdx+c] = val;
+            int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;
+			outputBuffer->memory[outIdx] = val;
 		}
-		outMemIdx += outputBuffer->channels;
     }
 }

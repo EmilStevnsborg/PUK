@@ -56,7 +56,7 @@ bool test(std::string functionType) {
 
         int kernelSize = 3;
 
-        Buffer outputBuffer(1, rows, cols, rows, true);
+        Buffer outputBuffer(1, rows, cols, rows, true, 1);
         outputBufferPtr = &outputBuffer;
 
         host.Sobel(&outputBuffer);
@@ -74,7 +74,7 @@ bool test(std::string functionType) {
         double sigmaX = 1;
         double sigmaY = 0;
 
-        Buffer outputBuffer(channels, rows, cols, rows);
+        Buffer outputBuffer(channels, rows, cols, rows, false, 1);
         outputBufferPtr = &outputBuffer;
         
         host.GaussianBlur(&outputBuffer, kernelHeight, kernelWidth, sigmaX, sigmaY);
@@ -86,10 +86,10 @@ bool test(std::string functionType) {
     }
     else if (functionType == "cannyEdge") {
 
-        byte lowThreshold = 100;
-        byte highThreshold = 200;
+        float lowThreshold = 100;
+        float highThreshold = 200;
 
-        Buffer outputBuffer(1, rows, cols, rows, true);
+        Buffer outputBuffer(1, rows, cols, rows, true, 1);
         outputBufferPtr = &outputBuffer;
         
         host.CannyEdge(&outputBuffer, lowThreshold, highThreshold);

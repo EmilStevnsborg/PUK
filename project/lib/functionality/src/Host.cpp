@@ -80,7 +80,6 @@ void Host::StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
 
 
 // Gaussian filter which blurs camera input and outputs an image of same size
-// The kernel is 5x5
 void Host::GaussianBlur(Buffer* outputBuffer, 
                         int kernelHeight, int kernelWidth, 
                         double sigmaX, double sigmaY) 
@@ -99,10 +98,10 @@ void Host::GaussianBlur(Buffer* outputBuffer,
 void Host::Sobel(Buffer* outputBuffer) {
     std::vector<std::unique_ptr<Layer>> layers;
 
-    auto gaussianBlurLayer = std::make_unique<GaussianBlurLayer>(channels, 
-                                    rows, cols, 3, 3, 0, 0);
-
     auto grayScaleLayer = std::make_unique<GrayScaleLayer>(channels, rows, cols);
+
+    auto gaussianBlurLayer = std::make_unique<GaussianBlurLayer>(1, 
+                                    rows, cols, 3, 3, 0, 0);
 
     auto sobelLayer = std::make_unique<SobelLayer>(1, rows, cols, 3, 3);
 
@@ -113,16 +112,17 @@ void Host::Sobel(Buffer* outputBuffer) {
 }
 
 
-void Host::CannyEdge(Buffer* outputBuffer, byte lowThreshold, byte highThreshold) 
+void Host::CannyEdge(Buffer* outputBuffer, float lowThreshold, float highThreshold) 
 {
 
     std::vector<std::unique_ptr<Layer>> layers;
 
     // init layers for computation
-    auto gaussianBlurLayer = std::make_unique<GaussianBlurLayer>(channels, 
-                                    rows, cols, 5, 5, 0, 0);
 
     auto grayScaleLayer = std::make_unique<GrayScaleLayer>(channels, rows, cols);
+
+    auto gaussianBlurLayer = std::make_unique<GaussianBlurLayer>(1, 
+                                    rows, cols, 5, 5, 0, 0);
 
     auto sobelLayer = std::make_unique<SobelLayer>(1, rows, cols, 3, 3);
 
@@ -134,8 +134,8 @@ void Host::CannyEdge(Buffer* outputBuffer, byte lowThreshold, byte highThreshold
     layers.push_back(std::move(hysterisisLayer));
     layers.push_back(std::move(nmxLayer));
     layers.push_back(std::move(sobelLayer));
-    layers.push_back(std::move(grayScaleLayer));
     layers.push_back(std::move(gaussianBlurLayer));
+    layers.push_back(std::move(grayScaleLayer));
 
     // The first required lines for nmx's stream function exists in its input buffer
 

@@ -5,12 +5,8 @@ SobelLayer::SobelLayer(int inputChannels,
                        int inputCols,
                        int kernelHeight, int kernelWidth)     
     : Layer(inputChannels, inputRows, inputCols),
-      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight)
+      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, false, 1)
 {
-    this->inputChannels = inputChannels;
-    this->inputRows = inputRows;
-    this->inputCols = inputCols;
-
     this->kernelHeight = kernelHeight;
     this->kernelWidth = kernelWidth;
 
@@ -30,54 +26,56 @@ SobelLayer::SobelLayer(int inputChannels,
 
 void SobelLayer::Stream(Buffer* outputBuffer, int line) {
 
-    // Computation requires [line-padHeight,..., line+padHeight} from input
-    int startLine = line-padHeight;
+    // the line index in the memory of the outputBuffer
+    int outLineMemIdx = outputBuffer->LineMemoryIndex(line);
 
-    // Where the line should be placed in the memory of the outputBuffer
-    int outMemIdx = (outputBuffer->lineInserts % outputBuffer->lines) * 
-                     outputBuffer->bytesLine;
-
-    // Compute gradient and angle for each pixel
-    for (int startCol = -padWidth; startCol < inputCols; startCol++) {
-        for (int c = 0; c < inputBuffer.channels; c++) {
+    for (int j = 0; j < outputBuffer->cols; j++) {
+        for (int c = 0; c < outputBuffer->channels; c++) {
 
             float Gx = 0;
             float Gy = 0;
+            
+            // anchor pixel of input (update when introducing stride)
+            int ai = line;
+            int aj = j;
 
             // Sobel uses REFLECT_101 for padding: gradients at borders are 0
-            if (!((startCol == -padWidth || startCol == inputCols-2) ||
-                  (startLine == -padHeight || startLine == inputRows-2))) { 
-            
-                Gx = Convolution<float>(&inputBuffer, kernelX, 
-                                        kernelHeight, kernelWidth,
-                                        startLine, startCol, c,
-                                        inputChannels, inputCols);
+            if (!((aj == 0 || aj == inputBuffer.cols-1) ||
+                  (ai == 0 || ai == inputBuffer.rows-1))) { 
                 
+                float maxGradient = 4 * 255;
+
+                Gx = MatMul<float>(&inputBuffer, kernelX, 
+                                   kernelHeight, kernelWidth,
+                                   ai, aj, c);
+
                 if (Gx > 255) {Gx = 255;}
                 else if (Gx < -255) {Gx = -255;}
-                
-                Gy = Convolution<float>(&inputBuffer, kernelY, 
-                                        kernelHeight, kernelWidth,
-                                        startLine, startCol, c,
-                                        inputChannels, inputCols);
-                
+
+                Gy = MatMul<float>(&inputBuffer, kernelY, 
+                                   kernelHeight, kernelWidth,
+                                   ai, aj, c);
+
                 if (Gy > 255) {Gy = 255;}
                 else if (Gy < -255) {Gy = -255;}
+            
             }
-            
-            // (min,max) = (0,361) which means the scale is roughly 1.42
-            float gradientMagnitude = std::sqrt(Gx*Gx + Gy*Gy)/1.42;
 
-            // if (gradientMagnitude > 255) {printf("Gx %f Gy %f grad mag %f\n", Gx, Gy, gradientMagnitude);}
+            // (min,max) = (0,361) which means the scale is roughly 1.42
+            float maxMagnitude = std::sqrt(255*255 + 255*255);
             
-            // Convert radians to degrees
+            float gradientMagnitude = std::sqrt(Gx*Gx + Gy*Gy);
+
+            gradientMagnitude = (gradientMagnitude / maxMagnitude) * 255;
+
+            // Convert to degrees
             float degrees = std::atan2(Gy, Gx) * (180/M_PI);
             if (degrees < 0) {degrees += 180;}
 
             // There are four directions {up, diagonal-up, horizontal, diagonal-down}
             byte angle;
 
-            // up
+            // up down
             if ((degrees >= 0 && degrees < 22.5) || (degrees >= 157.5)) {
                 angle = 0;
             }
@@ -93,9 +91,11 @@ void SobelLayer::Stream(Buffer* outputBuffer, int line) {
             else if (degrees >= 112.5 && degrees < 157.5) {
                 angle = 3;
             }
-            outputBuffer->memory[outMemIdx+c] = (byte) (std::floor(gradientMagnitude));
-            outputBuffer->extraMemory[outMemIdx+c] = (angle);
+            
+            int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;
+
+            outputBuffer->memory[outIdx] = (byte) (std::floor(gradientMagnitude));
+            outputBuffer->extraMemory[outIdx] = angle;
         }
-        outMemIdx += outputBuffer->channels;
     }
 }

@@ -5,12 +5,8 @@ GaussianBlurLayer::GaussianBlurLayer(int inputChannels, int inputRows,
                                      int kernelHeight, int kernelWidth, 
                                      double sigmaX, double sigmaY)
     : Layer(inputChannels, inputRows, inputCols),
-      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight)
+      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, false, 1)
 {
-    this->inputChannels = inputChannels;
-    this->inputRows = inputRows;
-    this->inputCols = inputCols;
-
     this->kernelHeight = kernelHeight;
     this->kernelWidth = kernelWidth;
     
@@ -28,25 +24,25 @@ GaussianBlurLayer::GaussianBlurLayer(int inputChannels, int inputRows,
 // stream a blurred line to output: necssarry lines already in buffer
 void GaussianBlurLayer::Stream(Buffer* outputBuffer, int line) {
 
-    // Computation requires [line-padHeight,..., line+padHeight] from input
-    int startLine = line-padHeight;
+    // the line index in the memory of the outputBuffer
+    int outLineMemIdx = outputBuffer->LineMemoryIndex(line);
 
-    // Where the line should be placed in the memory of the outputBuffer
-    int outMemIdx = (outputBuffer->lineInserts % outputBuffer->lines) * 
-                     outputBuffer->bytesLine;
-
-
-    for (int startCol = -padWidth; startCol < inputCols; startCol++) {
+    for (int j = 0; j < outputBuffer->cols; j++) {
         for (int c = 0; c < outputBuffer->channels; c++) {
             
-            float conv = Convolution<float>(&inputBuffer, kernel, 
-                                            kernelHeight, kernelWidth,
-                                            startLine, startCol, c,
-                                            inputChannels, inputCols);
+            // anchor pixel of input (update when introducing stride)
+            int ai = line;
+            int aj = j;
+
+            // all these parameters are related to input
+            float sumProduct = MatMul<float>(&inputBuffer, kernel, 
+                                             kernelHeight, kernelWidth,
+                                             ai, aj, c);
             
-            outputBuffer->memory[outMemIdx+c] = (byte) (std::floor(conv));
+            int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;
+
+            outputBuffer->memory[outIdx] = (byte) (std::floor(sumProduct));
         }
-        outMemIdx += outputBuffer->channels;
     }
 }
 

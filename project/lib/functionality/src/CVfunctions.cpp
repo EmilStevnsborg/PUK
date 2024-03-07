@@ -1,146 +1,100 @@
 #include "CVfunctions.h"
 
+
 template<typename KernelType>
-float Convolution(Buffer* inputBuffer,
-                  std::vector<std::vector<KernelType>>& kernel,
-                  int& kernelHeight, int& kernelWidth,
-                  int& startLine, int& startCol, int c, 
-                  int& channels, int& cols) 
+float MatMul(Buffer* inputBuffer,
+             std::vector<std::vector<KernelType>>& kernel,
+             int& kernelHeight, int& kernelWidth,
+             int& ai, int& aj, int& c) 
 {
-    // kernel indexers
-    int ki;
-    int kj;
+    float sumProduct = 0;
 
-    int inputIdx;
+    // this works only for odd kernel sizes currently
+    int starti = ai-kernelHeight/2;
+    int startj = aj-kernelWidth/2;
 
-    float w;
-    float inputVal;
+    int endi = ai+kernelHeight/2;
+    int endj = aj+kernelWidth/2;
+
+    for (int i = starti; i < endi+1; i++) {
         
-    KernelType conv = 0;
-        
-    // lines used in matrixmult 
-    for (int i = 0; i < inputBuffer->lines; i++) {
-
-        // line is stored at index i in the memory
-        int line = inputBuffer->lineMemoryMap[i];
-
-        // kernel begins at startLine
-        ki = line - startLine;
-        
-        // top padding and bottom padding
-        if ((ki >= kernelHeight) || (line < startLine)) {
+        if (i < 0 || i >= inputBuffer->rows) {
             continue;
         }
-
-        // go through kernel
-        for (int j = 0; j < kernelWidth; j++) {
-            
-            // left padding and right padding
-            if ((startCol + j < 0) ||(startCol + j >= cols)) {
+        for (int j = startj; j < endj+1; j++) {
+        
+            if (j < 0 || j >= inputBuffer->cols) {
                 continue;
             }
-            
-            kj = j;
+            int ki = i-starti;
+            int kj = j-startj;
 
-            w = kernel[ki][kj];
+            int lineMemoryIdx = inputBuffer->LineMemoryIndex(i);
+            int inputIdx = (lineMemoryIdx + 
+                            j*inputBuffer->channels + 
+                            c);
+            float inputVal = ((float) inputBuffer->memory[inputIdx]);
+            float w = kernel[ki][kj];
 
-            inputIdx = i*(inputBuffer->bytesLine) + (startCol+j)*channels + c;
-            
-            inputVal = (float) inputBuffer->memory[inputIdx];
-            conv += w * inputVal;
+            sumProduct += inputVal*w;
         }
     }
-    return conv;
+    return sumProduct;
 }
 
-template float Convolution(Buffer* inputBuffer,
-                     std::vector<std::vector<float>>& kernel,
-                     int& kernelHeight, int& kernelWidth,
-                     int& startLine, int& startCol, int c, 
-                     int& channels, int& cols);
+template float MatMul(Buffer* inputBuffer,
+                      std::vector<std::vector<float>>& kernel,
+                      int& kernelHeight, int& kernelWidth,
+                      int& ai, int& aj, int& c);
 
-template float Convolution(Buffer* inputBuffer,
-                           std::vector<std::vector<byte>>& kernel,
-                           int& kernelHeight, int& kernelWidth,
-                           int& startLine, int& startCol, int c, 
-                           int& channels, int& cols);
-
-
-bool Hysterisis(Buffer* inputBuffer, 
-                int c, int& i, int& j)
+bool Hysterisis(Buffer* inputBuffer,
+                int& ai, int& aj, int& c)
 {
-    int iMem = i % inputBuffer->lines;
-    int anchorIdx = iMem*inputBuffer->bytesLine+j*inputBuffer->channels+c;
-    int inputIdx = anchorIdx;
+    // check if anchor is strong or non relevant
+
+    int anchorlineMemoryIdx = inputBuffer->LineMemoryIndex(ai);
+    int anchorIdx = (anchorlineMemoryIdx + 
+                    aj*inputBuffer->channels + 
+                    c);
 
     // already strong
-    if (inputBuffer->memory[inputIdx] == 255) {return true;}
+    if (inputBuffer->memory[anchorIdx] == 255) {return true;}
     
     // already non relevant 
-    if (inputBuffer->memory[inputIdx] == 0) {return false;}
+    if (inputBuffer->memory[anchorIdx] == 0) {return false;}
 
-    
-    // up
-    inputIdx = (((i-1) % inputBuffer->lines)*
-                inputBuffer->bytesLine+j*inputBuffer->channels+c);
+    // check if pixels in neighbourhood are strong
 
-    if ((i-1 >= 0 &&
-         inputBuffer->memory[inputIdx] == 255))
-        {return true;}
+    int starti = ai-1;
+    int startj = aj-1;
 
-    // down
-    inputIdx = (((i+1) % inputBuffer->lines)*
-                inputBuffer->bytesLine+j*inputBuffer->channels+c);
+    int endi = ai+1;
+    int endj = aj+1;
 
-    if ((i+1 < inputBuffer->rows && 
-         inputBuffer->memory[inputIdx] == 255))
-        {return true;}
-    
-    // left
-    inputIdx = iMem*inputBuffer->bytesLine+(j-1)*inputBuffer->channels+c;
-    if ((j-1 >= 0 && 
-         inputBuffer->memory[inputIdx] == 255))
-        {return true;}
-    
-    // right
-    inputIdx = iMem*inputBuffer->bytesLine+(j+1)*inputBuffer->channels+c;
-    if ((j+1 >= 0 && 
-         inputBuffer->memory[inputIdx] == 255))
-        {return true;}
+    for (int i = starti; i < endi+1; i++) {
 
-    // DIAGONALS
+        int lineMemoryIdx = inputBuffer->LineMemoryIndex(i);
+        
+        if (i < 0 || i >= inputBuffer->rows) {
+            continue;
+        }
+        for (int j = startj; j < endj+1; j++) {
+        
+            if (j < 0 || j >= inputBuffer->cols) {
+                continue;
+            }
+            int inputIdx = (lineMemoryIdx + 
+                            j*inputBuffer->channels + 
+                            c);
+            
+            if (inputIdx == anchorIdx) {continue;}
 
-    // left up
-    inputIdx = (((i-1) % inputBuffer->lines)*
-                inputBuffer->bytesLine+(j-1)*inputBuffer->channels+c);
-    
-    if ((i-1 >= 0 && j-1 >= 0 && 
-         inputBuffer->memory[inputIdx] == 255))
-        {return true;}
-    
-    // right up
-    inputIdx = (((i-1) % inputBuffer->lines)*
-                inputBuffer->bytesLine+(j+1)*inputBuffer->channels+c);
-    
-    if ((i-1 >= 0 && j+1 < inputBuffer->cols && 
-         inputBuffer->memory[inputIdx] == 255))
-        {return true;}
-    
-    // left down
-    inputIdx = (((i+1) % inputBuffer->lines)*
-                inputBuffer->bytesLine+(j-1)*inputBuffer->channels+c);
-    
-    if ((i+1 < inputBuffer->rows && j-1 >= 0 && 
-         inputBuffer->memory[inputIdx] == 255))
-        {return true;}
-    
-    // right down
-    inputIdx = (((i+1)%inputBuffer->lines)*
-                inputBuffer->bytesLine+(j+1)*inputBuffer->channels+c);
-    
-    if ((i+1 < inputBuffer->rows && j+1 < inputBuffer->cols && 
-         inputBuffer->memory[inputIdx] == 255))
-        {return true;}
+            if (inputBuffer->memory[inputIdx] == 255) {
+                // inputBuffer->memory[anchorIdx] = 255;
+                return true;
+            }
+        }
+    }
 
     return false;
 }

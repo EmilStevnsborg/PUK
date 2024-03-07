@@ -34,7 +34,7 @@ class Host {
                           int kernelHeight, int kernelWidth, 
                           double sigmaX, double sigmaY);
                           
-        void CannyEdge(Buffer* outputBuffer, byte lowThreshold, byte highThreshold);
+        void CannyEdge(Buffer* outputBuffer, float lowThreshold, float highThreshold);
 
         void Sobel(Buffer* outputBuffer);
 

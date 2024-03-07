@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <vector>
+#include <cstdio>
 
 typedef uint8_t byte;
 
@@ -25,6 +26,7 @@ class Buffer {
         // specifically used for sobel
         byte* extraMemory;
         bool hasExtraMemory;
+        int byteScaleFactor;
 
         // functionality specifics
 
@@ -34,10 +36,13 @@ class Buffer {
         int lineInserts;
         
         // circular buffer
-        Buffer(int channels, int rows, int cols, int lines, bool extraMemory = false);
+        Buffer(int channels, int rows, int cols, int lines, 
+               bool hasExtraMemory = false, int byteScaleFactor = 1);
 
-        void FreeMemory();
         void LineInserted();
+        // can only be called for line already in buffer ie. inputBuffer
+        int LineMemoryIndex(int line);
+        void FreeMemory();
 };
 
 #endif // BUFFER_H
