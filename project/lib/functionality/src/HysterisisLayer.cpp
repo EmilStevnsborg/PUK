@@ -5,7 +5,7 @@ HysterisisLayer::HysterisisLayer(int inputChannels,
                                  int inputCols,
                                  int kernelHeight, 
                                  int kernelWidth)     
-    : Layer(inputChannels, inputRows, inputCols),
+    : Layer(),
       inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, false, 1) 
 {
     this->kernelHeight = kernelHeight;

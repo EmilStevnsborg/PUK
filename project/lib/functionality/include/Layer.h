@@ -11,7 +11,7 @@ class Layer {
         Buffer inputBuffer;
 
         // Base constructor
-        Layer(int inputChannels, int inputRows, int inputCols) : 
+        Layer() : 
             inputBuffer(0, 0, 0, 0) {}
         
         virtual void Stream(Buffer* outputBuffer, int line) = 0;

@@ -4,7 +4,7 @@ GaussianBlurLayer::GaussianBlurLayer(int inputChannels, int inputRows,
                                      int inputCols,
                                      int kernelHeight, int kernelWidth, 
                                      double sigmaX, double sigmaY)
-    : Layer(inputChannels, inputRows, inputCols),
+    : Layer(),
       inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, false, 1)
 {
     this->kernelHeight = kernelHeight;

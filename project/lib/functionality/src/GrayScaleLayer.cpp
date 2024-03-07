@@ -3,7 +3,7 @@
 GrayScaleLayer::GrayScaleLayer(int inputChannels, 
                                int inputRows, 
                                int inputCols)     
-    : Layer(inputChannels, inputRows, inputCols),
+    : Layer(),
       inputBuffer(inputChannels, inputRows, inputCols, 1, false, 1) 
 {
     this->kernelHeight = 1;

@@ -7,7 +7,7 @@ NonMaxSuppressionLayer::NonMaxSuppressionLayer(int inputChannels,
                                                int kernelWidth,
 											   float lowThreshold,
 											   float highThreshold)     
-    : Layer(inputChannels, inputRows, inputCols),
+    : Layer(),
       inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, true, 1) 
 {
     this->kernelHeight = kernelHeight;
