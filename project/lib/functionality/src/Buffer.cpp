@@ -1,42 +1,46 @@
 #include "Buffer.h"
 
-
 // circular buffer
 Buffer::Buffer(int channels, int rows, int cols, int lines, 
-               bool hasExtraMemory, int byteScaleFactor)
-        : lineMemoryMap(lines)
+               bool hasExtraMemory, bool storesBytes)
 {
     // image
     this->channels = channels;
     this->rows = rows;
     this->cols = cols;
 
-    // scale factor for how many extra bytes we might need to store
-    this->byteScaleFactor = byteScaleFactor;
-
     // buffer
     this->lines = lines;
-    this->bytesLine = cols*channels*byteScaleFactor;
+    this->lineSize = cols*channels;
+    this->elementsAllocated = lines*this->lineSize;
 
-    this->bytesAllocated = lines*bytesLine;
-    this->memory = (byte*) malloc(bytesAllocated*sizeof(byte));
+    this->storesBytes = storesBytes;
+
+    if (storesBytes) {
+        this->memoryUINT8 = (byte*) malloc(this->elementsAllocated*sizeof(byte));
+        this->memoryUINT16 = nullptr;
+    } else {
+        this->memoryUINT16 = (uint16_t*) malloc(2*this->elementsAllocated*sizeof(byte));
+        this->memoryUINT8 = nullptr;
+    }
 
     this->hasExtraMemory = hasExtraMemory;
     if (hasExtraMemory) {
-        this->extraMemory = (byte*) malloc(bytesAllocated*sizeof(byte));
+        this->extraMemory = (byte*) malloc(this->elementsAllocated*sizeof(byte));
     } else {
         this->extraMemory = nullptr;
     }
     
-    // init lineMemoryMap to -1 (empty buffer)
-    fill(this->lineMemoryMap.begin(), this->lineMemoryMap.end(), -1);
-    
     this->lineInserts = 0;
 }
 
+template <>
+uint16_t* Buffer::Memory<uint16_t>() {return memoryUINT16;}
+
+template <>
+byte* Buffer::Memory<byte>() {return memoryUINT8;}
+
 void Buffer::LineInserted() {
-    int newMemoryMapIdx = this->lineInserts % this->lines;
-    lineMemoryMap[newMemoryMapIdx] = lineInserts;
     lineInserts += 1;
 }
 
@@ -46,9 +50,14 @@ int Buffer::LineMemoryIndex(int line) {
         // line is not in buffer
         // throw error
     }
-    return line % this->lines * bytesLine;
+    return line % this->lines * lineSize;
 }
 
 void Buffer::FreeMemory() {
-    free(this->memory);
+    if (this->storesBytes) {
+        free(this->memoryUINT8);
+    } else {
+        free(this->memoryUINT16);
+    }
+    if (this->hasExtraMemory) {free(this->extraMemory);}
 }

@@ -5,7 +5,7 @@ SobelLayer::SobelLayer(int inputChannels,
                        int inputCols,
                        int kernelHeight, int kernelWidth)     
     : Layer(),
-      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, false, 1)
+      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, false, true)
 {
     this->kernelHeight = kernelHeight;
     this->kernelWidth = kernelWidth;
@@ -42,60 +42,68 @@ void SobelLayer::Stream(Buffer* outputBuffer, int line) {
             // Sobel uses REFLECT_101 for padding: gradients at borders are 0
             if (!((aj == 0 || aj == inputBuffer.cols-1) ||
                   (ai == 0 || ai == inputBuffer.rows-1))) { 
-                
-                float maxGradient = 4 * 255;
 
                 Gx = MatMul<float>(&inputBuffer, kernelX, 
                                    kernelHeight, kernelWidth,
                                    ai, aj, c);
 
-                if (Gx > 255) {Gx = 255;}
-                else if (Gx < -255) {Gx = -255;}
-
                 Gy = MatMul<float>(&inputBuffer, kernelY, 
                                    kernelHeight, kernelWidth,
-                                   ai, aj, c);
-
-                if (Gy > 255) {Gy = 255;}
-                else if (Gy < -255) {Gy = -255;}
-            
+                                   ai, aj, c);            
             }
-
-            // (min,max) = (0,361) which means the scale is roughly 1.42
-            float maxMagnitude = std::sqrt(255*255 + 255*255);
-            
-            float gradientMagnitude = std::sqrt(Gx*Gx + Gy*Gy);
-
-            gradientMagnitude = (gradientMagnitude / maxMagnitude) * 255;
 
             // Convert to degrees
             float degrees = std::atan2(Gy, Gx) * (180/M_PI);
             if (degrees < 0) {degrees += 180;}
+            
+            float gradientMagnitude = std::sqrt(Gx*Gx + Gy*Gy);
 
-            // There are four directions {up, diagonal-up, horizontal, diagonal-down}
+            // An edge direction is normal to the angle
             byte angle;
 
-            // up down
+            // up down angle
             if ((degrees >= 0 && degrees < 22.5) || (degrees >= 157.5)) {
                 angle = 0;
             }
-            // diagonal-right 
+            // diagonal-right angle
             else if (degrees >= 22.5 && degrees < 67.5) {
                 angle = 1;
             } 
-            // horizontal
+            // horizontal angle
             else if (degrees >= 67.5 && degrees < 112.5) {
                 angle = 2;
             } 
-            // diagonal-left
+            // diagonal-left angle
             else if (degrees >= 112.5 && degrees < 157.5) {
                 angle = 3;
             }
             
             int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;
 
-            outputBuffer->memory[outIdx] = (byte) (std::floor(gradientMagnitude));
+            // store gradient magnitude
+            outputBuffer->Memory<uint16_t>()[outIdx] = (uint16_t) (std::floor(gradientMagnitude));
+            // store angle
             outputBuffer->extraMemory[outIdx] = angle;
         }
     }
+}
+
+// streaming line this layer, what lines does inputbuffer need to do that
+std::vector<int> SobelLayer::NextLines(int streamingLine) {
+    std::vector<int> nextLines;
+
+    // if buffer is already full, then nothing
+    if (inputBuffer.lineInserts == inputBuffer.rows) {
+        return nextLines;
+    }
+    
+    int startLine = inputBuffer.lineInserts;
+    int endLine = streamingLine + padHeight;
+    
+    for (int nextLine = startLine; nextLine <= endLine; nextLine++) {
+        if (nextLine < inputBuffer.rows) {
+            nextLines.push_back(nextLine);
+        }
+    }
+    return nextLines;
 }

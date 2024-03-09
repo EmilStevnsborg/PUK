@@ -4,31 +4,20 @@
 #include "Layer.h"
 #include "CVfunctions.h"
 
+// is a successor to SobelLayer and samples an entire image of 16 bit values
 class NonMaxSuppressionLayer : public Layer {
     public:
         Buffer inputBuffer;
 
-        int kernelHeight;
-        int kernelWidth;
-        
-        int padHeight;
-        int padWidth;
-
-        float lowThreshold;
-        float highThreshold;
-
         NonMaxSuppressionLayer(int inputChannels, 
                                int inputRows, 
-                               int inputCols,
-                               int kernelHeight, 
-                               int kernelWidth,
-                               float lowThreshold,
-                               float highThreshold);
+                               int inputCols);
 
         void Stream(Buffer* outputBuffer, int line);
 
         Buffer* InputBuffer() {return &this->inputBuffer;}
-        int PadHeight() {return padHeight;}
+
+        std::vector<int> NextLines(int streamingLine);
 
         ~NonMaxSuppressionLayer() {};
 };

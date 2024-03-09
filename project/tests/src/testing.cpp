@@ -56,16 +56,16 @@ bool test(std::string functionType) {
 
         int kernelSize = 3;
 
-        Buffer outputBuffer(1, rows, cols, rows, true, 1);
+        Buffer outputBuffer(1, rows, cols, rows, true, true);
         outputBufferPtr = &outputBuffer;
 
         host.Sobel(&outputBuffer);
-        hostOutput = byteArrayToImg(outputBuffer.memory, 1, rows, cols);
+        hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), 1, rows, cols);
 
         cv::Mat gray;
         cv::cvtColor(camSimulator.GetImage(), gray, cv::COLOR_BGR2GRAY);
 
-        cvOutput = sobel(gray, kernelSize);
+        cvOutput = sobel(gray, kernelSize).first;
     } 
     else if (functionType == "gaussianBlur") {
 
@@ -74,11 +74,11 @@ bool test(std::string functionType) {
         double sigmaX = 1;
         double sigmaY = 0;
 
-        Buffer outputBuffer(channels, rows, cols, rows, false, 1);
+        Buffer outputBuffer(channels, rows, cols, rows, false, true);
         outputBufferPtr = &outputBuffer;
         
         host.GaussianBlur(&outputBuffer, kernelHeight, kernelWidth, sigmaX, sigmaY);
-        hostOutput = byteArrayToImg(outputBuffer.memory, channels, rows, cols);
+        hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), channels, rows, cols);
 
         cvOutput = gaussianBlur(camSimulator.GetImage(), 
                                 kernelHeight, kernelWidth, 
@@ -86,19 +86,34 @@ bool test(std::string functionType) {
     }
     else if (functionType == "cannyEdge") {
 
-        float lowThreshold = 100;
-        float highThreshold = 200;
+        byte lowThreshold = 100;
+        byte highThreshold = 200;
 
-        Buffer outputBuffer(1, rows, cols, rows, true, 1);
+        Buffer outputBuffer(1, rows, cols, rows, true, true);
         outputBufferPtr = &outputBuffer;
         
         host.CannyEdge(&outputBuffer, lowThreshold, highThreshold);
-        hostOutput = byteArrayToImg(outputBuffer.memory, 1, rows, cols);
+        hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), 1, rows, cols);
 
         cvOutput = cannyEdge(camSimulator.GetImage(), lowThreshold, highThreshold);
+    }
+    else if (functionType == "cannyEdgeManual") {
+
+        byte lowThreshold = 100;
+        byte highThreshold = 200;
+
+        Buffer outputBuffer(1, rows, cols, rows, true, true);
+        outputBufferPtr = &outputBuffer;
+        
+        host.CannyEdge(&outputBuffer, lowThreshold, highThreshold);
+        hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), 1, rows, cols);
+
+        cvOutput = cannyEdgeManual(camSimulator.GetImage(), lowThreshold, highThreshold);
     }
 
     checkCorrectness(cvOutput, hostOutput);
 
     outputBufferPtr->FreeMemory();
+    
+    return false;
 }

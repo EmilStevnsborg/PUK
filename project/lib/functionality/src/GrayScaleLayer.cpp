@@ -4,7 +4,7 @@ GrayScaleLayer::GrayScaleLayer(int inputChannels,
                                int inputRows, 
                                int inputCols)     
     : Layer(),
-      inputBuffer(inputChannels, inputRows, inputCols, 1, false, 1) 
+      inputBuffer(inputChannels, inputRows, inputCols, 1, false, true) 
 {
     this->kernelHeight = 1;
     this->kernelWidth = 1;
@@ -17,6 +17,7 @@ GrayScaleLayer::GrayScaleLayer(int inputChannels,
 }
 
 void GrayScaleLayer::Stream(Buffer* outputBuffer, int line) {
+    
     // the line index in the memory of the outputBuffer
     int outLineMemIdx = outputBuffer->LineMemoryIndex(line);
 
@@ -30,8 +31,28 @@ void GrayScaleLayer::Stream(Buffer* outputBuffer, int line) {
                             j*inputBuffer.channels + 
                             c);
             float weight = intensityWeights[c];
-            val += (byte) ((float) inputBuffer.memory[inputIdx] * weight);
+            val += (byte) ((float) inputBuffer.Memory<byte>()[inputIdx] * weight);
         }
-        outputBuffer->memory[outLineMemIdx+j] = val;
+        outputBuffer->Memory<byte>()[outLineMemIdx+j] = val;
     }
+}
+
+// streaming line this layer, what lines does inputbuffer need to do that
+std::vector<int> GrayScaleLayer::NextLines(int streamingLine) {
+    std::vector<int> nextLines;
+
+    // if buffer is already full, then nothing
+    if (inputBuffer.lineInserts == inputBuffer.rows) {
+        return nextLines;
+    }
+    
+    int startLine = inputBuffer.lineInserts;
+    int endLine = streamingLine + padHeight;
+    
+    for (int nextLine = startLine; nextLine <= endLine; nextLine++) {
+        if (nextLine < inputBuffer.rows) {
+            nextLines.push_back(nextLine);
+        }
+    }
+    return nextLines;
 }

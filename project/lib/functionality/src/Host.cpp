@@ -10,21 +10,17 @@ Host::Host(Camera* cam, int channels, int rows, int cols)
     this->camSensor = cam;
 }
 
-void Host::PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers, 
-                           Buffer* outputBuffer, 
+void Host::PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
+                           Buffer* outputBuffer,
                            int currentLayerIdx, int line)
-{
-    if (outputBuffer != nullptr) {
-        layers[currentLayerIdx]->Stream(outputBuffer, line);
-    }
+{    
+    // in order to stream line, inputBuffer needs the next lines:
+    std::vector<int> nextLines = layers[currentLayerIdx]->NextLines(line);
     
-    // next line that needs to be put into layer's input buffer
-    int nextLine = line + layers[currentLayerIdx]->PadHeight()+1;
-    
-    // populate inputBuffer
-    if ((line - layers[currentLayerIdx]->PadHeight() >= 0) &&
-        (nextLine < layers[currentLayerIdx]->InputBuffer()->rows))
+    // populate inputBuffer with each line needed (some might already be there)
+    for (auto& nextLine: nextLines)
     {
+        // stream from camera if it is the first layer in the streaming process
         if (currentLayerIdx == (int) layers.size()-1) {
             camSensor->Stream(layers[currentLayerIdx]->InputBuffer(), 
                               nextLine);
@@ -32,35 +28,17 @@ void Host::PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
             PopulateBuffers(layers, layers[currentLayerIdx]->InputBuffer(),
                             currentLayerIdx+1, nextLine);
         }
+        // line has been inserted
         layers[currentLayerIdx]->InputBuffer()->LineInserted();
     }
+    // stream the layer to the output
+    layers[currentLayerIdx]->Stream(outputBuffer, line);
 }
 
 // This function streams an entire output to outputBuffer
-void Host::StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers, 
-                             Buffer* outputBuffer) 
+void Host::StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
+                             Buffer* outputBuffer)
 {
-    // populate inputBuffer of first layer with cam data
-    for (int camLine = 0; 
-         camLine < layers[layers.size()-1]->InputBuffer()->lines; 
-         camLine++) 
-    {
-        camSensor->Stream(layers[layers.size()-1]->InputBuffer(), 
-                          camLine);
-        layers[layers.size()-1]->InputBuffer()->LineInserted();
-    }
-
-    // populate remainding layers' input buffers recursively
-    for (int layerIdx = layers.size()-2; layerIdx >= 0; layerIdx--) {
-        for(int line = 0; line < layers[layerIdx]->InputBuffer()->lines; line++) {
-            PopulateBuffers(layers, 
-                            layers[layerIdx]->InputBuffer(), 
-                            layerIdx+1, line);
-
-            layers[layerIdx]->InputBuffer()->LineInserted();
-        }
-    }
-
     // Compute each line in the outputBuffer
     for (int line = 0; line < outputBuffer->lines; line++) {
 
@@ -96,6 +74,7 @@ void Host::GaussianBlur(Buffer* outputBuffer,
 }
 
 void Host::Sobel(Buffer* outputBuffer) {
+
     std::vector<std::unique_ptr<Layer>> layers;
 
     auto grayScaleLayer = std::make_unique<GrayScaleLayer>(channels, rows, cols);
@@ -105,6 +84,9 @@ void Host::Sobel(Buffer* outputBuffer) {
 
     auto sobelLayer = std::make_unique<SobelLayer>(1, rows, cols, 3, 3);
 
+    auto minMaxNormLayer = std::make_unique<MinMaxNormLayer>(1, rows, cols);
+
+    layers.push_back(std::move(minMaxNormLayer));
     layers.push_back(std::move(sobelLayer));
     layers.push_back(std::move(grayScaleLayer));
     
@@ -112,7 +94,8 @@ void Host::Sobel(Buffer* outputBuffer) {
 }
 
 
-void Host::CannyEdge(Buffer* outputBuffer, float lowThreshold, float highThreshold) 
+void Host::CannyEdge(Buffer* outputBuffer, 
+                     uint16_t lowThreshold, uint16_t highThreshold) 
 {
 
     std::vector<std::unique_ptr<Layer>> layers;
@@ -126,13 +109,16 @@ void Host::CannyEdge(Buffer* outputBuffer, float lowThreshold, float highThresho
 
     auto sobelLayer = std::make_unique<SobelLayer>(1, rows, cols, 3, 3);
 
-    auto nmxLayer = std::make_unique<NonMaxSuppressionLayer>(1, rows, cols, 
-                                                             3, 3, lowThreshold,
-                                                             highThreshold);
-    auto hysterisisLayer = std::make_unique<HysterisisLayer>(1, rows, cols, 3, 3);
+    auto minMaxNormLayer = std::make_unique<MinMaxNormLayer>(1, rows, cols);
 
-    layers.push_back(std::move(hysterisisLayer));
+    auto nmxLayer = std::make_unique<NonMaxSuppressionLayer>(1, rows, cols);
+    auto hysterisisLayer = std::make_unique<HysterisisLayer>(1, rows, cols, 
+                                                             lowThreshold,
+                                                             highThreshold);
+
+    // layers.push_back(std::move(hysterisisLayer));
     layers.push_back(std::move(nmxLayer));
+    layers.push_back(std::move(minMaxNormLayer));
     layers.push_back(std::move(sobelLayer));
     layers.push_back(std::move(gaussianBlurLayer));
     layers.push_back(std::move(grayScaleLayer));

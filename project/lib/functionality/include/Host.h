@@ -4,16 +4,17 @@
 #include "Buffer.h"
 #include "CVfunctions.h"
 #include "Camera.h"
-#include "GaussianBlurLayer.h"
 #include "Layer.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <vector>
 #include <cstdio>
+#include "GaussianBlurLayer.h"
 #include "NonMaxSuppressionLayer.h"
 #include "SobelLayer.h"
 #include "HysterisisLayer.h"
 #include "GrayScaleLayer.h"
+#include "MinMaxNormLayer.h"
 #include <functional>
 #include <memory>
 
@@ -34,16 +35,17 @@ class Host {
                           int kernelHeight, int kernelWidth, 
                           double sigmaX, double sigmaY);
                           
-        void CannyEdge(Buffer* outputBuffer, float lowThreshold, float highThreshold);
+        void CannyEdge(Buffer* outputBuffer, 
+                       uint16_t lowThreshold, uint16_t highThreshold);
 
         void Sobel(Buffer* outputBuffer);
 
-        void StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers, 
-                             Buffer* outputBuffer);
-
-        void PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers, 
-                             Buffer* outputBuffer, 
+        void PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
+                             Buffer* outputBuffer,
                              int currentLayerIdx, int line);
+
+        void StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
+                               Buffer* outputBuffer);
 
         ~Host() {}
 };

@@ -122,9 +122,9 @@ void CamSimulator::Stream(Buffer* outputBuffer, int line) {
     // Line index within bounds
     if (line >= 0 && line < rows) {
         int bytesLine = cols*channels;
-        int startIdx = (line*bytesLine) % outputBuffer->bytesAllocated;
+        int startIdx = (line*bytesLine) % outputBuffer->elementsAllocated;
 
-        fillByteArray(outputBuffer->memory, image, line, startIdx, bytesLine);
+        fillByteArray(outputBuffer->Memory<byte>(), image, line, startIdx, bytesLine);
     } else {
         std::runtime_error("Line requested out of bounds");
     }
@@ -141,5 +141,5 @@ void CamSimulator::Stream(Buffer* outputBuffer) {
     int startIdx = 0;
 
     // Fill the byte array with image data
-    fillByteArray(outputBuffer->memory, image, line, startIdx, bytes);
+    fillByteArray(outputBuffer->Memory<byte>(), image, line, startIdx, bytes);
 }

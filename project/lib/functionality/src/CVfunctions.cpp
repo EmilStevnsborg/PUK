@@ -33,7 +33,7 @@ float MatMul(Buffer* inputBuffer,
             int inputIdx = (lineMemoryIdx + 
                             j*inputBuffer->channels + 
                             c);
-            float inputVal = ((float) inputBuffer->memory[inputIdx]);
+            float inputVal = ((float) inputBuffer->Memory<byte>()[inputIdx]);
             float w = kernel[ki][kj];
 
             sumProduct += inputVal*w;
@@ -58,10 +58,10 @@ bool Hysterisis(Buffer* inputBuffer,
                     c);
 
     // already strong
-    if (inputBuffer->memory[anchorIdx] == 255) {return true;}
+    if (inputBuffer->Memory<byte>()[anchorIdx] == 255) {return true;}
     
     // already non relevant 
-    if (inputBuffer->memory[anchorIdx] == 0) {return false;}
+    if (inputBuffer->Memory<byte>()[anchorIdx] == 0) {return false;}
 
     // check if pixels in neighbourhood are strong
 
@@ -89,12 +89,12 @@ bool Hysterisis(Buffer* inputBuffer,
             
             if (inputIdx == anchorIdx) {continue;}
 
-            if (inputBuffer->memory[inputIdx] == 255) {
-                // inputBuffer->memory[anchorIdx] = 255;
+            if (inputBuffer->Memory<byte>()[inputIdx] == 255) {
+                inputBuffer->Memory<byte>()[anchorIdx] = 255;
                 return true;
             }
         }
     }
-
+    inputBuffer->Memory<byte>()[anchorIdx] = 0;
     return false;
 }

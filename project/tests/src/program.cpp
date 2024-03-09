@@ -2,8 +2,10 @@
 
 int main() {
 
-    test("sobel");
+    // test("sobel");
+    // test("gaussianBlur");
     // test("cannyEdge");
+    test("cannyEdgeManual");
 
     // // camera tests: 3, 360, 640
     // int channels = 3;

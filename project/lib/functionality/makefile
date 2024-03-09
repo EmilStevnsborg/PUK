@@ -5,7 +5,8 @@ CXX := g++
 CXXFLAGS := -Wall -g
 LIBS := CVfunctions compression Host Buffer \
 		GaussianBlurLayer NonMaxSuppressionLayer \
-		SobelLayer HysterisisLayer GrayScaleLayer 
+		SobelLayer HysterisisLayer GrayScaleLayer \
+		MinMaxNormLayer
 
 OBJECTS := $(foreach LIB, $(LIBS), obj/$(LIB).o)
 

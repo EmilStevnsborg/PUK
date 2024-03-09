@@ -23,7 +23,8 @@ class GrayScaleLayer : public Layer {
         void Stream(Buffer* outputBuffer, int line);
 
         Buffer* InputBuffer() {return &this->inputBuffer;}
-        int PadHeight() {return padHeight;}
+
+        std::vector<int> NextLines(int streamingLine);
 
         ~GrayScaleLayer() {};
 };

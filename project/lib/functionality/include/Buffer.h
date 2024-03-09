@@ -18,27 +18,29 @@ class Buffer {
 
         // buffer specifics
         int lines;
-        int bytesLine;
-        int bytesAllocated;
-        
-        byte* memory;
+        int lineSize;
+        int elementsAllocated;
 
-        // specifically used for sobel
+        // do we store main data in memoryUINT8
+        bool storesBytes;
+        
+        byte* memoryUINT8;
+        uint16_t* memoryUINT16;
+
+        // extra memory that can be used for storing metadata
         byte* extraMemory;
         bool hasExtraMemory;
-        int byteScaleFactor;
 
-        // functionality specifics
-
-        // what lines from input are stored where in buffer
-        std::vector<int> lineMemoryMap;
         // times lines have been inserted besides the intital lines
         int lineInserts;
         
         // circular buffer
         Buffer(int channels, int rows, int cols, int lines, 
-               bool hasExtraMemory = false, int byteScaleFactor = 1);
+               bool hasExtraMemory = false, bool storesBytes = true);
 
+        template <typename MemoryType>
+        MemoryType* Memory();
+        
         void LineInserted();
         // can only be called for line already in buffer ie. inputBuffer
         int LineMemoryIndex(int line);

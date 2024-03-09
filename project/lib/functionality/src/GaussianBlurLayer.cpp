@@ -5,7 +5,7 @@ GaussianBlurLayer::GaussianBlurLayer(int inputChannels, int inputRows,
                                      int kernelHeight, int kernelWidth, 
                                      double sigmaX, double sigmaY)
     : Layer(),
-      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, false, 1)
+      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, false, true)
 {
     this->kernelHeight = kernelHeight;
     this->kernelWidth = kernelWidth;
@@ -41,7 +41,7 @@ void GaussianBlurLayer::Stream(Buffer* outputBuffer, int line) {
             
             int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;
 
-            outputBuffer->memory[outIdx] = (byte) (std::floor(sumProduct));
+            outputBuffer->Memory<byte>()[outIdx] = (byte) (std::floor(sumProduct));
         }
     }
 }
@@ -95,4 +95,24 @@ void GaussianBlurLayer::GetKernel() {
             kernel[i][j] /= sum_;
         }
     }
+}
+
+// streaming line this layer, what lines does inputbuffer need to do that
+std::vector<int> GaussianBlurLayer::NextLines(int streamingLine) {
+    std::vector<int> nextLines;
+
+    // if buffer is already full, then nothing
+    if (inputBuffer.lineInserts == inputBuffer.rows) {
+        return nextLines;
+    }
+    
+    int startLine = inputBuffer.lineInserts;
+    int endLine = streamingLine + padHeight;
+    
+    for (int nextLine = startLine; nextLine <= endLine; nextLine++) {
+        if (nextLine < inputBuffer.rows) {
+            nextLines.push_back(nextLine);
+        }
+    }
+    return nextLines;
 }

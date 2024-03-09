@@ -13,35 +13,89 @@ cv::Mat gaussianBlur(cv::Mat img,
 }
 
 // returns only the gradient magnitude
-cv::Mat sobel(cv::Mat img, int ksize) {
-    cv::Mat cvOutput;
-
-    int scale = 1;
-    int delta = 0;
-    int ddepth = CV_16S;
+std::pair<cv::Mat, cv::Mat> sobel(cv::Mat img, int ksize) {
+    
+    int ddepth = CV_64F;
 
     cv::Mat grad_x, grad_y;
-    cv::Mat abs_grad_x, abs_grad_y;
-    cv::Sobel(img, grad_x, ddepth, 1, 0, ksize, scale, delta, cv::BORDER_DEFAULT);
-    cv::Sobel(img, grad_y, ddepth, 0, 1, ksize, scale, delta, cv::BORDER_DEFAULT);
-    convertScaleAbs(grad_x, abs_grad_x);
-    convertScaleAbs(grad_y, abs_grad_y);
-    addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, cvOutput);
+    cv::Sobel(img, grad_x, ddepth, 1, 0, ksize);
+    cv::Sobel(img, grad_y, ddepth, 0, 1, ksize);
+    
+    cv::Mat magnitude, direction;
+    cartToPolar(grad_x, grad_y, magnitude, direction, true);
 
-    return cvOutput;
+    double minVal, maxVal;
+    minMaxLoc(magnitude, &minVal, &maxVal); // Find min and max values in gradient magnitude
+    magnitude = (magnitude * 255 / maxVal);
+
+    magnitude.convertTo(magnitude, CV_8U);
+
+    direction *= 180.0 / M_PI;
+    direction.convertTo(direction, CV_8U);
+
+    return std::make_pair(magnitude, direction);
+}
+
+cv::Mat nonMaxSuppression(cv::Mat& magnitude, cv::Mat& direction) {
+    cv::Mat nonMaxSuppressed = magnitude.clone();
+
+    for (int i = 1; i < magnitude.rows - 1; ++i) {
+        for (int j = 1; j < magnitude.cols - 1; ++j) {
+            float currentGradientDirection = direction.at<uchar>(i - 1, j - 1);
+            if (currentGradientDirection < 0) {currentGradientDirection += 180;}
+
+            float pixel1, pixel2;
+
+            // Horizontal edge
+            if (currentGradientDirection < 22.5 || currentGradientDirection >= 157.5) {
+                pixel1 = magnitude.at<uchar>(i, j - 1);
+                pixel2 = magnitude.at<uchar>(i, j + 1);
+            }
+            // Diagonal edge
+            else if (currentGradientDirection >= 22.5 && currentGradientDirection < 67.5) {
+                pixel1 = magnitude.at<uchar>(i - 1, j - 1);
+                pixel2 = magnitude.at<uchar>(i + 1, j + 1);
+            }
+            // Vertical edge
+            else if (currentGradientDirection >= 67.5 && currentGradientDirection < 112.5) {
+                pixel1 = magnitude.at<uchar>(i - 1, j);
+                pixel2 = magnitude.at<uchar>(i + 1, j);
+            }
+            // Anti-diagonal edge
+            else {
+                pixel1 = magnitude.at<uchar>(i - 1, j + 1);
+                pixel2 = magnitude.at<uchar>(i + 1, j - 1);
+            }
+
+            // Suppress non-maximum pixels
+            if (magnitude.at<uchar>(i, j) < pixel1 || magnitude.at<uchar>(i, j) < pixel2) {
+                nonMaxSuppressed.at<uchar>(i, j) = 0;
+            }
+        }
+    }
+
+    return nonMaxSuppressed;
 }
 
 cv::Mat cannyEdge(cv::Mat img, int lowThreshold, int highThreshold) {
     cv::Mat cvOutput;
-    cv::Canny(img, cvOutput, lowThreshold, highThreshold);
+    cv::Mat gray;
+    cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+    cv::Canny(gray, cvOutput, lowThreshold, highThreshold);
 
     return cvOutput;
 }
 
-cv::Mat cannyEdgeManual(cv::Mat img, int lowThreshold, int highThreshold) {
-    cv::Mat gaussOutput = gaussianBlur(img, 5, 5, 0, 0);
-    cv::Mat sobelOutput = sobel(gaussOutput, 3);
+cv::Mat cannyEdgeManual(cv::Mat img, uint16_t lowThreshold, uint16_t highThreshold) {
+    cv::Mat gray;
+    cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
 
-    cv::Mat cvOutput;
+    cv::Mat gaussOutput = gaussianBlur(gray, 5, 5, 0, 0);
+
+    std::pair<cv::Mat, cv::Mat> sobelOutput = sobel(gaussOutput, 3);
+    cv::Mat gradMagnitude = sobelOutput.first;
+    cv::Mat gradDirection = sobelOutput.second;
+
+    cv::Mat cvOutput = nonMaxSuppression(gradMagnitude, gradDirection);;
     return cvOutput;
 }

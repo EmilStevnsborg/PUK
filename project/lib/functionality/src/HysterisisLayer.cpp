@@ -3,17 +3,13 @@
 HysterisisLayer::HysterisisLayer(int inputChannels, 
                                  int inputRows, 
                                  int inputCols,
-                                 int kernelHeight, 
-                                 int kernelWidth)     
+                                 byte lowThreshold,
+                                 byte highThreshold)     
     : Layer(),
-      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, false, 1) 
+      inputBuffer(inputChannels, inputRows, inputCols, 3, false, true) 
 {
-    this->kernelHeight = kernelHeight;
-    this->kernelWidth = kernelWidth;
-
-    // integer division is floored
-    this->padHeight = kernelHeight/2;
-    this->padWidth = kernelWidth/2;
+    this->lowThreshold = lowThreshold;
+    this->highThreshold = highThreshold;
 }
 
 
@@ -30,10 +26,30 @@ void HysterisisLayer::Stream(Buffer* outputBuffer, int line) {
             bool keep = Hysterisis(&inputBuffer, line, j, c);
             
             if (keep) {
-                outputBuffer->memory[outIdx] = 255;
+                outputBuffer->Memory<byte>()[outIdx] = 255;
             } else {
-                outputBuffer->memory[outIdx] = 0;
+                outputBuffer->Memory<byte>()[outIdx] = 0;
             }
         }
     }
+}
+
+// streaming line this layer, what lines does inputbuffer need to do that
+std::vector<int> HysterisisLayer::NextLines(int streamingLine) {
+    std::vector<int> nextLines;
+
+    // if buffer is already full, then nothing
+    if (inputBuffer.lineInserts == inputBuffer.rows) {
+        return nextLines;
+    }
+    
+    int startLine = inputBuffer.lineInserts;
+    int endLine = streamingLine + 1;
+    
+    for (int nextLine = startLine; nextLine <= endLine; nextLine++) {    
+        if (nextLine < inputBuffer.rows) {
+            nextLines.push_back(nextLine);
+        }
+    }
+    return nextLines;
 }

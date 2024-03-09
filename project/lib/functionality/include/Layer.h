@@ -8,15 +8,15 @@ typedef uint8_t byte;
 // Abstract class for a functionality layer
 class Layer {
     public:
-        Buffer inputBuffer;
 
         // Base constructor
-        Layer() : 
-            inputBuffer(0, 0, 0, 0) {}
+        Layer() {}
         
         virtual void Stream(Buffer* outputBuffer, int line) = 0;
         virtual Buffer* InputBuffer() = 0;
-        virtual int PadHeight() = 0;
+        
+        virtual std::vector<int> NextLines(int streamingLine) = 0;
+        
         virtual ~Layer() {}
 };
 #endif // LAYER_H
