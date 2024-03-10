@@ -1,6 +1,5 @@
 #include "CVfunctions.h"
 
-
 template<typename KernelType>
 float MatMul(Buffer* inputBuffer,
              std::vector<std::vector<KernelType>>& kernel,
@@ -48,7 +47,8 @@ template float MatMul(Buffer* inputBuffer,
                       int& ai, int& aj, int& c);
 
 bool Hysterisis(Buffer* inputBuffer,
-                int& ai, int& aj, int& c)
+                int& ai, int& aj, int& c,
+                uint16_t& lowThreshold, uint16_t& highThreshold)
 {
     // check if anchor is strong or non relevant
 
@@ -58,10 +58,10 @@ bool Hysterisis(Buffer* inputBuffer,
                     c);
 
     // already strong
-    if (inputBuffer->Memory<byte>()[anchorIdx] == 255) {return true;}
+    if (inputBuffer->Memory<uint16_t>()[anchorIdx] >= highThreshold) {return true;}
     
     // already non relevant 
-    if (inputBuffer->Memory<byte>()[anchorIdx] == 0) {return false;}
+    if (inputBuffer->Memory<uint16_t>()[anchorIdx] < lowThreshold) {return false;}
 
     // check if pixels in neighbourhood are strong
 
@@ -89,12 +89,12 @@ bool Hysterisis(Buffer* inputBuffer,
             
             if (inputIdx == anchorIdx) {continue;}
 
-            if (inputBuffer->Memory<byte>()[inputIdx] == 255) {
-                inputBuffer->Memory<byte>()[anchorIdx] = 255;
+            if (inputBuffer->Memory<uint16_t>()[inputIdx] >= highThreshold) {
+                inputBuffer->Memory<uint16_t>()[anchorIdx] = 255;
                 return true;
             }
         }
     }
-    inputBuffer->Memory<byte>()[anchorIdx] = 0;
+    inputBuffer->Memory<uint16_t>()[anchorIdx] = 0;
     return false;
 }

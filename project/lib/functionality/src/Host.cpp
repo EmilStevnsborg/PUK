@@ -95,7 +95,7 @@ void Host::Sobel(Buffer* outputBuffer) {
 
 
 void Host::CannyEdge(Buffer* outputBuffer, 
-                     uint16_t lowThreshold, uint16_t highThreshold) 
+                     byte lowThreshold, byte highThreshold) 
 {
 
     std::vector<std::unique_ptr<Layer>> layers;
@@ -109,16 +109,13 @@ void Host::CannyEdge(Buffer* outputBuffer,
 
     auto sobelLayer = std::make_unique<SobelLayer>(1, rows, cols, 3, 3);
 
-    auto minMaxNormLayer = std::make_unique<MinMaxNormLayer>(1, rows, cols);
-
     auto nmxLayer = std::make_unique<NonMaxSuppressionLayer>(1, rows, cols);
     auto hysterisisLayer = std::make_unique<HysterisisLayer>(1, rows, cols, 
                                                              lowThreshold,
                                                              highThreshold);
 
-    // layers.push_back(std::move(hysterisisLayer));
+    layers.push_back(std::move(hysterisisLayer));
     layers.push_back(std::move(nmxLayer));
-    layers.push_back(std::move(minMaxNormLayer));
     layers.push_back(std::move(sobelLayer));
     layers.push_back(std::move(gaussianBlurLayer));
     layers.push_back(std::move(grayScaleLayer));

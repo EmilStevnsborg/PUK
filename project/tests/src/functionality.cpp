@@ -13,7 +13,7 @@ cv::Mat gaussianBlur(cv::Mat img,
 }
 
 // returns only the gradient magnitude
-std::pair<cv::Mat, cv::Mat> sobel(cv::Mat img, int ksize) {
+std::tuple<cv::Mat, cv::Mat> sobel(cv::Mat img, int ksize) {
     
     int ddepth = CV_64F;
 
@@ -24,66 +24,89 @@ std::pair<cv::Mat, cv::Mat> sobel(cv::Mat img, int ksize) {
     cv::Mat magnitude, direction;
     cartToPolar(grad_x, grad_y, magnitude, direction, true);
 
-    double minVal, maxVal;
-    minMaxLoc(magnitude, &minVal, &maxVal); // Find min and max values in gradient magnitude
-    magnitude = (magnitude * 255 / maxVal);
-
-    magnitude.convertTo(magnitude, CV_8U);
-
     direction *= 180.0 / M_PI;
-    direction.convertTo(direction, CV_8U);
 
-    return std::make_pair(magnitude, direction);
+    return std::make_tuple(magnitude, direction);
 }
 
-cv::Mat nonMaxSuppression(cv::Mat& magnitude, cv::Mat& direction) {
-    cv::Mat nonMaxSuppressed = magnitude.clone();
+cv::Mat minMaxNorm(cv::Mat magnitude) {
+    double minVal, maxVal;
+    minMaxLoc(magnitude, &minVal, &maxVal); // Find min and max values
+
+    cv::Mat scaledMagnitude = (magnitude * 255 / maxVal);
+
+    scaledMagnitude.convertTo(scaledMagnitude, CV_8U);
+
+    return scaledMagnitude;
+}
+
+cv::Mat nonMaxSuppression(cv::Mat magnitude, cv::Mat direction) {
+    cv::Mat result = magnitude.clone();
 
     for (int i = 1; i < magnitude.rows - 1; ++i) {
         for (int j = 1; j < magnitude.cols - 1; ++j) {
-            float currentGradientDirection = direction.at<uchar>(i - 1, j - 1);
+            double currentGradientDirection = direction.at<double>(i - 1, j - 1);
             if (currentGradientDirection < 0) {currentGradientDirection += 180;}
 
-            float pixel1, pixel2;
+            double pixel1, pixel2;
 
             // Horizontal edge
             if (currentGradientDirection < 22.5 || currentGradientDirection >= 157.5) {
-                pixel1 = magnitude.at<uchar>(i, j - 1);
-                pixel2 = magnitude.at<uchar>(i, j + 1);
+                pixel1 = magnitude.at<double>(i, j - 1);
+                pixel2 = magnitude.at<double>(i, j + 1);
             }
             // Diagonal edge
             else if (currentGradientDirection >= 22.5 && currentGradientDirection < 67.5) {
-                pixel1 = magnitude.at<uchar>(i - 1, j - 1);
-                pixel2 = magnitude.at<uchar>(i + 1, j + 1);
+                pixel1 = magnitude.at<double>(i - 1, j - 1);
+                pixel2 = magnitude.at<double>(i + 1, j + 1);
             }
             // Vertical edge
             else if (currentGradientDirection >= 67.5 && currentGradientDirection < 112.5) {
-                pixel1 = magnitude.at<uchar>(i - 1, j);
-                pixel2 = magnitude.at<uchar>(i + 1, j);
+                pixel1 = magnitude.at<double>(i - 1, j);
+                pixel2 = magnitude.at<double>(i + 1, j);
             }
             // Anti-diagonal edge
             else {
-                pixel1 = magnitude.at<uchar>(i - 1, j + 1);
-                pixel2 = magnitude.at<uchar>(i + 1, j - 1);
+                pixel1 = magnitude.at<double>(i - 1, j + 1);
+                pixel2 = magnitude.at<double>(i + 1, j - 1);
             }
 
             // Suppress non-maximum pixels
-            if (magnitude.at<uchar>(i, j) < pixel1 || magnitude.at<uchar>(i, j) < pixel2) {
-                nonMaxSuppressed.at<uchar>(i, j) = 0;
+            if (magnitude.at<double>(i, j) < pixel1 || magnitude.at<double>(i, j) < pixel2) {
+                result.at<double>(i, j) = 0;
             }
         }
     }
 
-    return nonMaxSuppressed;
+    return result;
 }
 
-cv::Mat cannyEdge(cv::Mat img, int lowThreshold, int highThreshold) {
-    cv::Mat cvOutput;
-    cv::Mat gray;
-    cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
-    cv::Canny(gray, cvOutput, lowThreshold, highThreshold);
+cv::Mat hysteresis(cv::Mat img, uint16_t lowThreshold, uint16_t highThreshold) {
+    cv::Mat result = img.clone();
 
-    return cvOutput;
+    for (int i = 1; i < img.rows - 1; ++i) {
+        for (int j = 1; j < img.cols - 1; ++j) {
+            if (img.at<double>(i, j) >= highThreshold) {
+                result.at<double>(i, j) = 255; // Strong edge pixel
+            } else if (img.at<double>(i, j) >= lowThreshold) {
+                // Check neighboring pixels
+                for (int di = -1; di <= 1; ++di) {
+                    for (int dj = -1; dj <= 1; ++dj) {
+                        if (img.at<double>(i + di, j + dj) >= highThreshold) {
+                            result.at<double>(i, j) = 255; // Weak edge pixel connected to strong edge
+                            break;
+                        } else {
+                            result.at<double>(i, j) = 0; // Not an edge pixel
+                        }
+                    }
+                }
+            } else {
+                result.at<double>(i, j) = 0; // Not an edge pixel
+            }
+        }
+    }
+
+    return result;
 }
 
 cv::Mat cannyEdgeManual(cv::Mat img, uint16_t lowThreshold, uint16_t highThreshold) {
@@ -92,10 +115,24 @@ cv::Mat cannyEdgeManual(cv::Mat img, uint16_t lowThreshold, uint16_t highThresho
 
     cv::Mat gaussOutput = gaussianBlur(gray, 5, 5, 0, 0);
 
-    std::pair<cv::Mat, cv::Mat> sobelOutput = sobel(gaussOutput, 3);
-    cv::Mat gradMagnitude = sobelOutput.first;
-    cv::Mat gradDirection = sobelOutput.second;
+    std::tuple<cv::Mat, cv::Mat> sobelOutput = sobel(gaussOutput, 3);
+    cv::Mat gradMagnitude = std::get<0>(sobelOutput);
+    cv::Mat gradDirection = std::get<1>(sobelOutput);
 
-    cv::Mat cvOutput = nonMaxSuppression(gradMagnitude, gradDirection);;
+    cv::Mat nmxsOutput = nonMaxSuppression(gradMagnitude, gradDirection);
+    cv::Mat hysterisOutput = hysteresis(nmxsOutput, lowThreshold, highThreshold);
+
+    hysterisOutput.convertTo(hysterisOutput, CV_8U);
+    return hysterisOutput;
+}
+
+cv::Mat cannyEdge(cv::Mat img, uint16_t lowThreshold, uint16_t highThreshold) {
+
+    // actual computation
+    cv::Mat cvOutput;
+    cv::Mat gray;
+    cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+    cv::Canny(gray, cvOutput, lowThreshold, highThreshold);
+
     return cvOutput;
 }

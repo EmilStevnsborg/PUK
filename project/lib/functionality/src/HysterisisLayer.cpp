@@ -3,10 +3,10 @@
 HysterisisLayer::HysterisisLayer(int inputChannels, 
                                  int inputRows, 
                                  int inputCols,
-                                 byte lowThreshold,
-                                 byte highThreshold)     
+                                 uint16_t lowThreshold,
+                                 uint16_t highThreshold)     
     : Layer(),
-      inputBuffer(inputChannels, inputRows, inputCols, 3, false, true) 
+      inputBuffer(inputChannels, inputRows, inputCols, 3, false, false) 
 {
     this->lowThreshold = lowThreshold;
     this->highThreshold = highThreshold;
@@ -23,7 +23,14 @@ void HysterisisLayer::Stream(Buffer* outputBuffer, int line) {
             
             int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;
             
-            bool keep = Hysterisis(&inputBuffer, line, j, c);
+            if ((j == 0 || j == outputBuffer->cols-1) || 
+                (line == 0 || line == outputBuffer->rows-1)) 
+            {
+                outputBuffer->Memory<byte>()[outIdx] = 0;
+                continue;
+            }
+            
+            bool keep = Hysterisis(&inputBuffer, line, j, c, lowThreshold, highThreshold);
             
             if (keep) {
                 outputBuffer->Memory<byte>()[outIdx] = 255;

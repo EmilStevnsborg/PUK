@@ -8,14 +8,14 @@ class HysterisisLayer : public Layer {
     public:
         Buffer inputBuffer;
 
-        byte lowThreshold;
-        byte highThreshold;
+        uint16_t lowThreshold;
+        uint16_t highThreshold;
 
         HysterisisLayer(int inputChannels, 
                         int inputRows, 
                         int inputCols,
-                        byte lowThreshold,
-                        byte highThreshold);
+                        uint16_t lowThreshold,
+                        uint16_t highThreshold);
 
         void Stream(Buffer* outputBuffer, int line);
 

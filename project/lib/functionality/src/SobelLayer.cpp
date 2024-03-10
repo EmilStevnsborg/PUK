@@ -22,10 +22,17 @@ SobelLayer::SobelLayer(int inputChannels,
     this->kernelY = {{1, 2, 1}, 
                      {0, 0, 0}, 
                      {-1, -2, -1}};
+    
+    // // Scharr
+    // this->kernelX = {{-3, 0, 3}, 
+    //                  {-10, 0, 10}, 
+    //                  {-3, 0, 3}};
+    // this->kernelY = {{3, 10, 3}, 
+    //                  {0, 0, 0}, 
+    //                  {-3, -10, -3}};
 }
 
 void SobelLayer::Stream(Buffer* outputBuffer, int line) {
-
     // the line index in the memory of the outputBuffer
     int outLineMemIdx = outputBuffer->LineMemoryIndex(line);
 
@@ -54,7 +61,13 @@ void SobelLayer::Stream(Buffer* outputBuffer, int line) {
 
             // Convert to degrees
             float degrees = std::atan2(Gy, Gx) * (180/M_PI);
-            if (degrees < 0) {degrees += 180;}
+            if (degrees < 0) {degrees += 360;}
+
+            // if (Gx > 255) {Gx = 255;}
+            // else if (Gx < -255) {Gx = -255;}
+
+            // if (Gy > 255) {Gy = 255;}
+            // else if (Gy < -255) {Gy = -255;}
             
             float gradientMagnitude = std::sqrt(Gx*Gx + Gy*Gy);
 

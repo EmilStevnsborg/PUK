@@ -33,15 +33,11 @@ void MinMaxNormLayer::Stream(Buffer* outputBuffer, int line) {
             byte val = (byte) std::floor(((float) gradientMagnitude) /
                                          ((float) this->max) * 
                                          255);
-            
-            byte angle = inputBuffer.extraMemory[inputIdx];
 
             int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;
             
             // store min-max normalized magnitude in output
             outputBuffer->Memory<byte>()[outIdx] = val;
-            // store temporarily local-stored angle in output
-            outputBuffer->extraMemory[outIdx] = angle;
         }
     }
 }

@@ -36,7 +36,7 @@ class Host {
                           double sigmaX, double sigmaY);
                           
         void CannyEdge(Buffer* outputBuffer, 
-                       uint16_t lowThreshold, uint16_t highThreshold);
+                       byte lowThreshold, byte highThreshold);
 
         void Sobel(Buffer* outputBuffer);
 

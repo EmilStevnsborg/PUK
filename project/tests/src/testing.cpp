@@ -56,7 +56,7 @@ bool test(std::string functionType) {
 
         int kernelSize = 3;
 
-        Buffer outputBuffer(1, rows, cols, rows, true, true);
+        Buffer outputBuffer(1, rows, cols, rows, false, true);
         outputBufferPtr = &outputBuffer;
 
         host.Sobel(&outputBuffer);
@@ -64,8 +64,7 @@ bool test(std::string functionType) {
 
         cv::Mat gray;
         cv::cvtColor(camSimulator.GetImage(), gray, cv::COLOR_BGR2GRAY);
-
-        cvOutput = sobel(gray, kernelSize).first;
+        cvOutput = minMaxNorm(std::get<0>(sobel(gray, kernelSize)));
     } 
     else if (functionType == "gaussianBlur") {
 
@@ -86,8 +85,8 @@ bool test(std::string functionType) {
     }
     else if (functionType == "cannyEdge") {
 
-        byte lowThreshold = 100;
-        byte highThreshold = 200;
+        uint16_t lowThreshold = 50;
+        uint16_t highThreshold = 100;
 
         Buffer outputBuffer(1, rows, cols, rows, true, true);
         outputBufferPtr = &outputBuffer;
@@ -95,12 +94,15 @@ bool test(std::string functionType) {
         host.CannyEdge(&outputBuffer, lowThreshold, highThreshold);
         hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), 1, rows, cols);
 
-        cvOutput = cannyEdge(camSimulator.GetImage(), lowThreshold, highThreshold);
+        cv::Mat cannyOutput = cannyEdge(camSimulator.GetImage(), 
+                                        lowThreshold, highThreshold);
+        
+        cvOutput = cannyOutput;
     }
     else if (functionType == "cannyEdgeManual") {
 
-        byte lowThreshold = 100;
-        byte highThreshold = 200;
+        uint16_t lowThreshold = 50;
+        uint16_t highThreshold = 100;
 
         Buffer outputBuffer(1, rows, cols, rows, true, true);
         outputBufferPtr = &outputBuffer;

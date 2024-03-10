@@ -9,8 +9,6 @@
 #include <cstdio>
 #include <cmath>
 
-typedef uint8_t byte;
-
 template<typename KernelType>
 float MatMul(Buffer* inputBuffer,
              std::vector<std::vector<KernelType>>& kernel,
@@ -18,6 +16,7 @@ float MatMul(Buffer* inputBuffer,
              int& ai, int& aj, int& c);
 
 bool Hysterisis(Buffer* inputBuffer,
-                int& ai, int& aj, int& c);
+                int& ai, int& aj, int& c,
+                uint16_t& lowThreshold, uint16_t& highThreshold);
 
 #endif // CVFUNCTIONS_H
