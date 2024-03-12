@@ -50,25 +50,25 @@ cv::Mat nonMaxSuppression(cv::Mat magnitude, cv::Mat direction) {
 
             double pixel1, pixel2;
 
-            // Horizontal edge
+            // up-down angle (horizontal edge)
             if (currentGradientDirection < 22.5 || currentGradientDirection >= 157.5) {
                 pixel1 = magnitude.at<double>(i, j - 1);
                 pixel2 = magnitude.at<double>(i, j + 1);
             }
-            // Diagonal edge
+            // diagonal up angle (diagonal down edge)
             else if (currentGradientDirection >= 22.5 && currentGradientDirection < 67.5) {
-                pixel1 = magnitude.at<double>(i - 1, j - 1);
-                pixel2 = magnitude.at<double>(i + 1, j + 1);
+                pixel1 = magnitude.at<double>(i + 1, j - 1);
+                pixel2 = magnitude.at<double>(i - 1, j + 1);
             }
-            // Vertical edge
+            // horizontal angle (up-down edge)
             else if (currentGradientDirection >= 67.5 && currentGradientDirection < 112.5) {
                 pixel1 = magnitude.at<double>(i - 1, j);
                 pixel2 = magnitude.at<double>(i + 1, j);
             }
-            // Anti-diagonal edge
+            // diagonal down angle (diagonal down edge)
             else {
-                pixel1 = magnitude.at<double>(i - 1, j + 1);
-                pixel2 = magnitude.at<double>(i + 1, j - 1);
+                pixel1 = magnitude.at<double>(i - 1, j - 1);
+                pixel2 = magnitude.at<double>(i + 1, j + 1);
             }
 
             // Suppress non-maximum pixels
@@ -93,6 +93,7 @@ cv::Mat hysteresis(cv::Mat img, uint16_t lowThreshold, uint16_t highThreshold) {
                 for (int di = -1; di <= 1; ++di) {
                     for (int dj = -1; dj <= 1; ++dj) {
                         if (img.at<double>(i + di, j + dj) >= highThreshold) {
+                            img.at<double>(i,j) = 255;
                             result.at<double>(i, j) = 255; // Weak edge pixel connected to strong edge
                             break;
                         } else {
@@ -101,6 +102,7 @@ cv::Mat hysteresis(cv::Mat img, uint16_t lowThreshold, uint16_t highThreshold) {
                     }
                 }
             } else {
+                img.at<double>(i,j) = 0;
                 result.at<double>(i, j) = 0; // Not an edge pixel
             }
         }

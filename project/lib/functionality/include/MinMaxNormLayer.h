@@ -12,11 +12,12 @@ class MinMaxNormLayer : public Layer {
         uint16_t min;
         uint16_t max;
 
-        bool minMaxFound;
+        int minMaxIterations;
 
         MinMaxNormLayer(int inputChannels, 
                         int inputRows, 
-                        int inputCols);
+                        int inputCols,
+                        int bufferLines);
 
         void Stream(Buffer* outputBuffer, int line);
 

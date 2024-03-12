@@ -61,7 +61,7 @@ void SobelLayer::Stream(Buffer* outputBuffer, int line) {
 
             // Convert to degrees
             float degrees = std::atan2(Gy, Gx) * (180/M_PI);
-            if (degrees < 0) {degrees += 360;}
+            if (degrees < 0) {degrees += 180;}
 
             // if (Gx > 255) {Gx = 255;}
             // else if (Gx < -255) {Gx = -255;}
@@ -80,15 +80,15 @@ void SobelLayer::Stream(Buffer* outputBuffer, int line) {
             }
             // diagonal-right angle
             else if (degrees >= 22.5 && degrees < 67.5) {
-                angle = 1;
+                angle = 45;
             } 
             // horizontal angle
             else if (degrees >= 67.5 && degrees < 112.5) {
-                angle = 2;
+                angle = 90;
             } 
             // diagonal-left angle
             else if (degrees >= 112.5 && degrees < 157.5) {
-                angle = 3;
+                angle = 135;
             }
             
             int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;

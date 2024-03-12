@@ -32,7 +32,7 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 			uint16_t val = gradientMagnitude;
 
-			// up down angle (horizontal direction)
+			// up down angle (horizontal edge)
 			if (angle == 0) {
 
 				int qi = i;
@@ -54,8 +54,8 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 					if (inputBuffer.Memory<uint16_t>()[rIdx] > gradientMagnitude) {val = 0;}
 				}
 			}
-			// diagonal up (diagonal down direction)
-			else if (angle == 1) {
+			// diagonal up angle (diagonal down edge)
+			else if (angle == 45) {
 				int qi = i+1;
 				int qj = j-1;
 				
@@ -75,8 +75,8 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 					if (inputBuffer.Memory<uint16_t>()[rIdx] > gradientMagnitude) {val = 0;}
 				}
 			}
-			// horizontal angle (up down direction)
-			else if (angle == 2) {
+			// horizontal angle (up down edge)
+			else if (angle == 90) {
 
 				int qi = i-1;
 				int qj = j;
@@ -97,7 +97,7 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 					if (inputBuffer.Memory<uint16_t>()[rIdx] > gradientMagnitude) {val = 0;}
 				}
 			}
-			// diagonal down angle (diagonal up direction)
+			// diagonal down angle (diagonal up edge)
 			else {
 
 				int qi = i-1;

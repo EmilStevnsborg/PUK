@@ -21,12 +21,12 @@ void Host::PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
     for (auto& nextLine: nextLines)
     {
         // stream from camera if it is the first layer in the streaming process
-        if (currentLayerIdx == (int) layers.size()-1) {
+        if (currentLayerIdx == 0) {
             camSensor->Stream(layers[currentLayerIdx]->InputBuffer(), 
                               nextLine);
         } else {
             PopulateBuffers(layers, layers[currentLayerIdx]->InputBuffer(),
-                            currentLayerIdx+1, nextLine);
+                            currentLayerIdx-1, nextLine);
         }
         // line has been inserted
         layers[currentLayerIdx]->InputBuffer()->LineInserted();
@@ -39,11 +39,12 @@ void Host::PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
 void Host::StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
                              Buffer* outputBuffer)
 {
+    int lastLayerIdx = layers.size()-1;
     // Compute each line in the outputBuffer
     for (int line = 0; line < outputBuffer->lines; line++) {
 
         // Update input buffers of layers recursively for the next line
-        PopulateBuffers(layers, outputBuffer, 0, line);
+        PopulateBuffers(layers, outputBuffer, lastLayerIdx, line);
         
         // Indicate that one line has been inserted into the output buffer
         outputBuffer->LineInserted();
@@ -84,11 +85,11 @@ void Host::Sobel(Buffer* outputBuffer) {
 
     auto sobelLayer = std::make_unique<SobelLayer>(1, rows, cols, 3, 3);
 
-    auto minMaxNormLayer = std::make_unique<MinMaxNormLayer>(1, rows, cols);
+    auto minMaxNormLayer = std::make_unique<MinMaxNormLayer>(1, rows, cols, 2);
 
-    layers.push_back(std::move(minMaxNormLayer));
-    layers.push_back(std::move(sobelLayer));
     layers.push_back(std::move(grayScaleLayer));
+    layers.push_back(std::move(sobelLayer));
+    layers.push_back(std::move(minMaxNormLayer));
     
     StreamingPipeLine(layers, outputBuffer);
 }
@@ -111,14 +112,14 @@ void Host::CannyEdge(Buffer* outputBuffer,
 
     auto nmxLayer = std::make_unique<NonMaxSuppressionLayer>(1, rows, cols);
     auto hysterisisLayer = std::make_unique<HysterisisLayer>(1, rows, cols, 
-                                                             lowThreshold,
-                                                             highThreshold);
+                                                             lowThreshold/4,
+                                                             highThreshold/4);
 
-    layers.push_back(std::move(hysterisisLayer));
-    layers.push_back(std::move(nmxLayer));
-    layers.push_back(std::move(sobelLayer));
-    layers.push_back(std::move(gaussianBlurLayer));
     layers.push_back(std::move(grayScaleLayer));
+    layers.push_back(std::move(gaussianBlurLayer));
+    layers.push_back(std::move(sobelLayer));
+    layers.push_back(std::move(nmxLayer));
+    layers.push_back(std::move(hysterisisLayer));
 
     // The first required lines for nmx's stream function exists in its input buffer
 

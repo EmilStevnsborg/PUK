@@ -23,13 +23,6 @@ void HysterisisLayer::Stream(Buffer* outputBuffer, int line) {
             
             int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;
             
-            if ((j == 0 || j == outputBuffer->cols-1) || 
-                (line == 0 || line == outputBuffer->rows-1)) 
-            {
-                outputBuffer->Memory<byte>()[outIdx] = 0;
-                continue;
-            }
-            
             bool keep = Hysterisis(&inputBuffer, line, j, c, lowThreshold, highThreshold);
             
             if (keep) {

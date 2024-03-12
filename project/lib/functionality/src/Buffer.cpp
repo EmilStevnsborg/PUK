@@ -20,7 +20,7 @@ Buffer::Buffer(int channels, int rows, int cols, int lines,
         this->memoryUINT8 = (byte*) malloc(this->elementsAllocated*sizeof(byte));
         this->memoryUINT16 = nullptr;
     } else {
-        this->memoryUINT16 = (uint16_t*) malloc(2*this->elementsAllocated*sizeof(byte));
+        this->memoryUINT16 = (uint16_t*) malloc(this->elementsAllocated*sizeof(uint16_t));
         this->memoryUINT8 = nullptr;
     }
 
