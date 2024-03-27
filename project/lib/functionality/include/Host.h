@@ -15,6 +15,7 @@
 #include "HysterisisLayer.h"
 #include "GrayScaleLayer.h"
 #include "MinMaxNormLayer.h"
+#include "MedianBlurLayer.h"
 #include <functional>
 #include <memory>
 
@@ -23,13 +24,17 @@ typedef uint8_t byte;
 // one camera, multiple functions (different buffering)
 class Host {
     private:
+    public:
+        Camera* camSensor; // Dependency injection
         int channels;
         int rows;
         int cols;
         int bytesLine;
-        Camera* camSensor; // Dependency injection
-    public:
+        
         Host(Camera* cam, int channels, int rows, int cols);
+        
+        void MedianBlur(Buffer* outputBuffer, 
+                        int kernelHeight, int kernelWidth);
         
         void GaussianBlur(Buffer* outputBuffer, 
                           int kernelHeight, int kernelWidth, 

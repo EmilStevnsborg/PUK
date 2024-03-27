@@ -37,6 +37,9 @@ class Buffer {
         // circular buffer
         Buffer(int channels, int rows, int cols, int lines, 
                bool hasExtraMemory = false, bool storesBytes = true);
+        
+        // used specifically for pybind
+        Buffer(int channels, int rows, int cols, int lines, byte* bytePtr);
 
         template <typename MemoryType>
         MemoryType* Memory();

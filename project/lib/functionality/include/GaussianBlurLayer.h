@@ -1,5 +1,5 @@
-#ifndef GAUSSIANBLUR_H
-#define GAUSSIANBLUR_H
+#ifndef GAUSSIANBLURLAYER_H
+#define GAUSSIANBLURLAYER_H
 
 #include "Layer.h"
 #include "CVfunctions.h"
@@ -39,4 +39,4 @@ class GaussianBlurLayer : public Layer {
         ~GaussianBlurLayer() {};
 };
 
-#endif // GAUSSIANBLUR_H
+#endif // GAUSSIANBLURLAYER_H

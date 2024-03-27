@@ -34,6 +34,28 @@ Buffer::Buffer(int channels, int rows, int cols, int lines,
     this->lineInserts = 0;
 }
 
+// Used specifically for pybind
+Buffer::Buffer(int channels, int rows, int cols, int lines, byte* bytePtr) {
+    // image
+    this->channels = channels;
+    this->rows = rows;
+    this->cols = cols;
+
+    // buffer
+    this->lines = lines;
+    this->lineSize = cols*channels;
+    this->elementsAllocated = lines*this->lineSize;
+
+    this->memoryUINT8 = bytePtr;
+    this->storesBytes = true;
+    this->hasExtraMemory = false;
+
+    this->extraMemory = nullptr;
+    this->memoryUINT16 = nullptr;
+
+    this->lineInserts = 0;
+}
+
 template <>
 uint16_t* Buffer::Memory<uint16_t>() {return memoryUINT16;}
 

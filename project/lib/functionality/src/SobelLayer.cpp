@@ -14,22 +14,12 @@ SobelLayer::SobelLayer(int inputChannels,
     this->padHeight = kernelHeight/2;
     this->padWidth = kernelWidth/2;
 
-
-    // generalise these kernels
     this->kernelX = {{-1, 0, 1}, 
                      {-2, 0, 2}, 
                      {-1, 0, 1}};
     this->kernelY = {{1, 2, 1}, 
                      {0, 0, 0}, 
                      {-1, -2, -1}};
-    
-    // // Scharr
-    // this->kernelX = {{-3, 0, 3}, 
-    //                  {-10, 0, 10}, 
-    //                  {-3, 0, 3}};
-    // this->kernelY = {{3, 10, 3}, 
-    //                  {0, 0, 0}, 
-    //                  {-3, -10, -3}};
 }
 
 void SobelLayer::Stream(Buffer* outputBuffer, int line) {
@@ -41,33 +31,24 @@ void SobelLayer::Stream(Buffer* outputBuffer, int line) {
 
             float Gx = 0;
             float Gy = 0;
+        
             
             // anchor pixel of input (update when introducing stride)
             int ai = line;
             int aj = j;
 
-            // Sobel uses REFLECT_101 for padding: gradients at borders are 0
-            if (!((aj == 0 || aj == inputBuffer.cols-1) ||
-                  (ai == 0 || ai == inputBuffer.rows-1))) { 
+            // Sobel uses REFLECT_101 for the border
+            Gx = MatMul<float>(&inputBuffer, kernelX, 
+                                kernelHeight, kernelWidth,
+                                ai, aj, c);
 
-                Gx = MatMul<float>(&inputBuffer, kernelX, 
-                                   kernelHeight, kernelWidth,
-                                   ai, aj, c);
-
-                Gy = MatMul<float>(&inputBuffer, kernelY, 
-                                   kernelHeight, kernelWidth,
-                                   ai, aj, c);            
-            }
+            Gy = MatMul<float>(&inputBuffer, kernelY, 
+                                kernelHeight, kernelWidth,
+                                ai, aj, c);        
 
             // Convert to degrees
             float degrees = std::atan2(Gy, Gx) * (180/M_PI);
             if (degrees < 0) {degrees += 180;}
-
-            // if (Gx > 255) {Gx = 255;}
-            // else if (Gx < -255) {Gx = -255;}
-
-            // if (Gy > 255) {Gy = 255;}
-            // else if (Gy < -255) {Gy = -255;}
             
             float gradientMagnitude = std::sqrt(Gx*Gx + Gy*Gy);
 

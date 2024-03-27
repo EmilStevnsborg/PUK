@@ -17,20 +17,17 @@ float MatMul(Buffer* inputBuffer,
 
     for (int i = starti; i < endi+1; i++) {
         
-        if (i < 0 || i >= inputBuffer->rows) {
-            continue;
-        }
         for (int j = startj; j < endj+1; j++) {
-        
-            if (j < 0 || j >= inputBuffer->cols) {
-                continue;
-            }
+            
             int ki = i-starti;
             int kj = j-startj;
+        
+            int iReflect = ReflectIndex(i, inputBuffer->rows);
+            int jReflect = ReflectIndex(j, inputBuffer->cols);
 
-            int lineMemoryIdx = inputBuffer->LineMemoryIndex(i);
+            int lineMemoryIdx = inputBuffer->LineMemoryIndex(iReflect);
             int inputIdx = (lineMemoryIdx + 
-                            j*inputBuffer->channels + 
+                            jReflect*inputBuffer->channels + 
                             c);
             float inputVal = ((float) inputBuffer->Memory<byte>()[inputIdx]);
             float w = kernel[ki][kj];
@@ -39,6 +36,14 @@ float MatMul(Buffer* inputBuffer,
         }
     }
     return sumProduct;
+}
+
+// Function to handle border reflection for index i
+int ReflectIndex(int i, int maxIdx) {
+    int iNew = i;
+    if (i < 0) {iNew = -i;} 
+    else if (i >= maxIdx) {iNew = 2 * maxIdx - 1 - i;}
+    return iNew;
 }
 
 template float MatMul(Buffer* inputBuffer,
@@ -58,7 +63,7 @@ bool Hysterisis(Buffer* inputBuffer,
                     c);
 
     // already strong
-    if (inputBuffer->Memory<uint16_t>()[anchorIdx] >= highThreshold) {return true;}
+    if (inputBuffer->Memory<uint16_t>()[anchorIdx] > highThreshold) {return true;}
     
     // already non relevant 
     if (inputBuffer->Memory<uint16_t>()[anchorIdx] < lowThreshold) {return false;}
@@ -89,7 +94,7 @@ bool Hysterisis(Buffer* inputBuffer,
             
             if (inputIdx == anchorIdx) {continue;}
 
-            if (inputBuffer->Memory<uint16_t>()[inputIdx] >= highThreshold) {
+            if (inputBuffer->Memory<uint16_t>()[inputIdx] > highThreshold) {
                 inputBuffer->Memory<uint16_t>()[anchorIdx] = 255;
                 return true;
             }

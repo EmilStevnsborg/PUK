@@ -6,6 +6,9 @@
 #include "Host.h"
 #include "functionality.h"
 #include <optional>
+#include <vector>
+
+cv::Mat byteArrayToImg(byte* byteArray, int channels, int rows, int cols);
 
 bool checkCorrectness(cv::Mat& y, cv::Mat& yPrime);
 

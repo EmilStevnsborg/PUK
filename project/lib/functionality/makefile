@@ -2,11 +2,11 @@
 
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -Wall -g
+CXXFLAGS := -Wall -g -shared -fPIC
 LIBS := CVfunctions compression Host Buffer \
 		GaussianBlurLayer NonMaxSuppressionLayer \
 		SobelLayer HysterisisLayer GrayScaleLayer \
-		MinMaxNormLayer
+		MinMaxNormLayer MedianBlurLayer
 
 OBJECTS := $(foreach LIB, $(LIBS), obj/$(LIB).o)
 

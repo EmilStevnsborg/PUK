@@ -2,10 +2,7 @@
 
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -Wall -g
-
-OPENCV_CFLAGS := $(shell pkg-config --cflags opencv4)
-OPENCV_LIBS := $(shell pkg-config --libs opencv4)
+CXXFLAGS := -Wall -g -shared -fPIC
 
 LIBS := util CamSimulator
 
@@ -19,7 +16,7 @@ all: $(OBJECTS)
 # "$@ $<" (automatic variables OBJECT and SOURCE)
 obj/%.o: src/%.cpp
 	mkdir -p obj
-	$(CXX) $(CXXFLAGS) -c -o $@ $< $(OPENCV_CFLAGS)	$(OPENCV_LIBS) $(HEADERS)
+	$(CXX) $(CXXFLAGS) -c -o $@ $< $(HEADERS)
 
 # Clean rule
 clean:

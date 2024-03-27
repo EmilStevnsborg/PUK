@@ -41,7 +41,7 @@ void GaussianBlurLayer::Stream(Buffer* outputBuffer, int line) {
             
             int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;
 
-            outputBuffer->Memory<byte>()[outIdx] = (byte) (std::floor(sumProduct));
+            outputBuffer->Memory<byte>()[outIdx] = (byte) (std::floor(sumProduct));    
         }
     }
 }

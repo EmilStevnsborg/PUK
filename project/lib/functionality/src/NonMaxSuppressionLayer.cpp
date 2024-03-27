@@ -24,7 +24,7 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
     for (int j = 0; j < outputBuffer->cols; j++) {
         for (int c = 0; c < outputBuffer->channels; c++) {
 
-			int inputIdx = inLineMemIdx + j*inputBuffer.channels + c;
+			int inputIdx = inLineMemIdx+j*inputBuffer.channels+c;
             int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;
 
 			uint16_t gradientMagnitude = inputBuffer.Memory<uint16_t>()[inputIdx];

@@ -15,6 +15,8 @@ float MatMul(Buffer* inputBuffer,
              int& kernelHeight, int& kernelWidth,
              int& ai, int& aj, int& c);
 
+int ReflectIndex(int i, int max_index);
+
 bool Hysterisis(Buffer* inputBuffer,
                 int& ai, int& aj, int& c,
                 uint16_t& lowThreshold, uint16_t& highThreshold);
