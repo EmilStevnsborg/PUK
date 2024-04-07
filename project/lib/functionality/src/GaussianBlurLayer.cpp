@@ -3,9 +3,10 @@
 GaussianBlurLayer::GaussianBlurLayer(int inputChannels, int inputRows, 
                                      int inputCols,
                                      int kernelHeight, int kernelWidth, 
-                                     double sigmaX, double sigmaY)
+                                     double sigmaX, double sigmaY,
+                                     int bufferLines)
     : Layer(),
-      inputBuffer(inputChannels, inputRows, inputCols, kernelHeight, false, true)
+      inputBuffer(inputChannels, inputRows, inputCols, bufferLines, false, true)
 {
     this->kernelHeight = kernelHeight;
     this->kernelWidth = kernelWidth;

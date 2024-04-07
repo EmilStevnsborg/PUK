@@ -7,7 +7,7 @@ CXXFLAGS := -Wall -g
 OPENCV_CFLAGS := $(shell pkg-config --cflags opencv4)
 OPENCV_LIBS := $(shell pkg-config --libs opencv4)
 
-LIBS := program testing functionality
+LIBS := program testing
 
 HEADERS_TEST := -Iinclude/
 

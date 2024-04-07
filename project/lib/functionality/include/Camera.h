@@ -6,6 +6,7 @@
 // Abstract class for camera functionality
 class Camera {
     public:
+        bool snapshot;
         virtual void Stream(Buffer* outputMemory, int line) = 0;
         virtual void Stream(Buffer* outputMemory) = 0;
         virtual ~Camera() {}

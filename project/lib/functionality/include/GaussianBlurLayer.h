@@ -25,7 +25,8 @@ class GaussianBlurLayer : public Layer {
 
         GaussianBlurLayer(int inputChannels, int inputRows, int inputCols,
                           int kernelHeight, int kernelWidth, 
-                          double sigmaX, double sigmaY);
+                          double sigmaX, double sigmaY,
+                          int bufferLines = 0);
 
         // compute output line and stream into outputMemory
         void Stream(Buffer* outputBuffer, int line);

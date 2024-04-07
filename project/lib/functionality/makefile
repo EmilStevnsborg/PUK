@@ -6,7 +6,7 @@ CXXFLAGS := -Wall -g -shared -fPIC
 LIBS := CVfunctions compression Host Buffer \
 		GaussianBlurLayer NonMaxSuppressionLayer \
 		SobelLayer HysterisisLayer GrayScaleLayer \
-		MinMaxNormLayer MedianBlurLayer
+		MinMaxNormLayer MedianBlurLayer CameraHS
 
 OBJECTS := $(foreach LIB, $(LIBS), obj/$(LIB).o)
 

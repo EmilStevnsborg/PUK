@@ -19,45 +19,52 @@ cv::Mat byteArrayToImg(byte* byteArray, int channels, int rows, int cols) {
     return image;
 }
 
-bool checkCorrectness(cv::Mat& y, cv::Mat& yPrime) {
-    // Check if the dimensions of the two images match
-    if (y.size() != yPrime.size()) {
-        return false;
+void checkCorrectness(cv::Mat& y) {
+    // Display the predicate image
+    cv::imshow("predicate image", y);
+    cv::waitKey(0);
+}
+
+bool test_livecam(std::string functionType) {
+    // input
+    int channels = 3;
+    int rows = 360;
+    int cols = 640;
+
+    std::string devicePath = "/dev/video2";
+    CameraHS cameraHS(devicePath, true, channels, rows, cols);
+
+    Host host(&cameraHS, channels, rows, cols);
+    Buffer* outputBufferPtr;
+
+    if (functionType == "gaussianBlur") {
+
+        // int kernelHeight = 3; 
+        // int kernelWidth = 3;
+        // double sigmaX = 1;
+        // double sigmaY = 0;
+
+        Buffer outputBuffer(channels, rows, cols, rows, false, true);
+        outputBufferPtr = &outputBuffer;
+
+        cameraHS.Stream(&outputBuffer);
+
+        cv::Mat image(rows, cols, CV_8UC(channels), outputBuffer.Memory<byte>());
+
+        checkCorrectness(image);
     }
 
-    // Display the predicate image
-    cv::imshow("predicate image", yPrime);
-    cv::waitKey(0);
-
-    // Display the true image
-    cv::imshow("true image", y);
-    cv::waitKey(0);
-
-    // Calculate absolute difference between the two images
-    cv::Mat diff;
-    cv::absdiff(y, yPrime, diff);
-
-    double absSum = cv::sum(diff)[0];
-
-    double minVal, maxVal;
-    cv::minMaxLoc(diff.reshape(1), &minVal, &maxVal);
-
-    printf("diff abs sum: %f\n", absSum);
-    printf("diff max %f\n", maxVal);
-
-    // Show the difference image
-    cv::imshow("Difference Image", diff);
-    cv::waitKey(0); // Wait for a key press before closing
+    outputBufferPtr->FreeMemory();
 
     return true;
 }
 
-bool test(std::string functionType) {
+bool test_simulator(std::string functionType) {
     // input
     int channels = 3;
     int rows = 576;
     int cols = 768;
-    CamSimulator camSimulator(channels, rows, cols);
+    CamSimulator camSimulator(true, channels, rows, cols);
     std::string path = "cases/Background_Subtraction_Tutorial_frame_1.png";
     cv::Mat inputImage = cv::imread(path);
 
@@ -74,29 +81,20 @@ bool test(std::string functionType) {
 
     camSimulator.StoreData(vectorInputImage);
 
-
     Host host(&camSimulator, channels, rows, cols);
 
 
     // optimized functionality output
     cv::Mat hostOutput;
     Buffer* outputBufferPtr;
-    // cv implementation output
-    cv::Mat cvOutput;
     
     if (functionType == "sobel") {
-
-        int kernelSize = 3;
 
         Buffer outputBuffer(1, rows, cols, rows, false, true);
         outputBufferPtr = &outputBuffer;
 
         host.Sobel(&outputBuffer);
         hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), 1, rows, cols);
-
-        cv::Mat gray;
-        cv::cvtColor(inputImage, gray, cv::COLOR_BGR2GRAY);
-        cvOutput = minMaxNorm(std::get<0>(sobel(gray, kernelSize)));
     } 
     else if (functionType == "gaussianBlur") {
 
@@ -111,9 +109,6 @@ bool test(std::string functionType) {
         host.GaussianBlur(&outputBuffer, kernelHeight, kernelWidth, sigmaX, sigmaY);
         hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), channels, rows, cols);
 
-        cvOutput = gaussianBlur(inputImage, 
-                                kernelHeight, kernelWidth, 
-                                sigmaX, sigmaY);
     }
     else if (functionType == "cannyEdge") {
 
@@ -125,11 +120,6 @@ bool test(std::string functionType) {
         
         host.CannyEdge(&outputBuffer, lowThreshold, highThreshold);
         hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), 1, rows, cols);
-
-        cv::Mat cannyOutput = cannyEdge(inputImage, 
-                                        lowThreshold, highThreshold);
-        
-        cvOutput = cannyOutput;
     }
     else if (functionType == "cannyEdgeManual") {
 
@@ -141,11 +131,9 @@ bool test(std::string functionType) {
         
         host.CannyEdge(&outputBuffer, lowThreshold, highThreshold);
         hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), 1, rows, cols);
-
-        cvOutput = cannyEdgeManual(inputImage, lowThreshold, highThreshold);
     }
 
-    checkCorrectness(cvOutput, hostOutput);
+    checkCorrectness(hostOutput);
 
     outputBufferPtr->FreeMemory();
     

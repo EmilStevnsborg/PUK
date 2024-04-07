@@ -41,7 +41,7 @@ float MatMul(Buffer* inputBuffer,
 // Function to handle border reflection for index i
 int ReflectIndex(int i, int maxIdx) {
     int iNew = i;
-    if (i < 0) {iNew = -i;} 
+    if (i < 0) {iNew = -i - 1;} 
     else if (i >= maxIdx) {iNew = 2 * maxIdx - 1 - i;}
     return iNew;
 }

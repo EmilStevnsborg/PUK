@@ -11,14 +11,13 @@ typedef uint8_t byte;
 class CamSimulator : public Camera {
     private:
         std::vector<byte> image;
-
         int channels;
         int rows;
         int cols;
 
     public:
-        CamSimulator(int channels, int rows, int cols);
-
+        CamSimulator(bool snapshot, int channels, int rows, int cols);
+        
         // PROPERTIES
         std::vector<byte> GetImage();
         int Channels();

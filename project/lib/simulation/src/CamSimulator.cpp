@@ -5,7 +5,8 @@
 
 // CONSTRUCTOR
 
-CamSimulator::CamSimulator(int channels, int rows, int cols) {
+CamSimulator::CamSimulator(bool snapshot, int channels, int rows, int cols) {
+    this->snapshot = snapshot;
     this->channels = channels;
     this->rows =  rows;
     this->cols = cols;

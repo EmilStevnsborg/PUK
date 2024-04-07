@@ -27,7 +27,7 @@ void copyData(Buffer* outputBuffer, py::array_t<uint8_t>& array) {
 
 PYBIND11_MODULE(EmbeddedCV, m) {
     py::class_<CamSimulator>(m, "CamSimulator")
-        .def(py::init<int, int, int>())
+        .def(py::init<bool, int, int, int>())
         .def("StoreData", [](CamSimulator &self, py::array_t<uint8_t> array) {
             std::vector<uint8_t> data(array.size());
             std::memcpy(data.data(), array.data(), array.size() * sizeof(uint8_t));

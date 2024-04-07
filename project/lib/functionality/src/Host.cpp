@@ -20,10 +20,17 @@ void Host::PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
     // populate inputBuffer with each line needed (some might already be there)
     for (auto& nextLine: nextLines)
     {
-        // stream from camera if it is the first layer in the streaming process
         if (currentLayerIdx == 0) {
-            camSensor->Stream(layers[currentLayerIdx]->InputBuffer(), 
-                              nextLine);
+            if (camSensor->snapshot) {
+                camSensor->Stream(layers[currentLayerIdx]->InputBuffer());
+                layers[currentLayerIdx]->InputBuffer()->lineInserts = rows;
+                break;
+            } 
+            // line scan
+            else {
+                camSensor->Stream(layers[currentLayerIdx]->InputBuffer(), 
+                                  nextLine);
+            }
         } else {
             PopulateBuffers(layers, layers[currentLayerIdx]->InputBuffer(),
                             currentLayerIdx-1, nextLine);
@@ -61,10 +68,18 @@ void Host::MedianBlur(Buffer* outputBuffer,
 {
     std::vector<std::unique_ptr<Layer>> layers;
 
-    auto medianBlurLayer = std::make_unique<MedianBlurLayer>(channels, rows, cols, 
-                                                             kernelHeight, kernelWidth);
+    int bufferLines;
+    if (this->camSensor->snapshot) {
+        bufferLines = this->rows;
+    } else {
+        bufferLines = kernelHeight;
+    }
 
-    auto minMaxNormLayer = std::make_unique<MinMaxNormLayer>(channels, rows, cols, 2);
+    auto medianBlurLayer = std::make_unique<MedianBlurLayer>(channels, rows, cols, 
+                                                             kernelHeight, kernelWidth,
+                                                             bufferLines);
+
+    auto minMaxNormLayer = std::make_unique<MinMaxNormLayer>(channels, rows, cols, 5);
 
     layers.push_back(std::move(medianBlurLayer));
     layers.push_back(std::move(minMaxNormLayer));
@@ -80,9 +95,17 @@ void Host::GaussianBlur(Buffer* outputBuffer,
 {   
     std::vector<std::unique_ptr<Layer>> layers;
 
+    int bufferLines;
+    if (this->camSensor->snapshot) {
+        bufferLines = this->rows;
+    } else {
+        bufferLines = kernelHeight;
+    }
+
     auto gaussianBlurLayer = std::make_unique<GaussianBlurLayer>(channels, rows, cols, 
                                                                  kernelHeight, kernelWidth, 
-                                                                 sigmaX, sigmaY);
+                                                                 sigmaX, sigmaY,
+                                                                 bufferLines);
 
     layers.push_back(std::move(gaussianBlurLayer));
 
@@ -94,9 +117,14 @@ void Host::Sobel(Buffer* outputBuffer)
 
     std::vector<std::unique_ptr<Layer>> layers;
 
-    // auto grayScaleLayer = std::make_unique<GrayScaleLayer>(channels, rows, cols);
+    int bufferLines;
+    if (this->camSensor->snapshot) {
+        bufferLines = this->rows;
+    } else {
+        bufferLines = 1;
+    }
 
-    auto sobelLayer = std::make_unique<SobelLayer>(channels, rows, cols, 3, 3);
+    auto sobelLayer = std::make_unique<SobelLayer>(channels, rows, cols, 3, 3, bufferLines);
 
     auto minMaxNormLayer = std::make_unique<MinMaxNormLayer>(channels, rows, cols, 2);
 
@@ -113,9 +141,14 @@ void Host::CannyEdge(Buffer* outputBuffer,
 
     std::vector<std::unique_ptr<Layer>> layers;
 
-    // init layers for computation
+    int bufferLines;
+    if (this->camSensor->snapshot) {
+        bufferLines = this->rows;
+    } else {
+        bufferLines = 1;
+    }
 
-    auto grayScaleLayer = std::make_unique<GrayScaleLayer>(channels, rows, cols);
+    auto grayScaleLayer = std::make_unique<GrayScaleLayer>(channels, rows, cols, bufferLines);
 
     auto gaussianBlurLayer = std::make_unique<GaussianBlurLayer>(1, 
                                     rows, cols, 5, 5, 0, 0);

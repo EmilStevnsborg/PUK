@@ -20,8 +20,10 @@ class MedianBlurLayer : public Layer {
         int padHeight;
         int padWidth;
 
-        MedianBlurLayer(int inputChannels, int inputRows, int inputCols,
-                        int kernelHeight, int kernelWidth);
+        MedianBlurLayer(int inputChannels, 
+                        int inputRows, int inputCols,
+                        int kernelHeight, int kernelWidth,
+                        int bufferLines = 0);
 
         // compute output line and stream into outputMemory
         void Stream(Buffer* outputBuffer, int line);

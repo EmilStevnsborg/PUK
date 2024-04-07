@@ -2,9 +2,10 @@
 
 GrayScaleLayer::GrayScaleLayer(int inputChannels, 
                                int inputRows, 
-                               int inputCols)     
+                               int inputCols,
+                               int bufferLines)     
     : Layer(),
-      inputBuffer(inputChannels, inputRows, inputCols, 1, false, true) 
+      inputBuffer(inputChannels, inputRows, inputCols, bufferLines, false, true) 
 {
     this->kernelHeight = 1;
     this->kernelWidth = 1;
