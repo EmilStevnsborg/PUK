@@ -4,12 +4,10 @@
 #include <unistd.h>
 #include <cstring>
 
-CameraHS::CameraHS(std::string devicePath, bool snapshot, int channels, int rows, int cols) {
-    this->snapshot = snapshot;
-    this->channels = channels;
-    this->rows =  rows;
-    this->cols = cols;
-
+CameraHS::CameraHS(std::string devicePath, bool snapshot, 
+                   int channels, int rows, int cols) :
+    Camera(channels, rows, cols, snapshot)
+{
     this->devicePath = devicePath.c_str();
 
     open_device();
@@ -95,8 +93,8 @@ void CameraHS::init_device() {
     // configure format
     struct v4l2_format fmt;
     fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    fmt.fmt.pix.width       = this->cols;
-    fmt.fmt.pix.height      = this->rows;
+    fmt.fmt.pix.width       = this->Cols();
+    fmt.fmt.pix.height      = this->Rows();
     fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUYV;
     fmt.fmt.pix.field       = V4L2_FIELD_INTERLACED;
     if (-1 == xioctl(this->fd, VIDIOC_S_FMT, &fmt))
@@ -170,16 +168,31 @@ int CameraHS::read_frame(Buffer* outputBuffer) {
 }
 
 void CameraHS::process_image(const void *p, int size, Buffer* outputBuffer) {
-    // Cast the image data pointer to the appropriate type
-    const byte* image_data = reinterpret_cast<const byte*>(p);
+    const byte* yuyv_data = reinterpret_cast<const byte*>(p);
+    
+    for (int i = 0, j = 0; i < size; i += 4, j += 6) {
+        int y0 = yuyv_data[i];
+        int u = yuyv_data[i + 1] - 128;
+        int y1 = yuyv_data[i + 2];
+        int v = yuyv_data[i + 3] - 128;
 
-    int index = 0;
-    int numBytes = this->rows * this->cols * this->channels;
-    while (index < numBytes) {
-        outputBuffer->Memory<byte>()[index] = image_data[index];
-        index += 1;
+        int r0 = (int)(y0 + 1.402 * v);
+        int g0 = (int)(y0 - 0.344136 * u - 0.714136 * v);
+        int b0 = (int)(y0 + 1.772 * u);
+
+        int r1 = (int)(y1 + 1.402 * v);
+        int g1 = (int)(y1 - 0.344136 * u - 0.714136 * v);
+        int b1 = (int)(y1 + 1.772 * u);
+
+        // Clamp values to [0, 255]
+        outputBuffer->Memory<byte>()[j]     = (byte)std::min(std::max(r0, 0), 255);
+        outputBuffer->Memory<byte>()[j + 1] = (byte)std::min(std::max(g0, 0), 255);
+        outputBuffer->Memory<byte>()[j + 2] = (byte)std::min(std::max(b0, 0), 255);
+
+        outputBuffer->Memory<byte>()[j + 3] = (byte)std::min(std::max(r1, 0), 255);
+        outputBuffer->Memory<byte>()[j + 4] = (byte)std::min(std::max(g1, 0), 255);
+        outputBuffer->Memory<byte>()[j + 5] = (byte)std::min(std::max(b1, 0), 255);
     }
-    printf("index %d\n", index);
 }
 
 

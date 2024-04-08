@@ -1,13 +1,14 @@
 #include "Host.h"
 
-Host::Host(Camera* cam, int channels, int rows, int cols)
+// undefined Host
+Host::Host() {}
+
+void Host::Configure(Camera* cam)
 {
     this->camSensor = cam;
-    this->channels = channels;
-    this->rows = rows;
-    this->cols = cols;
-    // sensor we stream data from
-    this->camSensor = cam;
+    this->channels = cam->Channels();
+    this->rows = cam->Rows();
+    this->cols = cam->Cols();
 }
 
 void Host::PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
@@ -124,7 +125,8 @@ void Host::Sobel(Buffer* outputBuffer)
         bufferLines = 1;
     }
 
-    auto sobelLayer = std::make_unique<SobelLayer>(channels, rows, cols, 3, 3, bufferLines);
+    auto sobelLayer = std::make_unique<SobelLayer>(channels, rows, cols, 
+                                                   3, 3, bufferLines);
 
     auto minMaxNormLayer = std::make_unique<MinMaxNormLayer>(channels, rows, cols, 2);
 
@@ -148,17 +150,19 @@ void Host::CannyEdge(Buffer* outputBuffer,
         bufferLines = 1;
     }
 
-    auto grayScaleLayer = std::make_unique<GrayScaleLayer>(channels, rows, cols, bufferLines);
+    auto grayScaleLayer = std::make_unique<GrayScaleLayer>(channels, rows, cols, 
+                                                           bufferLines);
 
-    auto gaussianBlurLayer = std::make_unique<GaussianBlurLayer>(1, 
-                                    rows, cols, 5, 5, 0, 0);
+    auto gaussianBlurLayer = std::make_unique<GaussianBlurLayer>(1, rows, cols, 
+                                                                 5, 5, 0, 0,
+                                                                 5);
 
-    auto sobelLayer = std::make_unique<SobelLayer>(1, rows, cols, 3, 3);
+    auto sobelLayer = std::make_unique<SobelLayer>(1, rows, cols, 3, 3, 3);
 
-    auto nmxLayer = std::make_unique<NonMaxSuppressionLayer>(1, rows, cols);
+    auto nmxLayer = std::make_unique<NonMaxSuppressionLayer>(1, rows, cols, 3);
     auto hysterisisLayer = std::make_unique<HysterisisLayer>(1, rows, cols, 
                                                              lowThreshold,
-                                                             highThreshold);
+                                                             highThreshold, 1);
 
     layers.push_back(std::move(grayScaleLayer));
     layers.push_back(std::move(gaussianBlurLayer));

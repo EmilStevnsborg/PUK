@@ -31,7 +31,8 @@ class Host {
         int cols;
         int bytesLine;
         
-        Host(Camera* cam, int channels, int rows, int cols);
+        Host();
+        void Configure(Camera* cam);
         
         void MedianBlur(Buffer* outputBuffer, 
                         int kernelHeight, int kernelWidth);

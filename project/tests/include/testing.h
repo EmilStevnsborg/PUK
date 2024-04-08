@@ -1,7 +1,7 @@
 #ifndef TESTING_H
 #define TESTING_H
 
-#include "CamSimulator.h"
+#include "CameraSim.h"
 #include "CameraHS.h"
 #include "util.h"
 #include "Host.h"
@@ -14,8 +14,12 @@ cv::Mat byteArrayToImg(byte* byteArray, int channels, int rows, int cols);
 
 bool checkCorrectness(cv::Mat& y, cv::Mat& yPrime);
 
-bool test_livecam(std::string functionType);
+CameraHS makeCameraHS();
 
-bool test_simulator(std::string functionType);
+CameraSim makeCameraSim(bool snapshot);
+
+void test(std::string functionType, bool hasDevice, bool snapshot);
+
+void function(std::string functionType, Host& host);
 
 #endif // TESTING_H

@@ -2,10 +2,11 @@
 
 NonMaxSuppressionLayer::NonMaxSuppressionLayer(int inputChannels, 
                                                int inputRows, 
-                                               int inputCols)     
+                                               int inputCols,
+											   int bufferLines)     
     : Layer(),
       // buffer stores 16 bit gradient magnitudes and angles in extra memory
-      inputBuffer(inputChannels, inputRows, inputCols, 3, true, false) 
+      inputBuffer(inputChannels, inputRows, inputCols, bufferLines, true, false) 
 {
 }
 

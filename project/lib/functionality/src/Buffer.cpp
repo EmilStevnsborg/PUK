@@ -72,6 +72,7 @@ int Buffer::LineMemoryIndex(int line) {
         // line is not in buffer
         // throw error
     }
+    // printf("line %d lines %d lineSize %d\n", line, this->lines, this->lineSize);
     return line % this->lines * lineSize;
 }
 

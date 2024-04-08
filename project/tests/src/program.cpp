@@ -1,20 +1,11 @@
 #include "program.h"
 
 int main() {
+    bool hasDevice = true;
+    bool snapshot = false;
 
-    // test("sobel");
-    // test_simulator("gaussianBlur");
-    // test("cannyEdge");
-    // test("cannyEdgeManual");
-
-    // // camera tests: 3, 360, 640
-    test_livecam("gaussianBlur");
-    // int channels = 3;
-    // int rows = 360;
-    // int cols = 640;
-    // CamSimulator camSimulator(channels, rows, cols);
-    // CamSimulator::InitDevice();
-    // camSimulator.ClaimDevice();
-    // camSimulator.StoreData();
+    // test("sobel", hasDevice, snapshot);
+    // test("gaussianBlur", hasDevice, snapshot);
+    test("cannyEdge", hasDevice, snapshot);
 }
 

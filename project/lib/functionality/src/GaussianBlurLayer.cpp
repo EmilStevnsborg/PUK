@@ -24,7 +24,6 @@ GaussianBlurLayer::GaussianBlurLayer(int inputChannels, int inputRows,
 
 // stream a blurred line to output: necssarry lines already in buffer
 void GaussianBlurLayer::Stream(Buffer* outputBuffer, int line) {
-
     // the line index in the memory of the outputBuffer
     int outLineMemIdx = outputBuffer->LineMemoryIndex(line);
 

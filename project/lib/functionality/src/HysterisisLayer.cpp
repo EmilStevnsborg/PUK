@@ -4,9 +4,10 @@ HysterisisLayer::HysterisisLayer(int inputChannels,
                                  int inputRows, 
                                  int inputCols,
                                  uint16_t lowThreshold,
-                                 uint16_t highThreshold)     
+                                 uint16_t highThreshold,
+                                 int bufferLines)     
     : Layer(),
-      inputBuffer(inputChannels, inputRows, inputCols, 3, false, false) 
+      inputBuffer(inputChannels, inputRows, inputCols, bufferLines, false, false) 
 {
     this->lowThreshold = lowThreshold;
     this->highThreshold = highThreshold;

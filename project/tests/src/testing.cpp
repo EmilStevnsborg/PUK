@@ -25,51 +25,30 @@ void checkCorrectness(cv::Mat& y) {
     cv::waitKey(0);
 }
 
-bool test_livecam(std::string functionType) {
-    // input
+
+CameraHS makeCameraHS() {
     int channels = 3;
     int rows = 360;
     int cols = 640;
 
-    std::string devicePath = "/dev/video2";
-    CameraHS cameraHS(devicePath, true, channels, rows, cols);
+    bool snapshot = true;
 
-    Host host(&cameraHS, channels, rows, cols);
-    Buffer* outputBufferPtr;
+    std::string devicePath = "/dev/video0";
+    CameraHS cameraHS(devicePath, snapshot, channels, rows, cols);
 
-    if (functionType == "gaussianBlur") {
+    return cameraHS;
 
-        // int kernelHeight = 3; 
-        // int kernelWidth = 3;
-        // double sigmaX = 1;
-        // double sigmaY = 0;
-
-        Buffer outputBuffer(channels, rows, cols, rows, false, true);
-        outputBufferPtr = &outputBuffer;
-
-        cameraHS.Stream(&outputBuffer);
-
-        cv::Mat image(rows, cols, CV_8UC(channels), outputBuffer.Memory<byte>());
-
-        checkCorrectness(image);
-    }
-
-    outputBufferPtr->FreeMemory();
-
-    return true;
 }
 
-bool test_simulator(std::string functionType) {
-    // input
+CameraSim makeCameraSim(bool snapshot) {
     int channels = 3;
     int rows = 576;
     int cols = 768;
-    CamSimulator camSimulator(true, channels, rows, cols);
+
+    CameraSim cameraSim(snapshot, channels, rows, cols);
     std::string path = "cases/Background_Subtraction_Tutorial_frame_1.png";
     cv::Mat inputImage = cv::imread(path);
-
     std::vector<byte> vectorInputImage;
-
     for (int i = 0; i < inputImage.rows; i++) {
         for (int j = 0; j < inputImage.cols; j++) {
             cv::Vec3b pixel = inputImage.at<cv::Vec3b>(i,j);
@@ -78,13 +57,31 @@ bool test_simulator(std::string functionType) {
             }
         }
     }
+    cameraSim.StoreData(vectorInputImage);
 
-    camSimulator.StoreData(vectorInputImage);
+    return cameraSim;
+}
 
-    Host host(&camSimulator, channels, rows, cols);
+void test(std::string functionType, bool hasDevice, bool snapshot) {
+    Host host;
+    if (hasDevice) {
+        printf("Hyperspectral camera snapshot is %d\n", 1);
+        CameraHS cam = makeCameraHS();
+        host.Configure(&cam);
+        function(functionType, host);
+    } else {
+        printf("Simulation camera snapshot is %d\n", snapshot);
+        CameraSim cam = makeCameraSim(snapshot);
+        host.Configure(&cam);
+        function(functionType, host);
+    }
+}
 
+void function(std::string functionType, Host& host) {
+    int channels = host.camSensor->Channels();
+    int cols = host.camSensor->Cols();
+    int rows = host.camSensor->Rows();
 
-    // optimized functionality output
     cv::Mat hostOutput;
     Buffer* outputBufferPtr;
     
@@ -112,19 +109,8 @@ bool test_simulator(std::string functionType) {
     }
     else if (functionType == "cannyEdge") {
 
-        uint16_t lowThreshold = 100;
-        uint16_t highThreshold = 200;
-
-        Buffer outputBuffer(1, rows, cols, rows, true, true);
-        outputBufferPtr = &outputBuffer;
-        
-        host.CannyEdge(&outputBuffer, lowThreshold, highThreshold);
-        hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), 1, rows, cols);
-    }
-    else if (functionType == "cannyEdgeManual") {
-
         uint16_t lowThreshold = 50;
-        uint16_t highThreshold = 100;
+        uint16_t highThreshold = 150;
 
         Buffer outputBuffer(1, rows, cols, rows, true, true);
         outputBufferPtr = &outputBuffer;
@@ -136,6 +122,4 @@ bool test_simulator(std::string functionType) {
     checkCorrectness(hostOutput);
 
     outputBufferPtr->FreeMemory();
-    
-    return false;
 }

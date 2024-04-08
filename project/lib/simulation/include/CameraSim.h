@@ -1,5 +1,5 @@
-#ifndef CAMSIMULATOR_H
-#define CAMSIMULATOR_H
+#ifndef CameraSim_H
+#define CameraSim_H
 
 #include <stdint.h>
 #include "Camera.h"
@@ -8,21 +8,15 @@
 
 typedef uint8_t byte;
 
-class CamSimulator : public Camera {
+class CameraSim : public Camera {
     private:
         std::vector<byte> image;
-        int channels;
-        int rows;
-        int cols;
 
     public:
-        CamSimulator(bool snapshot, int channels, int rows, int cols);
+        CameraSim(bool snapshot, int channels, int rows, int cols);
         
         // PROPERTIES
         std::vector<byte> GetImage();
-        int Channels();
-        int Rows();
-        int Cols();
 
         // METHODS
 
@@ -34,8 +28,8 @@ class CamSimulator : public Camera {
         // snapshot
         void Stream(Buffer* outputBuffer);
 
-        virtual ~CamSimulator() = default;
+        virtual ~CameraSim() = default;
 
 };
 
-#endif //CAMSIMULATOR_H
+#endif //CameraSim_H

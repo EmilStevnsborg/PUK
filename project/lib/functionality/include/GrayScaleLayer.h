@@ -19,7 +19,7 @@ class GrayScaleLayer : public Layer {
         GrayScaleLayer(int inputChannels, 
                        int inputRows, 
                        int inputCols,
-                       int bufferLines = 0);
+                       int bufferLines);
 
         void Stream(Buffer* outputBuffer, int line);
 

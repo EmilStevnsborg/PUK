@@ -34,7 +34,6 @@ obj/%.o: src/%.cpp
 	mkdir -p obj
 	$(CXX) $(CXXFLAGS) -c -o $@ $< $(OPENCV_CFLAGS)	$(OPENCV_LIBS) $(HEADERS)
 
-
-# supress warnings from opemcv in terminal: export OPENCV_LOG_LEVEL=OFF
-
-# check for memory leaks: valgrind --leak-check=yes ./program
+# Clean rule
+clean:
+	rm -rf obj

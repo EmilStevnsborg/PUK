@@ -4,7 +4,7 @@
 CXX := g++
 CXXFLAGS := -Wall -g -shared -fPIC
 
-LIBS := util CamSimulator
+LIBS := util CameraSim
 
 HEADERS := -I../functionality/include/ -Iinclude/
 

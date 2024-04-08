@@ -11,7 +11,8 @@ class NonMaxSuppressionLayer : public Layer {
 
         NonMaxSuppressionLayer(int inputChannels, 
                                int inputRows, 
-                               int inputCols);
+                               int inputCols,
+                               int bufferLines);
 
         void Stream(Buffer* outputBuffer, int line);
 

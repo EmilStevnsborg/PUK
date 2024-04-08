@@ -36,10 +36,6 @@ struct buffer {
 
 class CameraHS : public Camera {
     private:
-        int channels;
-        int rows;
-        int cols;
-
         const char* devicePath;
 
         // camera interaction

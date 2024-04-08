@@ -21,7 +21,7 @@ class SobelLayer : public Layer {
                    int inputRows, 
                    int inputCols,
                    int kernelHeight, int kernelWidth,
-                   int bufferLines = 0);
+                   int bufferLines);
 
         void Stream(Buffer* outputBuffer, int line);
 

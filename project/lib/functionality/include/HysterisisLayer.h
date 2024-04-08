@@ -15,7 +15,8 @@ class HysterisisLayer : public Layer {
                         int inputRows, 
                         int inputCols,
                         uint16_t lowThreshold,
-                        uint16_t highThreshold);
+                        uint16_t highThreshold,
+                        int bufferLines);
 
         void Stream(Buffer* outputBuffer, int line);
 
