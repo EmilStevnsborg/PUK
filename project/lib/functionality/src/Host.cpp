@@ -12,7 +12,7 @@ void Host::Configure(Camera* cam)
 }
 
 void Host::PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
-                           Buffer* outputBuffer,
+                           Buffer* bufferPtr,
                            int currentLayerIdx, int line)
 {    
     // in order to stream line, inputBuffer needs the next lines:
@@ -40,22 +40,22 @@ void Host::PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
         layers[currentLayerIdx]->InputBuffer()->LineInserted();
     }
     // stream the layer to the output
-    layers[currentLayerIdx]->Stream(outputBuffer, line);
+    layers[currentLayerIdx]->Stream(bufferPtr, line);
 }
 
-// This function streams an entire output to outputBuffer
+// This function streams an entire output to buffer
 void Host::StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
-                             Buffer* outputBuffer)
+                             Buffer* bufferPtr)
 {
     int lastLayerIdx = layers.size()-1;
-    // Compute each line in the outputBuffer
-    for (int line = 0; line < outputBuffer->lines; line++) {
+    // Compute each line in the buffer
+    for (int line = 0; line < bufferPtr->lines; line++) {
 
         // Update input buffers of layers recursively for the next line
-        PopulateBuffers(layers, outputBuffer, lastLayerIdx, line);
+        PopulateBuffers(layers, bufferPtr, lastLayerIdx, line);
         
         // Indicate that one line has been inserted into the output buffer
-        outputBuffer->LineInserted();
+        bufferPtr->LineInserted();
     }
 
     // Free memory for input buffers of each layer
@@ -64,9 +64,50 @@ void Host::StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
     }
 }
 
-void Host::MedianBlur(Buffer* outputBuffer, 
+// compression on top of layers (not done)
+void Host::StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
+                             Compression* compression) 
+{
+    Buffer buffer(channels, rows, cols, 1);
+    int line = 0;
+
+    int lastLayerIdx = layers.size()-1;
+
+    while (line < rows) {
+        PopulateBuffers(layers, compression->InputBuffer(), lastLayerIdx, line);
+        line++;
+    }
+
+    buffer.FreeMemory();
+}
+
+// compression no layers
+void Host::StreamingPipeLine(Compression* compression) {
+
+    if (camSensor->snapshot) {
+        camSensor->Stream(compression->InputBuffer());
+        compression->InputBuffer()->lineInserts = compression->InputBuffer()->rows;
+        
+        for (int line = 0; line < rows; line++) {
+            compression->EncodeLine(line);
+        }
+    } else {
+        int line = 0;
+        while (line < rows) {
+            camSensor->Stream(compression->InputBuffer(), line);
+            compression->EncodeLine(line);
+
+            compression->InputBuffer()->LineInserted();
+            line++;
+        }
+    }
+}
+
+void Host::MedianBlur(byte* output, 
                       int kernelHeight, int kernelWidth)
 {
+    Buffer buffer(channels, rows, cols, rows, output);
+
     std::vector<std::unique_ptr<Layer>> layers;
 
     int bufferLines;
@@ -80,20 +121,22 @@ void Host::MedianBlur(Buffer* outputBuffer,
                                                              kernelHeight, kernelWidth,
                                                              bufferLines);
 
-    auto minMaxNormLayer = std::make_unique<MinMaxNormLayer>(channels, rows, cols, 5);
+    auto minMaxNormLayer = std::make_unique<MinMaxNormLayer>(channels, rows, cols, rows);
 
     layers.push_back(std::move(medianBlurLayer));
     layers.push_back(std::move(minMaxNormLayer));
 
-    StreamingPipeLine(layers, outputBuffer);
+    StreamingPipeLine(layers, &buffer);
 }
 
 
 // Gaussian filter which blurs camera input and outputs an image of same size
-void Host::GaussianBlur(Buffer* outputBuffer, 
+void Host::GaussianBlur(byte* output, 
                         int kernelHeight, int kernelWidth, 
                         double sigmaX, double sigmaY) 
 {   
+    Buffer buffer(channels, rows, cols, rows, output);
+
     std::vector<std::unique_ptr<Layer>> layers;
 
     int bufferLines;
@@ -110,11 +153,12 @@ void Host::GaussianBlur(Buffer* outputBuffer,
 
     layers.push_back(std::move(gaussianBlurLayer));
 
-    StreamingPipeLine(layers, outputBuffer);
+    StreamingPipeLine(layers, &buffer);
 }
 
-void Host::Sobel(Buffer* outputBuffer) 
+void Host::Sobel(byte* output) 
 {
+    Buffer buffer(channels, rows, cols, rows, output);
 
     std::vector<std::unique_ptr<Layer>> layers;
 
@@ -133,13 +177,14 @@ void Host::Sobel(Buffer* outputBuffer)
     layers.push_back(std::move(sobelLayer));
     layers.push_back(std::move(minMaxNormLayer));
     
-    StreamingPipeLine(layers, outputBuffer);
+    StreamingPipeLine(layers, &buffer);
 }
 
 
-void Host::CannyEdge(Buffer* outputBuffer, 
+void Host::CannyEdge(byte* output, 
                      byte lowThreshold, byte highThreshold) 
 {
+    Buffer buffer(1, rows, cols, rows, output);
 
     std::vector<std::unique_ptr<Layer>> layers;
 
@@ -172,5 +217,25 @@ void Host::CannyEdge(Buffer* outputBuffer,
 
     // The first required lines for nmx's stream function exists in its input buffer
 
-    StreamingPipeLine(layers, outputBuffer);
+    StreamingPipeLine(layers, &buffer);
+}
+
+void Host::Encode(byte* output, std::string compressionType, std::string function) {
+    
+    // buffer to store image input
+    int bufferLines;
+    if (camSensor->snapshot) {
+        bufferLines = rows;
+    } else {
+        bufferLines = 1;
+    }
+    Buffer buffer(channels, rows, cols, bufferLines);
+    
+    if (compressionType == "QOI") {
+        QOI QOIcompression(&buffer, output);
+        
+        StreamingPipeLine(&QOIcompression);
+    }
+
+    buffer.FreeMemory();
 }

@@ -82,44 +82,68 @@ void function(std::string functionType, Host& host) {
     int cols = host.camSensor->Cols();
     int rows = host.camSensor->Rows();
 
+    int outChannels;
+    int outRows;
+    int outCols;
+
     cv::Mat hostOutput;
-    Buffer* outputBufferPtr;
+    byte* output;
     
     if (functionType == "sobel") {
+        outChannels = channels;
+        outRows = rows;
+        outCols = cols;
 
-        Buffer outputBuffer(1, rows, cols, rows, false, true);
-        outputBufferPtr = &outputBuffer;
+        output = (byte*) malloc(outChannels*outRows*outCols*sizeof(byte));
 
-        host.Sobel(&outputBuffer);
-        hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), 1, rows, cols);
+        host.Sobel(output);
     } 
     else if (functionType == "gaussianBlur") {
+        outChannels = channels;
+        outRows = rows;
+        outCols = cols;
+
+        output = (byte*) malloc(outChannels*outRows*outCols*sizeof(byte));
 
         int kernelHeight = 3; 
         int kernelWidth = 3;
         double sigmaX = 1;
         double sigmaY = 0;
-
-        Buffer outputBuffer(channels, rows, cols, rows, false, true);
-        outputBufferPtr = &outputBuffer;
         
-        host.GaussianBlur(&outputBuffer, kernelHeight, kernelWidth, sigmaX, sigmaY);
-        hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), channels, rows, cols);
-
+        host.GaussianBlur(output, kernelHeight, kernelWidth, sigmaX, sigmaY);
     }
     else if (functionType == "cannyEdge") {
+        outChannels = 1;
+        outRows = rows;
+        outCols = cols;
 
-        uint16_t lowThreshold = 50;
-        uint16_t highThreshold = 150;
+        output = (byte*) malloc(outChannels*outRows*outCols*sizeof(byte));
 
-        Buffer outputBuffer(1, rows, cols, rows, true, true);
-        outputBufferPtr = &outputBuffer;
+        uint16_t lowThreshold = 20;
+        uint16_t highThreshold = 70;
         
-        host.CannyEdge(&outputBuffer, lowThreshold, highThreshold);
-        hostOutput = byteArrayToImg(outputBuffer.Memory<byte>(), 1, rows, cols);
+        host.CannyEdge(output, lowThreshold, highThreshold);
+    } else if (functionType == "QOIencode") {
+        outChannels = channels;
+        outRows = rows;
+        outCols = cols;
+        
+        int headerSize = 14;
+        int endMarkerSize = 8;
+        int maxSize = outRows * outCols * (outChannels + 1) + headerSize + endMarkerSize;
+
+        byte* outputEncoding = (byte*) malloc(maxSize*sizeof(byte));
+        host.Encode(outputEncoding, "QOI", "");
+
+        output = (byte*) malloc(outChannels*outRows*outCols*sizeof(byte));
+        QOIdecoder(outputEncoding, output);
+
+        free(outputEncoding);
+    } else {
     }
 
+    hostOutput = byteArrayToImg(output, outChannels, outRows, outCols);
     checkCorrectness(hostOutput);
 
-    outputBufferPtr->FreeMemory();
+    free(output);
 }

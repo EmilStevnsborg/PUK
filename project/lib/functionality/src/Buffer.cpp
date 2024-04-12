@@ -34,8 +34,10 @@ Buffer::Buffer(int channels, int rows, int cols, int lines,
     this->lineInserts = 0;
 }
 
-// Used specifically for pybind
-Buffer::Buffer(int channels, int rows, int cols, int lines, byte* bytePtr) {
+// Used for top level functions
+Buffer::Buffer(int channels, int rows, int cols, 
+               int lines, byte* bytePtr) 
+{
     // image
     this->channels = channels;
     this->rows = rows;
@@ -72,7 +74,7 @@ int Buffer::LineMemoryIndex(int line) {
         // line is not in buffer
         // throw error
     }
-    // printf("line %d lines %d lineSize %d\n", line, this->lines, this->lineSize);
+    // printf("line % this->lines %d, line %d, lines %d, lineSize %d\n",line % this->lines, line, lines, lineSize);
     return line % this->lines * lineSize;
 }
 

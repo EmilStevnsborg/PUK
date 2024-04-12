@@ -44,15 +44,19 @@ void NonMaxSuppressionLayer::Stream(Buffer* outputBuffer, int line) {
 
 				if (qi >= 0 && qj >= 0) {
 					int qIdx = (inputBuffer.LineMemoryIndex(qi) + 
-								qj*inputBuffer.channels + 
-								c);
-					if (inputBuffer.Memory<uint16_t>()[qIdx] > gradientMagnitude) {val = 0;}
+									 qj*inputBuffer.channels + 
+									 c);
+					if (inputBuffer.Memory<uint16_t>()[qIdx] > gradientMagnitude) {
+						val = 0;
+					}
 				}
 				if (ri < inputBuffer.rows && rj < inputBuffer.cols) {
 					int rIdx = (inputBuffer.LineMemoryIndex(ri) + 
 								rj*inputBuffer.channels + 
 								c);
-					if (inputBuffer.Memory<uint16_t>()[rIdx] > gradientMagnitude) {val = 0;}
+					if (inputBuffer.Memory<uint16_t>()[rIdx] > gradientMagnitude) {
+						val = 0;
+					}
 				}
 			}
 			// diagonal up angle (diagonal down edge)

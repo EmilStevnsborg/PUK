@@ -1,11 +1,12 @@
 #include "program.h"
 
 int main() {
-    bool hasDevice = true;
-    bool snapshot = false;
+    bool hasDevice = false;
+    bool snapshot = true;
 
-    // test("sobel", hasDevice, snapshot);
+    test("QOIencode", hasDevice, snapshot);
     // test("gaussianBlur", hasDevice, snapshot);
-    test("cannyEdge", hasDevice, snapshot);
+    // test("sobel", hasDevice, snapshot);
+    // test("cannyEdge", hasDevice, snapshot);
 }
 

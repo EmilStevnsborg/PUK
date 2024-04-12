@@ -16,6 +16,7 @@
 #include "GrayScaleLayer.h"
 #include "MinMaxNormLayer.h"
 #include "MedianBlurLayer.h"
+#include "compression.h"
 #include <functional>
 #include <memory>
 
@@ -34,24 +35,31 @@ class Host {
         Host();
         void Configure(Camera* cam);
         
-        void MedianBlur(Buffer* outputBuffer, 
+        void MedianBlur(byte* output, 
                         int kernelHeight, int kernelWidth);
         
-        void GaussianBlur(Buffer* outputBuffer, 
+        void GaussianBlur(byte* output, 
                           int kernelHeight, int kernelWidth, 
                           double sigmaX, double sigmaY);
                           
-        void CannyEdge(Buffer* outputBuffer, 
+        void CannyEdge(byte* output, 
                        byte lowThreshold, byte highThreshold);
 
-        void Sobel(Buffer* outputBuffer);
+        void Sobel(byte* output);
+
+        void Encode(byte* output, std::string compressionType, std::string function);
 
         void PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
-                             Buffer* outputBuffer,
+                             Buffer* bufferPtr,
                              int currentLayerIdx, int line);
 
         void StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
-                               Buffer* outputBuffer);
+                               Buffer* bufferPtr);
+        
+        void StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
+                               Compression* compression);
+
+        void StreamingPipeLine(Compression* compression);
 
         ~Host() {}
 };

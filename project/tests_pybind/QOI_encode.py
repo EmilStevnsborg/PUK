@@ -43,7 +43,7 @@ def QOI_encode(flat_image, channels, rows, cols):
     QOI_OP_INDEX = int("0000000", 2)
     QOI_OP_DIFF = int("0100000", 2)
     # options 8-bit
-    QOI_OP_CHANNELS = int("1111110", 2)
+    QOI_OP_CHANNELS = int("11111100", 2)
 
     # output is pure byte array
     bytes = np.zeros(max_size, dtype=np.uint8)

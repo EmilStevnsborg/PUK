@@ -69,7 +69,7 @@ def sobel(image):
     Ky = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], np.float32)
     
     G = np.zeros_like(image_float, dtype=np.float32)
-    theta = np.zeros_like(image_float, dtype=np.float32)
+    theta = np.zeros_like(image_float, dtype=np.uint8)
     
     for channel in range(image_float.shape[2]):
         Ix = convolve(image_float[:,:,channel], Kx, mode="reflect")
@@ -77,15 +77,21 @@ def sobel(image):
         
         G[:,:,channel] = np.hypot(Ix, Iy)
         
-        theta[:,:,channel] = np.arctan2(Iy, Ix)
+        angle = np.arctan2(Iy, Ix)
 
-    return G, theta
+        angle_val = np.zeros_like(angle, dtype=np.uint8)
+        angle_val[(angle >= -np.pi/8) & (angle < np.pi/8)] = 0
+        angle_val[(angle >= np.pi/8) & (angle < 3*np.pi/8)] = 45
+        angle_val[(angle >= 3*np.pi/8) | (angle < -3*np.pi/8)] = 90
+        angle_val[(angle >= -3*np.pi/8) & (angle < -np.pi/8)] = 135
 
-def non_max_suppression(image, D):
+        theta[:,:,channel] = angle_val
+
+    return G.astype(np.uint16), theta
+
+def non_max_suppression(image, angle):
     M, N, C = image.shape
-    Z = np.zeros((M, N, C), dtype=np.int32)
-    angle = D * 180. / np.pi
-    angle[angle < 0] += 180
+    Z = np.zeros((M, N, C), dtype=np.uint8)
 
     for channel in range(C):
         for i in range(1, M - 1):
@@ -95,19 +101,19 @@ def non_max_suppression(image, D):
                     r = 255
 
                     # angle 0
-                    if (0 <= angle[i, j] < 22.5) or (157.5 <= angle[i, j] <= 180):
+                    if (angle == 0):
                         q = image[i, j + 1, channel]
                         r = image[i, j - 1, channel]
                     # angle 45
-                    elif (22.5 <= angle[i, j] < 67.5):
+                    elif (angle == 45):
                         q = image[i + 1, j - 1, channel]
                         r = image[i - 1, j + 1, channel]
                     # angle 90
-                    elif (67.5 <= angle[i, j] < 112.5):
+                    elif (angle == 90):
                         q = image[i + 1, j, channel]
                         r = image[i - 1, j, channel]
                     # angle 135
-                    elif (112.5 <= angle[i, j] < 157.5):
+                    elif (angle == 135):
                         q = image[i - 1, j - 1, channel]
                         r = image[i + 1, j + 1, channel]
 
@@ -160,7 +166,7 @@ def hysteresis(image, weak, strong):
                             image[i, j, channel] = 0
                     except IndexError as e:
                         pass
-    return image
+    return image.astype(np.uint8)
 
 def min_max_normalize(image):
     max_ = image.max()

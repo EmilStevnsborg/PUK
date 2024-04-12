@@ -1,5 +1,6 @@
 #include "Host.h"
-#include "CamSimulator.h"
+#include "CameraSim.h"
+#include "CameraHS.h"
 #include "util.h"
 #include <iostream>
 #include <pybind11/pybind11.h>
@@ -26,14 +27,17 @@ void copyData(Buffer* outputBuffer, py::array_t<uint8_t>& array) {
 }
 
 PYBIND11_MODULE(EmbeddedCV, m) {
-    py::class_<CamSimulator>(m, "CamSimulator")
+    py::class_<CameraHS>(m, "CameraHS")
+        .def(py::init<std::string, bool, int, int, int>());
+    
+    py::class_<CameraSim>(m, "CameraSim")
         .def(py::init<bool, int, int, int>())
-        .def("StoreData", [](CamSimulator &self, py::array_t<uint8_t> array) {
+        .def("StoreData", [](CameraSim &self, py::array_t<uint8_t> array) {
             std::vector<uint8_t> data(array.size());
             std::memcpy(data.data(), array.data(), array.size() * sizeof(uint8_t));
             self.StoreData(data);
         })
-        .def("GetImage", [](CamSimulator &self) {
+        .def("GetImage", [](CameraSim &self) {
             auto image = self.GetImage();
             py::array_t<uint8_t> numpy_array(image.size());
             std::memcpy(numpy_array.mutable_data(), image.data(), image.size() * sizeof(uint8_t));
@@ -42,7 +46,13 @@ PYBIND11_MODULE(EmbeddedCV, m) {
         });
 
     py::class_<Host>(m, "Host")
-        .def(py::init<CamSimulator*, int, int, int>())
+        .def(py::init<>())
+        .def("Configure", [] (Host& self, CameraHS* cam) {
+            self.Configure(cam);
+        })
+        .def("Configure", [] (Host& self, CameraSim* cam) {
+            self.Configure(cam);
+        })
         .def("CamSensor", [] (Host& self) {
             return self.camSensor;
         })
@@ -62,59 +72,33 @@ PYBIND11_MODULE(EmbeddedCV, m) {
         })
         .def("MedianBlur", [] (Host& self, py::array_t<uint8_t>& array, 
                            int kernelHeight, int kernelWidth) {
-            // Allocate memory for the output buffer
-            Buffer outputBuffer(self.channels, self.rows, self.cols, self.rows, false, true);
 
             // Call the GaussianBlur method with the output buffer
-            self.MedianBlur(&outputBuffer, kernelHeight, kernelWidth);
-            
-            // Copy data from the outputBuffer to the NumPy array
-            copyData(&outputBuffer, array);
+            self.MedianBlur(array.mutable_data(), kernelHeight, kernelWidth);
 
-            // Free the memory of the output buffer
-            outputBuffer.FreeMemory();
         })
         .def("GaussianBlur", [] (Host& self, py::array_t<uint8_t>& array, 
                                 int kernelHeight, int kernelWidth,
                                 double sigmaX, double sigmaY) {
-            // Allocate memory for the output buffer
-            Buffer outputBuffer(self.channels, self.rows, self.cols, self.rows, false, true);
 
             // Call the GaussianBlur method with the output buffer
-            self.GaussianBlur(&outputBuffer, kernelHeight, kernelWidth, sigmaX, sigmaY);
-            
-            // Copy data from the outputBuffer to the NumPy array
-            copyData(&outputBuffer, array);
+            self.GaussianBlur(array.mutable_data(), 
+                              kernelHeight, kernelWidth, 
+                              sigmaX, sigmaY);
 
-            // Free the memory of the output buffer
-            outputBuffer.FreeMemory();
         })
         .def("Sobel", [] (Host& self, py::array_t<uint8_t>& array) {
-            // Allocate memory for the output buffer
-            Buffer outputBuffer(self.channels, self.rows, self.cols, self.rows, false, true);
 
             // Call the GaussianBlur method with the output buffer
-            self.Sobel(&outputBuffer);
+            self.Sobel(array.mutable_data());
 
-            // Copy data from the outputBuffer to the NumPy array
-            copyData(&outputBuffer, array);
-            
-            // Free the memory of the output buffer
-            outputBuffer.FreeMemory();
         })
         .def("CannyEdge", [] (Host& self, py::array_t<uint8_t>& array, 
                               byte lowThreshold, byte highThreshold) {
-            // Allocate memory for the output buffer
-            Buffer outputBuffer(1, self.rows, self.cols, self.rows, false, true);
 
             // Call the GaussianBlur method with the output buffer
-            self.CannyEdge(&outputBuffer, lowThreshold, highThreshold);
-
-            // Copy data from the outputBuffer to the NumPy array
-            copyData(&outputBuffer, array);
+            self.CannyEdge(array.mutable_data(), lowThreshold, highThreshold);
             
-            // Free the memory of the output buffer
-            outputBuffer.FreeMemory();
         });
 }
 
