@@ -12,14 +12,19 @@
 
 cv::Mat byteArrayToImg(byte* byteArray, int channels, int rows, int cols);
 
+cv::Mat uint16ArrayToImg(uint16_t* byteArray, int channels, int rows, int cols);
+
 bool checkCorrectness(cv::Mat& y, cv::Mat& yPrime);
 
 CameraHS makeCameraHS();
 
 CameraSim makeCameraSim(bool snapshot);
 
-void test(std::string functionType, bool hasDevice, bool snapshot);
+void test(bool hasDevice, bool snapshot, 
+          std::string functionType, std::string compressionType = "");
 
-void function(std::string functionType, Host& host);
+void function(Host& host, 
+              std::string functionType, 
+              std::string compressionType = "");
 
 #endif // TESTING_H

@@ -32,13 +32,13 @@ std::vector<int> Pixel::operator-(const Pixel& other) const {
 
 // QOI
 
-QOI::QOI(Buffer* bufferPtr, byte* byteArray) 
+QOI::QOI(Buffer* bufferPtr, byte* output) 
     : seenPixels(64, Pixel(bufferPtr->channels)),
       prevPixel(Pixel(bufferPtr->channels))
 {
     this->bufferPtr = bufferPtr;
-    this->byteArray = byteArray;
-    this->byteArrayIdx = 0;
+    this->output = output;
+    this->writeIdx = 0;
     this->lastPixelIdx = bufferPtr->channels * 
                          bufferPtr->rows * 
                          bufferPtr->rows - bufferPtr->channels;
@@ -48,23 +48,21 @@ QOI::QOI(Buffer* bufferPtr, byte* byteArray)
     QOIheader();
 }
 
-Buffer* QOI::InputBuffer() {
-    return this->bufferPtr;
-}
+Buffer* QOI::InputBuffer() {return this->bufferPtr;}
 
 void QOI::QOIheader() {
-    this->byteArray[byteArrayIdx++] = 'q';
-    this->byteArray[byteArrayIdx++] = 'o';
-    this->byteArray[byteArrayIdx++] = 'i';
-    this->byteArray[byteArrayIdx++] = 'f';
+    this->output[writeIdx++] = 'q';
+    this->output[writeIdx++] = 'o';
+    this->output[writeIdx++] = 'i';
+    this->output[writeIdx++] = 'f';
 
-    int32toBytes(bufferPtr->rows, byteArray, byteArrayIdx);
-    int32toBytes(bufferPtr->cols, byteArray, byteArrayIdx);
+    int32toBytes(bufferPtr->rows, output, writeIdx);
+    int32toBytes(bufferPtr->cols, output, writeIdx);
     
-    byteArray[byteArrayIdx++] = bufferPtr->channels;
+    output[writeIdx++] = bufferPtr->channels;
 
     // sRGB??
-    byteArray[byteArrayIdx++] = 1;
+    output[writeIdx++] = 1;
 }
 
 // Encode the line called for
@@ -83,19 +81,19 @@ void QOI::EncodeLine(int& line) {
 
             if (run == 62 || index == this->lastPixelIdx) {
                 int runLength = run-1;
-                byteArray[byteArrayIdx++] = QOI_OP_RUN + runLength;
+                output[writeIdx++] = QOI_OP_RUN + runLength;
                 run = 0;
             }
         } else {
             if (run > 0) {
                 int runLength = run-1;
-                byteArray[byteArrayIdx++] = QOI_OP_RUN + runLength;
+                output[writeIdx++] = QOI_OP_RUN + runLength;
                 run = 0;
             }
             byte hash = hashFunction(currPixel);
             
-            if (this->prevPixel == currPixel) {
-                byteArray[byteArrayIdx++] = QOI_OP_INDEX + hash;
+            if (currPixel == seenPixels[hash]) {
+                output[writeIdx++] = QOI_OP_INDEX + hash;
             } 
             else {
                 this->seenPixels[hash] = currPixel;
@@ -116,16 +114,18 @@ void QOI::EncodeLine(int& line) {
                         currShift = (currShift - 2);
 
                         if (currShift == -2) {
-                            byteArray[byteArrayIdx++] = byteAcc;
+                            output[writeIdx++] = byteAcc;
                             byteAcc = 0;
                             currShift = 6;
                         }
                     }
-                    if (currShift != 6) {byteArrayIdx++;}
+                    if (currShift != 6) {
+                        output[writeIdx++] = byteAcc;
+                    }
                 } 
                 else {
-                    byteArray[byteArrayIdx++] = QOI_OP_CHANNELS;
-                    writePixel(currPixel, byteArray, byteArrayIdx);
+                    output[writeIdx++] = QOI_OP_CHANNELS;
+                    writePixel(currPixel, output, writeIdx);
                 }
             }
         }
@@ -136,10 +136,10 @@ void QOI::EncodeLine(int& line) {
     if (line == bufferPtr->rows - 1) {
         int zeros = 7;
         while (zeros-- > 0) {
-            byteArray[byteArrayIdx++] = 0;
+            output[writeIdx++] = 0;
         }
-        byteArray[byteArrayIdx++] = 1;
-        printf("size of the compressed data in bytes: %d\n", byteArrayIdx);
+        output[writeIdx++] = 1;
+        printf("size of the compressed data in bytes: %d\n", writeIdx);
     }
 }
 
@@ -185,6 +185,7 @@ void QOIdecoder(byte* input, byte* output) {
         } else if ((input[readIdx] & QOI_1ST_2BIT_MASK) == QOI_OP_INDEX) {
             byte index = (input[readIdx] & QOI_LAST_6BIT_MASK);
             writePixel(seenPixels[index], output, writeIdx);
+            prevPixel = seenPixels[index];
             readIdx++;
         } else if ((input[readIdx] & QOI_1ST_2BIT_MASK) == QOI_OP_DIFF) {
             int bitIdx = 2;
@@ -213,7 +214,11 @@ void QOIdecoder(byte* input, byte* output) {
                 data[i] = (byte) ((((int) data[i]) + diff) & 0xff);
             }
             Pixel newPixel(data);
+            byte hash = hashFunction(newPixel);
+
             prevPixel = newPixel;
+            seenPixels[hash] = newPixel;
+            
             writePixel(newPixel, output, writeIdx);
             if (bitIdx != 0) {readIdx++;}
 
@@ -232,19 +237,19 @@ byte hashFunction(Pixel& pixel) {
     return sum % 64;
 }
 
-void int32toBytes(int int32, byte* byteArray, int& byteArrayIdx) {
-    byteArray[byteArrayIdx++] = (int32 >> 24) & 0xFF;
-    byteArray[byteArrayIdx++] = (int32 >> 16) & 0xFF;
-    byteArray[byteArrayIdx++] = (int32 >> 8) & 0xFF;
-    byteArray[byteArrayIdx++] = int32 & 0xFF;
+void int32toBytes(int int32, byte* output, int& writeIdx) {
+    output[writeIdx++] = (int32 >> 24) & 0xFF;
+    output[writeIdx++] = (int32 >> 16) & 0xFF;
+    output[writeIdx++] = (int32 >> 8) & 0xFF;
+    output[writeIdx++] = int32 & 0xFF;
 }
 
-int int32fromBytes(byte* byteArray, int& byteArrayIdx) {
-    int int32 = (byteArray[byteArrayIdx]   << 24) +
-                (byteArray[byteArrayIdx+1] << 16) +
-                (byteArray[byteArrayIdx+2] << 8)  +
-                (byteArray[byteArrayIdx+3]);
-    byteArrayIdx += 4;
+int int32fromBytes(byte* input, int& readIdx) {
+    int int32 = (input[readIdx]   << 24) +
+                (input[readIdx+1] << 16) +
+                (input[readIdx+2] << 8)  +
+                (input[readIdx+3]);
+    readIdx += 4;
     return int32;
 }
 

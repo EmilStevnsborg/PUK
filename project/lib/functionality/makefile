@@ -3,6 +3,9 @@
 # Compiler and flags
 CXX := g++
 CXXFLAGS := -Wall -g -shared -fPIC
+
+# CXXFLAGS += -O3
+
 LIBS := CVfunctions compression Host Buffer \
 		GaussianBlurLayer NonMaxSuppressionLayer \
 		SobelLayer HysterisisLayer GrayScaleLayer \

@@ -32,7 +32,7 @@ class Compression {
 const byte QOI_OP_RUN = 192; // 11000000
 const byte QOI_OP_INDEX = 0; // 00000000
 const byte QOI_OP_DIFF = 64; // 01000000
-const byte QOI_OP_CHANNELS = 252; // 11111100
+const byte QOI_OP_CHANNELS = 254; // 11111110
 
 const byte QOI_1ST_2BIT_MASK = 192;
 const byte QOI_2ND_2BIT_MASK = 48;
@@ -44,8 +44,8 @@ const byte QOI_LAST_6BIT_MASK = 63;
 class QOI : public Compression {
     private:
         Buffer* bufferPtr;
-        byte* byteArray;
-        int byteArrayIdx;
+        byte* output;
+        int writeIdx;
         int lastPixelIdx;
         // 
         std::vector<Pixel> seenPixels;
@@ -53,7 +53,6 @@ class QOI : public Compression {
         Pixel prevPixel;
         //
         int run;
-
 
         void QOIheader();
     
@@ -73,9 +72,9 @@ void QOIdecoder(byte* input, byte* output);
 
 byte hashFunction(Pixel& pixel);
 
-void int32toBytes(int int32, byte* byteArray, int& byteArrayIdx);
+void int32toBytes(int int32, byte* output, int& writeIdx);
 
-int int32fromBytes(byte* byteArray, int& byteArrayIdx);
+int int32fromBytes(byte* input, int& readIdx);
 
 bool diffValid(std::vector<int> diff);
 

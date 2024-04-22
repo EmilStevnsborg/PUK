@@ -71,33 +71,72 @@ PYBIND11_MODULE(EmbeddedCV, m) {
 
         })
         .def("MedianBlur", [] (Host& self, py::array_t<uint8_t>& array, 
-                           int kernelHeight, int kernelWidth) {
+                               int kernelHeight, int kernelWidth,
+                               std::string compressionType) {
 
-            // Call the GaussianBlur method with the output buffer
-            self.MedianBlur(array.mutable_data(), kernelHeight, kernelWidth);
+            self.MedianBlur(array.mutable_data(), 
+                            kernelHeight, kernelWidth,
+                            compressionType);
+
+        })
+        .def("MedianBlur", [] (Host& self, py::array_t<uint16_t>& array, 
+                               int kernelHeight, int kernelWidth) {
+
+            self.MedianBlur(array.mutable_data(), 
+                            kernelHeight, kernelWidth);
 
         })
         .def("GaussianBlur", [] (Host& self, py::array_t<uint8_t>& array, 
-                                int kernelHeight, int kernelWidth,
-                                double sigmaX, double sigmaY) {
+                                 int kernelHeight, int kernelWidth,
+                                 double sigmaX, double sigmaY,
+                                 std::string compressionType) {
 
-            // Call the GaussianBlur method with the output buffer
+            self.GaussianBlur(array.mutable_data(), 
+                              kernelHeight, kernelWidth, 
+                              sigmaX, sigmaY,
+                              compressionType);
+
+        })
+        .def("GaussianBlur", [] (Host& self, py::array_t<uint8_t>& array, 
+                                 int kernelHeight, int kernelWidth,
+                                 double sigmaX, double sigmaY) {
+
             self.GaussianBlur(array.mutable_data(), 
                               kernelHeight, kernelWidth, 
                               sigmaX, sigmaY);
 
         })
-        .def("Sobel", [] (Host& self, py::array_t<uint8_t>& array) {
+        .def("Sobel", [] (Host& self, py::array_t<uint8_t>& array,
+                          std::string compressionType) {
 
-            // Call the GaussianBlur method with the output buffer
+            self.Sobel(array.mutable_data(), compressionType);
+
+        })
+        .def("Sobel", [] (Host& self, py::array_t<uint16_t>& array) {
+
             self.Sobel(array.mutable_data());
 
         })
         .def("CannyEdge", [] (Host& self, py::array_t<uint8_t>& array, 
+                              byte lowThreshold, byte highThreshold,
+                              std::string compressionType) {
+
+            self.CannyEdge(array.mutable_data(), 
+                           lowThreshold, highThreshold,
+                           compressionType);
+            
+        })
+        .def("CannyEdge", [] (Host& self, py::array_t<uint8_t>& array, 
                               byte lowThreshold, byte highThreshold) {
 
+            self.CannyEdge(array.mutable_data(), 
+                           lowThreshold, highThreshold);
+            
+        })
+        .def("QOIencode", [] (Host& self, py::array_t<uint8_t>& array) {
+
             // Call the GaussianBlur method with the output buffer
-            self.CannyEdge(array.mutable_data(), lowThreshold, highThreshold);
+            self.QOIencode(array.mutable_data());
             
         });
 }

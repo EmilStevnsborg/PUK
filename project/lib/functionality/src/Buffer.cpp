@@ -30,13 +30,15 @@ Buffer::Buffer(int channels, int rows, int cols, int lines,
     } else {
         this->extraMemory = nullptr;
     }
+
+    this->constructorMalloc = true;
     
     this->lineInserts = 0;
 }
 
 // Used for top level functions
 Buffer::Buffer(int channels, int rows, int cols, 
-               int lines, byte* bytePtr) 
+               int lines, bool hasExtraMemory, byte* bytePtr) 
 {
     // image
     this->channels = channels;
@@ -50,12 +52,52 @@ Buffer::Buffer(int channels, int rows, int cols,
 
     this->memoryUINT8 = bytePtr;
     this->storesBytes = true;
-    this->hasExtraMemory = false;
 
-    this->extraMemory = nullptr;
+    this->hasExtraMemory = hasExtraMemory;
+    if (hasExtraMemory) {
+        this->extraMemory = (byte*) malloc(this->elementsAllocated*sizeof(byte));
+    } else {
+        this->extraMemory = nullptr;
+    }
+
     this->memoryUINT16 = nullptr;
 
+    this->constructorMalloc = false;
+
     this->lineInserts = 0;
+}
+Buffer::Buffer(int channels, int rows, int cols, 
+               int lines, bool hasExtraMemory, uint16_t* uint16Ptr) 
+{
+    // image
+    this->channels = channels;
+    this->rows = rows;
+    this->cols = cols;
+
+    // buffer
+    this->lines = lines;
+    this->lineSize = cols*channels;
+    this->elementsAllocated = lines*this->lineSize;
+
+    this->memoryUINT16 = uint16Ptr;
+    this->storesBytes = false;
+    
+    this->hasExtraMemory = hasExtraMemory;
+    if (hasExtraMemory) {
+        this->extraMemory = (byte*) malloc(this->elementsAllocated*sizeof(byte));
+    } else {
+        this->extraMemory = nullptr;
+    }
+    
+    this->memoryUINT8 = nullptr;
+
+    this->constructorMalloc = false;
+
+    this->lineInserts = 0;
+}
+
+Buffer::~Buffer() {
+    this->FreeMemory();
 }
 
 template <>
@@ -74,15 +116,16 @@ int Buffer::LineMemoryIndex(int line) {
         // line is not in buffer
         // throw error
     }
-    // printf("line % this->lines %d, line %d, lines %d, lineSize %d\n",line % this->lines, line, lines, lineSize);
     return line % this->lines * lineSize;
 }
 
 void Buffer::FreeMemory() {
-    if (this->storesBytes) {
-        free(this->memoryUINT8);
-    } else {
-        free(this->memoryUINT16);
+    if (this->constructorMalloc) {
+        if (this->storesBytes) {
+            free(this->memoryUINT8);
+        } else {
+            free(this->memoryUINT16);
+        }
+        if (this->hasExtraMemory) {free(this->extraMemory);}
     }
-    if (this->hasExtraMemory) {free(this->extraMemory);}
 }

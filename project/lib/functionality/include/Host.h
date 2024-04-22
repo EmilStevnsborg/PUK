@@ -36,18 +36,33 @@ class Host {
         void Configure(Camera* cam);
         
         void MedianBlur(byte* output, 
+                        int kernelHeight, int kernelWidth,
+                        std::string compressionType);
+        
+        void MedianBlur(uint16_t* output, 
                         int kernelHeight, int kernelWidth);
         
         void GaussianBlur(byte* output, 
                           int kernelHeight, int kernelWidth, 
+                          double sigmaX, double sigmaY, 
+                          std::string compressionType);
+
+        void GaussianBlur(byte* output, 
+                          int kernelHeight, int kernelWidth, 
                           double sigmaX, double sigmaY);
-                          
+
+        void Sobel(byte* output, std::string compressionType);
+        
+        void Sobel(uint16_t* output);
+
+        void CannyEdge(byte* output, 
+                       byte lowThreshold, byte highThreshold,
+                       std::string compressionType);
+
         void CannyEdge(byte* output, 
                        byte lowThreshold, byte highThreshold);
 
-        void Sobel(byte* output);
-
-        void Encode(byte* output, std::string compressionType, std::string function);
+        void QOIencode(byte* output);
 
         void PopulateBuffers(std::vector<std::unique_ptr<Layer>>& layers,
                              Buffer* bufferPtr,
@@ -57,9 +72,9 @@ class Host {
                                Buffer* bufferPtr);
         
         void StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
-                               Compression* compression);
+                               Compression* compressionPtr);
 
-        void StreamingPipeLine(Compression* compression);
+        void StreamingPipeLine(Compression* compressionPtr);
 
         ~Host() {}
 };

@@ -4,9 +4,13 @@ int main() {
     bool hasDevice = false;
     bool snapshot = true;
 
-    test("QOIencode", hasDevice, snapshot);
-    // test("gaussianBlur", hasDevice, snapshot);
-    // test("sobel", hasDevice, snapshot);
-    // test("cannyEdge", hasDevice, snapshot);
+    // std::string functionType = "gaussianBlur";
+    // std::string functionType = "cannyEdge";
+    std::string functionType = "sobel";
+    // std::string functionType = "";
+    std::string compressionType = "";
+    // std::string compressionType = "QOI";
+
+    test(hasDevice, snapshot, functionType, compressionType);
 }
 
