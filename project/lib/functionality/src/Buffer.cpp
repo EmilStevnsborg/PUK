@@ -97,7 +97,7 @@ Buffer::Buffer(int channels, int rows, int cols,
 }
 
 Buffer::~Buffer() {
-    this->FreeMemory();
+    // this->FreeMemory();
 }
 
 template <>

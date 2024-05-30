@@ -30,7 +30,7 @@ def draw_triangle(image, size, color):
     for i in range(size):
         image[si+i:(si+i+1), (sj-i):(sj+i), :] = color
 
-def gen_image(channels, rows, cols, path):
+def gen_image(channels, rows, cols):
     image = np.zeros((rows, cols, channels), dtype=np.uint8)
     num_shapes = np.random.randint(30, 80)
 
@@ -48,10 +48,4 @@ def gen_image(channels, rows, cols, path):
             size = np.random.randint(5, min(rows, cols) // 4)
             draw_triangle(image, size, shape_color)
 
-    with open(path + ".bin", "wb") as file:
-        file.write(image.tobytes())
-    
-    if channels == 3:
-        cv2.imwrite(path + ".png", image.astype(np.uint8))
-
-gen_image(3, 500, 300, "quantitative/cases/1")
+    return image.astype(np.uint8)

@@ -1,0 +1,19 @@
+figurer i QOI: brug specifikationsfigurer
+
+verifikation i rapport: 
+    Jeg har mixet CV og naiv internal state er nemmere at debugge med naiv
+    Udgangspunkt er at bruge CV, men de steder jeg skal teste internal er jeg nødt til det
+    Jeg var nødt til at teste
+    Det er godt at skrive helt ud, hvad der sker i funktionerne. 
+    Python er et stærkere analytisk sprog
+
+Benchmarking:
+    benchmark fra Python
+    Brug Pythons CV
+    "Korrekthedstest var jeg nødt til at lave noget naivt i implementering 
+    for at teste internal state. OpenCV er svært at teste internal især i Canny Edge
+    Men da jeg skulle benchmark kunne jeg lige så godt bruge OpenCV"
+    Prøv at bruge massif til memory test
+    Husk warmup til runtime test
+    Rund af med at OpenCV er hyperoptimeret på RGB. 
+    En mere realistisk benchmark ville vær ndimage

@@ -91,8 +91,6 @@ bool Hysterisis(Buffer* inputBuffer,
             int inputIdx = (lineMemoryIdx + 
                             j*inputBuffer->channels + 
                             c);
-            
-            if (inputIdx == anchorIdx) {continue;}
 
             if (inputBuffer->Memory<uint16_t>()[inputIdx] > highThreshold) {
                 inputBuffer->Memory<uint16_t>()[anchorIdx] = 255;

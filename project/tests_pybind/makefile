@@ -6,7 +6,7 @@ CXXFLAGS += -shared
 PYBIND_SUFFIX = $(shell $(PYTHON)-config --extension-suffix)
 
 # Generic C++ flags
-CXXFLAGS += -std=c++17 -Wall -Wextra -Werror -pedantic -O3 -march=native -mtune=native -fopenmp -fPIC
+CXXFLAGS += -std=c++17 -Wall -Wextra -Werror -pedantic -O3 -march=native -mtune=native -fopenmp -fPIC -O3
 
 
 HEADERS := -I../lib/simulation/include/ -I../lib/functionality/include/ -L/usr/lib/x86_64-linux-gnu

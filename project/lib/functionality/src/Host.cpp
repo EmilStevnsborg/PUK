@@ -57,6 +57,9 @@ void Host::StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
         // Indicate that one line has been inserted into the output buffer
         bufferPtr->LineInserted();
     }
+    for (auto& layer : layers) {
+        layer->InputBuffer()->FreeMemory();
+    }
 }
 
 // compression on top of layers (not done)
@@ -70,6 +73,9 @@ void Host::StreamingPipeLine(std::vector<std::unique_ptr<Layer>>& layers,
         PopulateBuffers(layers, compressionPtr->InputBuffer(), lastLayerIdx, line);
         compressionPtr->EncodeLine(line);
         line++;
+    }
+    for (auto& layer : layers) {
+        layer->InputBuffer()->FreeMemory();
     }
 }
 

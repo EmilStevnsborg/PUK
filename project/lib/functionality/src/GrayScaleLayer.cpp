@@ -26,8 +26,8 @@ void GrayScaleLayer::Stream(Buffer* outputBuffer, int line) {
 
     for (int j = 0; j < inputBuffer.cols; j++) {
         byte val = 0;
-
-        for (int c = 0; c < inputBuffer.channels; c++) {
+        
+        for (int c = 0; c < std::min(inputBuffer.channels, 3); c++) {
             int inputIdx = (inLineMemIdx +
                             j*inputBuffer.channels + 
                             c);

@@ -9,6 +9,8 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <vector>
+#include <chrono>
+#include <fstream>
 
 cv::Mat byteArrayToImg(byte* byteArray, int channels, int rows, int cols);
 
@@ -22,6 +24,12 @@ CameraSim makeCameraSim(bool snapshot);
 
 void test(bool hasDevice, bool snapshot, 
           std::string functionType, std::string compressionType = "");
+
+void performanceTest(std::string functionType);
+
+void memoryTestEmbedded(std::string functionType);
+
+void memoryTestOCV(std::string functionType);
 
 void function(Host& host, 
               std::string functionType, 

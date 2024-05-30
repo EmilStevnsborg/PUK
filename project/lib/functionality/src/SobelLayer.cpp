@@ -56,8 +56,8 @@ void SobelLayer::Stream(Buffer* outputBuffer, int line) {
             // An edge direction is normal to the angle
             byte angle;
 
-            // up down angle
-            if ((degrees >= 0 && degrees < 22.5) || (degrees >= 157.5)) {
+            // up angle
+            if ((degrees >= 0 && degrees < 22.5)) {
                 angle = 0;
             }
             // diagonal-right angle
@@ -71,6 +71,10 @@ void SobelLayer::Stream(Buffer* outputBuffer, int line) {
             // diagonal-left angle
             else if (degrees >= 112.5 && degrees < 157.5) {
                 angle = 135;
+            } 
+            // down angle same as up
+            else {
+                angle = 0;
             }
             
             int outIdx = outLineMemIdx+j*(outputBuffer->channels)+c;

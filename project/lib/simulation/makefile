@@ -2,7 +2,7 @@
 
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -Wall -g -shared -fPIC
+CXXFLAGS := -Wall -g -shared -fPIC -O3
 
 LIBS := util CameraSim
 
