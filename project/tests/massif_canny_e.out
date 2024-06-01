@@ -1,0 +1,1482 @@
+desc: --massif-out-file=massif_canny_e.out
+cmd: ./program
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=204097448
+mem_heap_B=1984
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=221711270
+mem_heap_B=604032
+mem_heap_extra_B=25896
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=233943460
+mem_heap_B=1380706
+mem_heap_extra_B=190214
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=251203371
+mem_heap_B=2694021
+mem_heap_extra_B=521683
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=265614334
+mem_heap_B=4247107
+mem_heap_extra_B=819501
+mem_stacks_B=0
+heap_tree=detailed
+n8: 4247107 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1650720 0xF1BB993: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1650720 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1650720 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1650720 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1650720 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1650720 0x4006567: call_init (dl-init.c:33)
+       n1: 1650720 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1650720 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 1215240 0xF1BBE71: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1215240 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1215240 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1215240 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1215240 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1215240 0x4006567: call_init (dl-init.c:33)
+       n1: 1215240 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1215240 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n5: 631418 0xF1B953C: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 248249 0xF1BB761: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 248249 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 248249 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 248249 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 248249 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 248249 0x4006567: call_init (dl-init.c:33)
+        n1: 248249 0x4006567: _dl_init (dl-init.c:117)
+         n0: 248249 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 202664 0xF1BB793: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 202664 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 202664 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 202664 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 202664 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 202664 0x4006567: call_init (dl-init.c:33)
+        n1: 202664 0x4006567: _dl_init (dl-init.c:117)
+         n0: 202664 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 98810 0xF1BBEA2: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 98810 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 98810 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 98810 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 98810 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 98810 0x4006567: call_init (dl-init.c:33)
+        n1: 98810 0x4006567: _dl_init (dl-init.c:117)
+         n0: 98810 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 81666 0xF1BBD63: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 81666 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 81666 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 81666 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 81666 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 81666 0x4006567: call_init (dl-init.c:33)
+        n1: 81666 0x4006567: _dl_init (dl-init.c:117)
+         n0: 81666 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 29 in 5 places, all below massif's threshold (1.00%)
+ n1: 289600 0x12FBF991: alloc_pool::add_memory_block() (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+  n2: 289600 0x12FBFBD6: alloc_pool::alloc_pool(unsigned long, int, bool) (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+   n1: 256000 0x12FBE672: ??? (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+    n1: 256000 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 256000 0x4006567: call_init (dl-init.c:33)
+      n1: 256000 0x4006567: _dl_init (dl-init.c:117)
+       n0: 256000 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+   n0: 33600 in 1 place, below massif's threshold (1.00%)
+ n0: 154097 in 144 places, all below massif's threshold (1.00%)
+ n2: 141824 0xF3CA992: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+  n1: 131072 0xF3CAE41: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+   n1: 131072 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 131072 0x4006567: call_init (dl-init.c:33)
+     n1: 131072 0x4006567: _dl_init (dl-init.c:117)
+      n0: 131072 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 10752 in 3 places, all below massif's threshold (1.00%)
+ n2: 91504 0x12A343DC: asn1_array2tree (in /usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2)
+  n1: 72656 0xEC9E4E7: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+   n1: 72656 0xEC6CCA2: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+    n1: 72656 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 72656 0x4006567: call_init (dl-init.c:33)
+      n1: 72656 0x4006567: _dl_init (dl-init.c:117)
+       n0: 72656 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 18848 in 1 place, below massif's threshold (1.00%)
+ n1: 72704 0x52C8939: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+  n1: 72704 0x400647D: call_init.part.0 (dl-init.c:70)
+   n1: 72704 0x4006567: call_init (dl-init.c:33)
+    n1: 72704 0x4006567: _dl_init (dl-init.c:117)
+     n0: 72704 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+#-----------
+snapshot=6
+#-----------
+time=274405845
+mem_heap_B=5831184
+mem_heap_extra_B=928120
+mem_stacks_B=0
+heap_tree=peak
+n11: 5831184 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1650720 0xF1BB993: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1650720 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1650720 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1650720 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1650720 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1650720 0x4006567: call_init (dl-init.c:33)
+       n1: 1650720 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1650720 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 1629896 0xF1BBE71: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1629896 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1629896 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1629896 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1629896 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1629896 0x4006567: call_init (dl-init.c:33)
+       n1: 1629896 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1629896 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n5: 727930 0xF1B953C: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 248249 0xF1BB761: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 248249 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 248249 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 248249 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 248249 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 248249 0x4006567: call_init (dl-init.c:33)
+        n1: 248249 0x4006567: _dl_init (dl-init.c:117)
+         n0: 248249 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 202664 0xF1BB793: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 202664 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 202664 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 202664 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 202664 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 202664 0x4006567: call_init (dl-init.c:33)
+        n1: 202664 0x4006567: _dl_init (dl-init.c:117)
+         n0: 202664 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 145037 0xF1BBEA2: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 145037 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 145037 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 145037 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 145037 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 145037 0x4006567: call_init (dl-init.c:33)
+        n1: 145037 0x4006567: _dl_init (dl-init.c:117)
+         n0: 145037 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 115137 0xF1BBD63: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 115137 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 115137 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 115137 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 115137 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 115137 0x4006567: call_init (dl-init.c:33)
+        n1: 115137 0x4006567: _dl_init (dl-init.c:117)
+         n0: 115137 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 16843 in 10 places, all below massif's threshold (1.00%)
+ n2: 694400 0x10D0C2: Buffer::Buffer(int, int, int, int, bool, bool) (Buffer.cpp:20)
+  n1: 691200 0x10EDDB: GrayScaleLayer::GrayScaleLayer(int, int, int, int) (GrayScaleLayer.cpp:8)
+   n1: 691200 0x110883: make_unique<GrayScaleLayer, int&, int&, int&, int&> (unique_ptr.h:962)
+    n1: 691200 0x110883: Host::CannyEdge(unsigned char*, unsigned char, unsigned char) (Host.cpp:323)
+     n1: 691200 0x115D46: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:269)
+      n0: 691200 0x10C8F3: main (program.cpp:21)
+  n0: 3200 in 1 place, below massif's threshold (1.00%)
+ n1: 289600 0x12FBF991: alloc_pool::add_memory_block() (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+  n2: 289600 0x12FBFBD6: alloc_pool::alloc_pool(unsigned long, int, bool) (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+   n1: 256000 0x12FBE672: ??? (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+    n1: 256000 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 256000 0x4006567: call_init (dl-init.c:33)
+      n1: 256000 0x4006567: _dl_init (dl-init.c:117)
+       n0: 256000 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+   n0: 33600 in 1 place, below massif's threshold (1.00%)
+ n1: 230400 0x115D26: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:267)
+  n0: 230400 0x10C8F3: main (program.cpp:21)
+ n0: 228478 in 202 places, all below massif's threshold (1.00%)
+ n2: 141824 0xF3CA992: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+  n1: 131072 0xF3CAE41: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+   n1: 131072 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 131072 0x4006567: call_init (dl-init.c:33)
+     n1: 131072 0x4006567: _dl_init (dl-init.c:117)
+      n0: 131072 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 10752 in 3 places, all below massif's threshold (1.00%)
+ n2: 91504 0x12A343DC: asn1_array2tree (in /usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2)
+  n1: 72656 0xEC9E4E7: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+   n1: 72656 0xEC6CCA2: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+    n1: 72656 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 72656 0x4006567: call_init (dl-init.c:33)
+      n1: 72656 0x4006567: _dl_init (dl-init.c:117)
+       n0: 72656 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 18848 in 1 place, below massif's threshold (1.00%)
+ n1: 73728 0xEE4E479: srt::CUDTUnited::CUDTUnited() (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+  n1: 73728 0xEE4C942: ??? (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+   n1: 73728 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 73728 0x4006567: call_init (dl-init.c:33)
+     n1: 73728 0x4006567: _dl_init (dl-init.c:117)
+      n0: 73728 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 72704 0x52C8939: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+  n1: 72704 0x400647D: call_init.part.0 (dl-init.c:70)
+   n1: 72704 0x4006567: call_init (dl-init.c:33)
+    n1: 72704 0x4006567: _dl_init (dl-init.c:117)
+     n0: 72704 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+#-----------
+snapshot=7
+#-----------
+time=289450167
+mem_heap_B=5840732
+mem_heap_extra_B=928340
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=306381684
+mem_heap_B=5840704
+mem_heap_extra_B=928344
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=324456739
+mem_heap_B=5840696
+mem_heap_extra_B=928304
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=335060867
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=346966140
+mem_heap_B=5840704
+mem_heap_extra_B=928344
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=358639588
+mem_heap_B=5840696
+mem_heap_extra_B=928304
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=373513706
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=388464269
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=detailed
+n11: 5840700 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1650720 0xF1BB993: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1650720 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1650720 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1650720 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1650720 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1650720 0x4006567: call_init (dl-init.c:33)
+       n1: 1650720 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1650720 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 1629896 0xF1BBE71: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1629896 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1629896 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1629896 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1629896 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1629896 0x4006567: call_init (dl-init.c:33)
+       n1: 1629896 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1629896 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n5: 727930 0xF1B953C: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 248249 0xF1BB761: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 248249 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 248249 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 248249 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 248249 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 248249 0x4006567: call_init (dl-init.c:33)
+        n1: 248249 0x4006567: _dl_init (dl-init.c:117)
+         n0: 248249 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 202664 0xF1BB793: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 202664 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 202664 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 202664 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 202664 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 202664 0x4006567: call_init (dl-init.c:33)
+        n1: 202664 0x4006567: _dl_init (dl-init.c:117)
+         n0: 202664 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 145037 0xF1BBEA2: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 145037 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 145037 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 145037 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 145037 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 145037 0x4006567: call_init (dl-init.c:33)
+        n1: 145037 0x4006567: _dl_init (dl-init.c:117)
+         n0: 145037 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 115137 0xF1BBD63: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 115137 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 115137 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 115137 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 115137 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 115137 0x4006567: call_init (dl-init.c:33)
+        n1: 115137 0x4006567: _dl_init (dl-init.c:117)
+         n0: 115137 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 16843 in 10 places, all below massif's threshold (1.00%)
+ n2: 696320 0x10D0C2: Buffer::Buffer(int, int, int, int, bool, bool) (Buffer.cpp:20)
+  n1: 691200 0x10EDDB: GrayScaleLayer::GrayScaleLayer(int, int, int, int) (GrayScaleLayer.cpp:8)
+   n1: 691200 0x110883: make_unique<GrayScaleLayer, int&, int&, int&, int&> (unique_ptr.h:962)
+    n1: 691200 0x110883: Host::CannyEdge(unsigned char*, unsigned char, unsigned char) (Host.cpp:323)
+     n1: 691200 0x115D46: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:269)
+      n0: 691200 0x10C8F3: main (program.cpp:21)
+  n0: 5120 in 2 places, all below massif's threshold (1.00%)
+ n1: 289600 0x12FBF991: alloc_pool::add_memory_block() (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+  n2: 289600 0x12FBFBD6: alloc_pool::alloc_pool(unsigned long, int, bool) (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+   n1: 256000 0x12FBE672: ??? (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+    n1: 256000 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 256000 0x4006567: call_init (dl-init.c:33)
+      n1: 256000 0x4006567: _dl_init (dl-init.c:117)
+       n0: 256000 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+   n0: 33600 in 1 place, below massif's threshold (1.00%)
+ n0: 236074 in 217 places, all below massif's threshold (1.00%)
+ n1: 230400 0x115D26: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:267)
+  n0: 230400 0x10C8F3: main (program.cpp:21)
+ n2: 141824 0xF3CA992: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+  n1: 131072 0xF3CAE41: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+   n1: 131072 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 131072 0x4006567: call_init (dl-init.c:33)
+     n1: 131072 0x4006567: _dl_init (dl-init.c:117)
+      n0: 131072 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 10752 in 3 places, all below massif's threshold (1.00%)
+ n2: 91504 0x12A343DC: asn1_array2tree (in /usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2)
+  n1: 72656 0xEC9E4E7: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+   n1: 72656 0xEC6CCA2: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+    n1: 72656 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 72656 0x4006567: call_init (dl-init.c:33)
+      n1: 72656 0x4006567: _dl_init (dl-init.c:117)
+       n0: 72656 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 18848 in 1 place, below massif's threshold (1.00%)
+ n1: 73728 0xEE4E479: srt::CUDTUnited::CUDTUnited() (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+  n1: 73728 0xEE4C942: ??? (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+   n1: 73728 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 73728 0x4006567: call_init (dl-init.c:33)
+     n1: 73728 0x4006567: _dl_init (dl-init.c:117)
+      n0: 73728 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 72704 0x52C8939: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+  n1: 72704 0x400647D: call_init.part.0 (dl-init.c:70)
+   n1: 72704 0x4006567: call_init (dl-init.c:33)
+    n1: 72704 0x4006567: _dl_init (dl-init.c:117)
+     n0: 72704 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+#-----------
+snapshot=15
+#-----------
+time=405547221
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=424778750
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=441859384
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=458952250
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=473902490
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=detailed
+n11: 5840700 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1650720 0xF1BB993: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1650720 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1650720 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1650720 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1650720 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1650720 0x4006567: call_init (dl-init.c:33)
+       n1: 1650720 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1650720 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 1629896 0xF1BBE71: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1629896 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1629896 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1629896 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1629896 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1629896 0x4006567: call_init (dl-init.c:33)
+       n1: 1629896 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1629896 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n5: 727930 0xF1B953C: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 248249 0xF1BB761: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 248249 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 248249 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 248249 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 248249 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 248249 0x4006567: call_init (dl-init.c:33)
+        n1: 248249 0x4006567: _dl_init (dl-init.c:117)
+         n0: 248249 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 202664 0xF1BB793: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 202664 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 202664 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 202664 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 202664 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 202664 0x4006567: call_init (dl-init.c:33)
+        n1: 202664 0x4006567: _dl_init (dl-init.c:117)
+         n0: 202664 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 145037 0xF1BBEA2: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 145037 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 145037 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 145037 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 145037 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 145037 0x4006567: call_init (dl-init.c:33)
+        n1: 145037 0x4006567: _dl_init (dl-init.c:117)
+         n0: 145037 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 115137 0xF1BBD63: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 115137 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 115137 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 115137 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 115137 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 115137 0x4006567: call_init (dl-init.c:33)
+        n1: 115137 0x4006567: _dl_init (dl-init.c:117)
+         n0: 115137 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 16843 in 10 places, all below massif's threshold (1.00%)
+ n2: 696320 0x10D0C2: Buffer::Buffer(int, int, int, int, bool, bool) (Buffer.cpp:20)
+  n1: 691200 0x10EDDB: GrayScaleLayer::GrayScaleLayer(int, int, int, int) (GrayScaleLayer.cpp:8)
+   n1: 691200 0x110883: make_unique<GrayScaleLayer, int&, int&, int&, int&> (unique_ptr.h:962)
+    n1: 691200 0x110883: Host::CannyEdge(unsigned char*, unsigned char, unsigned char) (Host.cpp:323)
+     n1: 691200 0x115D46: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:269)
+      n0: 691200 0x10C8F3: main (program.cpp:21)
+  n0: 5120 in 2 places, all below massif's threshold (1.00%)
+ n1: 289600 0x12FBF991: alloc_pool::add_memory_block() (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+  n2: 289600 0x12FBFBD6: alloc_pool::alloc_pool(unsigned long, int, bool) (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+   n1: 256000 0x12FBE672: ??? (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+    n1: 256000 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 256000 0x4006567: call_init (dl-init.c:33)
+      n1: 256000 0x4006567: _dl_init (dl-init.c:117)
+       n0: 256000 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+   n0: 33600 in 1 place, below massif's threshold (1.00%)
+ n0: 236074 in 217 places, all below massif's threshold (1.00%)
+ n1: 230400 0x115D26: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:267)
+  n0: 230400 0x10C8F3: main (program.cpp:21)
+ n2: 141824 0xF3CA992: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+  n1: 131072 0xF3CAE41: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+   n1: 131072 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 131072 0x4006567: call_init (dl-init.c:33)
+     n1: 131072 0x4006567: _dl_init (dl-init.c:117)
+      n0: 131072 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 10752 in 3 places, all below massif's threshold (1.00%)
+ n2: 91504 0x12A343DC: asn1_array2tree (in /usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2)
+  n1: 72656 0xEC9E4E7: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+   n1: 72656 0xEC6CCA2: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+    n1: 72656 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 72656 0x4006567: call_init (dl-init.c:33)
+      n1: 72656 0x4006567: _dl_init (dl-init.c:117)
+       n0: 72656 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 18848 in 1 place, below massif's threshold (1.00%)
+ n1: 73728 0xEE4E479: srt::CUDTUnited::CUDTUnited() (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+  n1: 73728 0xEE4C942: ??? (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+   n1: 73728 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 73728 0x4006567: call_init (dl-init.c:33)
+     n1: 73728 0x4006567: _dl_init (dl-init.c:117)
+      n0: 73728 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 72704 0x52C8939: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+  n1: 72704 0x400647D: call_init.part.0 (dl-init.c:70)
+   n1: 72704 0x4006567: call_init (dl-init.c:33)
+    n1: 72704 0x4006567: _dl_init (dl-init.c:117)
+     n0: 72704 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+#-----------
+snapshot=20
+#-----------
+time=488853789
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=508083711
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=516635909
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=detailed
+n11: 5840700 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1650720 0xF1BB993: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1650720 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1650720 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1650720 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1650720 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1650720 0x4006567: call_init (dl-init.c:33)
+       n1: 1650720 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1650720 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 1629896 0xF1BBE71: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1629896 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1629896 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1629896 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1629896 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1629896 0x4006567: call_init (dl-init.c:33)
+       n1: 1629896 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1629896 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n5: 727930 0xF1B953C: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 248249 0xF1BB761: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 248249 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 248249 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 248249 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 248249 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 248249 0x4006567: call_init (dl-init.c:33)
+        n1: 248249 0x4006567: _dl_init (dl-init.c:117)
+         n0: 248249 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 202664 0xF1BB793: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 202664 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 202664 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 202664 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 202664 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 202664 0x4006567: call_init (dl-init.c:33)
+        n1: 202664 0x4006567: _dl_init (dl-init.c:117)
+         n0: 202664 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 145037 0xF1BBEA2: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 145037 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 145037 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 145037 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 145037 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 145037 0x4006567: call_init (dl-init.c:33)
+        n1: 145037 0x4006567: _dl_init (dl-init.c:117)
+         n0: 145037 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 115137 0xF1BBD63: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 115137 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 115137 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 115137 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 115137 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 115137 0x4006567: call_init (dl-init.c:33)
+        n1: 115137 0x4006567: _dl_init (dl-init.c:117)
+         n0: 115137 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 16843 in 10 places, all below massif's threshold (1.00%)
+ n2: 696320 0x10D0C2: Buffer::Buffer(int, int, int, int, bool, bool) (Buffer.cpp:20)
+  n1: 691200 0x10EDDB: GrayScaleLayer::GrayScaleLayer(int, int, int, int) (GrayScaleLayer.cpp:8)
+   n1: 691200 0x110883: make_unique<GrayScaleLayer, int&, int&, int&, int&> (unique_ptr.h:962)
+    n1: 691200 0x110883: Host::CannyEdge(unsigned char*, unsigned char, unsigned char) (Host.cpp:323)
+     n1: 691200 0x115D46: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:269)
+      n0: 691200 0x10C8F3: main (program.cpp:21)
+  n0: 5120 in 2 places, all below massif's threshold (1.00%)
+ n1: 289600 0x12FBF991: alloc_pool::add_memory_block() (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+  n2: 289600 0x12FBFBD6: alloc_pool::alloc_pool(unsigned long, int, bool) (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+   n1: 256000 0x12FBE672: ??? (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+    n1: 256000 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 256000 0x4006567: call_init (dl-init.c:33)
+      n1: 256000 0x4006567: _dl_init (dl-init.c:117)
+       n0: 256000 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+   n0: 33600 in 1 place, below massif's threshold (1.00%)
+ n0: 236074 in 217 places, all below massif's threshold (1.00%)
+ n1: 230400 0x115D26: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:267)
+  n0: 230400 0x10C8F3: main (program.cpp:21)
+ n2: 141824 0xF3CA992: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+  n1: 131072 0xF3CAE41: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+   n1: 131072 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 131072 0x4006567: call_init (dl-init.c:33)
+     n1: 131072 0x4006567: _dl_init (dl-init.c:117)
+      n0: 131072 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 10752 in 3 places, all below massif's threshold (1.00%)
+ n2: 91504 0x12A343DC: asn1_array2tree (in /usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2)
+  n1: 72656 0xEC9E4E7: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+   n1: 72656 0xEC6CCA2: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+    n1: 72656 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 72656 0x4006567: call_init (dl-init.c:33)
+      n1: 72656 0x4006567: _dl_init (dl-init.c:117)
+       n0: 72656 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 18848 in 1 place, below massif's threshold (1.00%)
+ n1: 73728 0xEE4E479: srt::CUDTUnited::CUDTUnited() (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+  n1: 73728 0xEE4C942: ??? (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+   n1: 73728 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 73728 0x4006567: call_init (dl-init.c:33)
+     n1: 73728 0x4006567: _dl_init (dl-init.c:117)
+      n0: 73728 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 72704 0x52C8939: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+  n1: 72704 0x400647D: call_init.part.0 (dl-init.c:70)
+   n1: 72704 0x4006567: call_init (dl-init.c:33)
+    n1: 72704 0x4006567: _dl_init (dl-init.c:117)
+     n0: 72704 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+#-----------
+snapshot=23
+#-----------
+time=531596304
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=540150316
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=550843899
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=559394670
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=detailed
+n11: 5840700 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1650720 0xF1BB993: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1650720 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1650720 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1650720 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1650720 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1650720 0x4006567: call_init (dl-init.c:33)
+       n1: 1650720 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1650720 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 1629896 0xF1BBE71: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1629896 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1629896 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1629896 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1629896 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1629896 0x4006567: call_init (dl-init.c:33)
+       n1: 1629896 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1629896 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n5: 727930 0xF1B953C: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 248249 0xF1BB761: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 248249 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 248249 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 248249 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 248249 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 248249 0x4006567: call_init (dl-init.c:33)
+        n1: 248249 0x4006567: _dl_init (dl-init.c:117)
+         n0: 248249 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 202664 0xF1BB793: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 202664 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 202664 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 202664 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 202664 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 202664 0x4006567: call_init (dl-init.c:33)
+        n1: 202664 0x4006567: _dl_init (dl-init.c:117)
+         n0: 202664 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 145037 0xF1BBEA2: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 145037 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 145037 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 145037 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 145037 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 145037 0x4006567: call_init (dl-init.c:33)
+        n1: 145037 0x4006567: _dl_init (dl-init.c:117)
+         n0: 145037 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 115137 0xF1BBD63: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 115137 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 115137 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 115137 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 115137 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 115137 0x4006567: call_init (dl-init.c:33)
+        n1: 115137 0x4006567: _dl_init (dl-init.c:117)
+         n0: 115137 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 16843 in 10 places, all below massif's threshold (1.00%)
+ n2: 696320 0x10D0C2: Buffer::Buffer(int, int, int, int, bool, bool) (Buffer.cpp:20)
+  n1: 691200 0x10EDDB: GrayScaleLayer::GrayScaleLayer(int, int, int, int) (GrayScaleLayer.cpp:8)
+   n1: 691200 0x110883: make_unique<GrayScaleLayer, int&, int&, int&, int&> (unique_ptr.h:962)
+    n1: 691200 0x110883: Host::CannyEdge(unsigned char*, unsigned char, unsigned char) (Host.cpp:323)
+     n1: 691200 0x115D46: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:269)
+      n0: 691200 0x10C8F3: main (program.cpp:21)
+  n0: 5120 in 2 places, all below massif's threshold (1.00%)
+ n1: 289600 0x12FBF991: alloc_pool::add_memory_block() (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+  n2: 289600 0x12FBFBD6: alloc_pool::alloc_pool(unsigned long, int, bool) (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+   n1: 256000 0x12FBE672: ??? (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+    n1: 256000 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 256000 0x4006567: call_init (dl-init.c:33)
+      n1: 256000 0x4006567: _dl_init (dl-init.c:117)
+       n0: 256000 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+   n0: 33600 in 1 place, below massif's threshold (1.00%)
+ n0: 236074 in 217 places, all below massif's threshold (1.00%)
+ n1: 230400 0x115D26: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:267)
+  n0: 230400 0x10C8F3: main (program.cpp:21)
+ n2: 141824 0xF3CA992: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+  n1: 131072 0xF3CAE41: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+   n1: 131072 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 131072 0x4006567: call_init (dl-init.c:33)
+     n1: 131072 0x4006567: _dl_init (dl-init.c:117)
+      n0: 131072 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 10752 in 3 places, all below massif's threshold (1.00%)
+ n2: 91504 0x12A343DC: asn1_array2tree (in /usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2)
+  n1: 72656 0xEC9E4E7: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+   n1: 72656 0xEC6CCA2: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+    n1: 72656 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 72656 0x4006567: call_init (dl-init.c:33)
+      n1: 72656 0x4006567: _dl_init (dl-init.c:117)
+       n0: 72656 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 18848 in 1 place, below massif's threshold (1.00%)
+ n1: 73728 0xEE4E479: srt::CUDTUnited::CUDTUnited() (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+  n1: 73728 0xEE4C942: ??? (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+   n1: 73728 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 73728 0x4006567: call_init (dl-init.c:33)
+     n1: 73728 0x4006567: _dl_init (dl-init.c:117)
+      n0: 73728 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 72704 0x52C8939: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+  n1: 72704 0x400647D: call_init.part.0 (dl-init.c:70)
+   n1: 72704 0x4006567: call_init (dl-init.c:33)
+    n1: 72704 0x4006567: _dl_init (dl-init.c:117)
+     n0: 72704 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+#-----------
+snapshot=27
+#-----------
+time=572219655
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=591455301
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=610697556
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=627794806
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=640625706
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=653453975
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=662009168
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=679104992
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=687655179
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=detailed
+n11: 5840700 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1650720 0xF1BB993: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1650720 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1650720 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1650720 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1650720 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1650720 0x4006567: call_init (dl-init.c:33)
+       n1: 1650720 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1650720 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 1629896 0xF1BBE71: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1629896 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1629896 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1629896 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1629896 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1629896 0x4006567: call_init (dl-init.c:33)
+       n1: 1629896 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1629896 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n5: 727930 0xF1B953C: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 248249 0xF1BB761: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 248249 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 248249 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 248249 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 248249 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 248249 0x4006567: call_init (dl-init.c:33)
+        n1: 248249 0x4006567: _dl_init (dl-init.c:117)
+         n0: 248249 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 202664 0xF1BB793: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 202664 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 202664 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 202664 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 202664 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 202664 0x4006567: call_init (dl-init.c:33)
+        n1: 202664 0x4006567: _dl_init (dl-init.c:117)
+         n0: 202664 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 145037 0xF1BBEA2: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 145037 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 145037 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 145037 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 145037 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 145037 0x4006567: call_init (dl-init.c:33)
+        n1: 145037 0x4006567: _dl_init (dl-init.c:117)
+         n0: 145037 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 115137 0xF1BBD63: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 115137 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 115137 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 115137 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 115137 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 115137 0x4006567: call_init (dl-init.c:33)
+        n1: 115137 0x4006567: _dl_init (dl-init.c:117)
+         n0: 115137 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 16843 in 10 places, all below massif's threshold (1.00%)
+ n2: 696320 0x10D0C2: Buffer::Buffer(int, int, int, int, bool, bool) (Buffer.cpp:20)
+  n1: 691200 0x10EDDB: GrayScaleLayer::GrayScaleLayer(int, int, int, int) (GrayScaleLayer.cpp:8)
+   n1: 691200 0x110883: make_unique<GrayScaleLayer, int&, int&, int&, int&> (unique_ptr.h:962)
+    n1: 691200 0x110883: Host::CannyEdge(unsigned char*, unsigned char, unsigned char) (Host.cpp:323)
+     n1: 691200 0x115D46: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:269)
+      n0: 691200 0x10C8F3: main (program.cpp:21)
+  n0: 5120 in 2 places, all below massif's threshold (1.00%)
+ n1: 289600 0x12FBF991: alloc_pool::add_memory_block() (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+  n2: 289600 0x12FBFBD6: alloc_pool::alloc_pool(unsigned long, int, bool) (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+   n1: 256000 0x12FBE672: ??? (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+    n1: 256000 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 256000 0x4006567: call_init (dl-init.c:33)
+      n1: 256000 0x4006567: _dl_init (dl-init.c:117)
+       n0: 256000 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+   n0: 33600 in 1 place, below massif's threshold (1.00%)
+ n0: 236074 in 217 places, all below massif's threshold (1.00%)
+ n1: 230400 0x115D26: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:267)
+  n0: 230400 0x10C8F3: main (program.cpp:21)
+ n2: 141824 0xF3CA992: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+  n1: 131072 0xF3CAE41: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+   n1: 131072 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 131072 0x4006567: call_init (dl-init.c:33)
+     n1: 131072 0x4006567: _dl_init (dl-init.c:117)
+      n0: 131072 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 10752 in 3 places, all below massif's threshold (1.00%)
+ n2: 91504 0x12A343DC: asn1_array2tree (in /usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2)
+  n1: 72656 0xEC9E4E7: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+   n1: 72656 0xEC6CCA2: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+    n1: 72656 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 72656 0x4006567: call_init (dl-init.c:33)
+      n1: 72656 0x4006567: _dl_init (dl-init.c:117)
+       n0: 72656 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 18848 in 1 place, below massif's threshold (1.00%)
+ n1: 73728 0xEE4E479: srt::CUDTUnited::CUDTUnited() (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+  n1: 73728 0xEE4C942: ??? (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+   n1: 73728 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 73728 0x4006567: call_init (dl-init.c:33)
+     n1: 73728 0x4006567: _dl_init (dl-init.c:117)
+      n0: 73728 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 72704 0x52C8939: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+  n1: 72704 0x400647D: call_init.part.0 (dl-init.c:70)
+   n1: 72704 0x4006567: call_init (dl-init.c:33)
+    n1: 72704 0x4006567: _dl_init (dl-init.c:117)
+     n0: 72704 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+#-----------
+snapshot=36
+#-----------
+time=700476819
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=717572760
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=734676052
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=753919030
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=768865140
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=785939419
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=796608112
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=807283347
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=817947807
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=830744874
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=847808976
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=866993304
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=879783439
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=detailed
+n11: 5840700 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1650720 0xF1BB993: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1650720 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1650720 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1650720 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1650720 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1650720 0x4006567: call_init (dl-init.c:33)
+       n1: 1650720 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1650720 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 1629896 0xF1BBE71: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1629896 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1629896 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1629896 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1629896 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1629896 0x4006567: call_init (dl-init.c:33)
+       n1: 1629896 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1629896 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n5: 727930 0xF1B953C: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 248249 0xF1BB761: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 248249 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 248249 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 248249 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 248249 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 248249 0x4006567: call_init (dl-init.c:33)
+        n1: 248249 0x4006567: _dl_init (dl-init.c:117)
+         n0: 248249 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 202664 0xF1BB793: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 202664 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 202664 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 202664 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 202664 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 202664 0x4006567: call_init (dl-init.c:33)
+        n1: 202664 0x4006567: _dl_init (dl-init.c:117)
+         n0: 202664 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 145037 0xF1BBEA2: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 145037 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 145037 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 145037 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 145037 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 145037 0x4006567: call_init (dl-init.c:33)
+        n1: 145037 0x4006567: _dl_init (dl-init.c:117)
+         n0: 145037 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 115137 0xF1BBD63: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 115137 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 115137 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 115137 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 115137 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 115137 0x4006567: call_init (dl-init.c:33)
+        n1: 115137 0x4006567: _dl_init (dl-init.c:117)
+         n0: 115137 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 16843 in 10 places, all below massif's threshold (1.00%)
+ n2: 696320 0x10D0C2: Buffer::Buffer(int, int, int, int, bool, bool) (Buffer.cpp:20)
+  n1: 691200 0x10EDDB: GrayScaleLayer::GrayScaleLayer(int, int, int, int) (GrayScaleLayer.cpp:8)
+   n1: 691200 0x110883: make_unique<GrayScaleLayer, int&, int&, int&, int&> (unique_ptr.h:962)
+    n1: 691200 0x110883: Host::CannyEdge(unsigned char*, unsigned char, unsigned char) (Host.cpp:323)
+     n1: 691200 0x115D46: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:269)
+      n0: 691200 0x10C8F3: main (program.cpp:21)
+  n0: 5120 in 2 places, all below massif's threshold (1.00%)
+ n1: 289600 0x12FBF991: alloc_pool::add_memory_block() (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+  n2: 289600 0x12FBFBD6: alloc_pool::alloc_pool(unsigned long, int, bool) (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+   n1: 256000 0x12FBE672: ??? (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+    n1: 256000 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 256000 0x4006567: call_init (dl-init.c:33)
+      n1: 256000 0x4006567: _dl_init (dl-init.c:117)
+       n0: 256000 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+   n0: 33600 in 1 place, below massif's threshold (1.00%)
+ n0: 236074 in 217 places, all below massif's threshold (1.00%)
+ n1: 230400 0x115D26: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:267)
+  n0: 230400 0x10C8F3: main (program.cpp:21)
+ n2: 141824 0xF3CA992: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+  n1: 131072 0xF3CAE41: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+   n1: 131072 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 131072 0x4006567: call_init (dl-init.c:33)
+     n1: 131072 0x4006567: _dl_init (dl-init.c:117)
+      n0: 131072 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 10752 in 3 places, all below massif's threshold (1.00%)
+ n2: 91504 0x12A343DC: asn1_array2tree (in /usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2)
+  n1: 72656 0xEC9E4E7: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+   n1: 72656 0xEC6CCA2: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+    n1: 72656 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 72656 0x4006567: call_init (dl-init.c:33)
+      n1: 72656 0x4006567: _dl_init (dl-init.c:117)
+       n0: 72656 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 18848 in 1 place, below massif's threshold (1.00%)
+ n1: 73728 0xEE4E479: srt::CUDTUnited::CUDTUnited() (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+  n1: 73728 0xEE4C942: ??? (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+   n1: 73728 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 73728 0x4006567: call_init (dl-init.c:33)
+     n1: 73728 0x4006567: _dl_init (dl-init.c:117)
+      n0: 73728 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 72704 0x52C8939: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+  n1: 72704 0x400647D: call_init.part.0 (dl-init.c:70)
+   n1: 72704 0x4006567: call_init (dl-init.c:33)
+    n1: 72704 0x4006567: _dl_init (dl-init.c:117)
+     n0: 72704 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+#-----------
+snapshot=49
+#-----------
+time=892563277
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=901164980
+mem_heap_B=5840696
+mem_heap_extra_B=928304
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=909755722
+mem_heap_B=5840692
+mem_heap_extra_B=928284
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=919355199
+mem_heap_B=5840704
+mem_heap_extra_B=928344
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=928773518
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=detailed
+n11: 5840700 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1650720 0xF1BB993: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1650720 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1650720 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1650720 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1650720 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1650720 0x4006567: call_init (dl-init.c:33)
+       n1: 1650720 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1650720 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 1629896 0xF1BBE71: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1629896 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1629896 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1629896 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1629896 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1629896 0x4006567: call_init (dl-init.c:33)
+       n1: 1629896 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1629896 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n5: 727930 0xF1B953C: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 248249 0xF1BB761: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 248249 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 248249 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 248249 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 248249 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 248249 0x4006567: call_init (dl-init.c:33)
+        n1: 248249 0x4006567: _dl_init (dl-init.c:117)
+         n0: 248249 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 202664 0xF1BB793: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 202664 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 202664 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 202664 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 202664 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 202664 0x4006567: call_init (dl-init.c:33)
+        n1: 202664 0x4006567: _dl_init (dl-init.c:117)
+         n0: 202664 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 145037 0xF1BBEA2: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 145037 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 145037 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 145037 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 145037 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 145037 0x4006567: call_init (dl-init.c:33)
+        n1: 145037 0x4006567: _dl_init (dl-init.c:117)
+         n0: 145037 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 115137 0xF1BBD63: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 115137 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 115137 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 115137 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 115137 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 115137 0x4006567: call_init (dl-init.c:33)
+        n1: 115137 0x4006567: _dl_init (dl-init.c:117)
+         n0: 115137 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 16843 in 10 places, all below massif's threshold (1.00%)
+ n2: 696320 0x10D0C2: Buffer::Buffer(int, int, int, int, bool, bool) (Buffer.cpp:20)
+  n1: 691200 0x10EDDB: GrayScaleLayer::GrayScaleLayer(int, int, int, int) (GrayScaleLayer.cpp:8)
+   n1: 691200 0x110883: make_unique<GrayScaleLayer, int&, int&, int&, int&> (unique_ptr.h:962)
+    n1: 691200 0x110883: Host::CannyEdge(unsigned char*, unsigned char, unsigned char) (Host.cpp:323)
+     n1: 691200 0x115D46: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:269)
+      n0: 691200 0x10C8F3: main (program.cpp:21)
+  n0: 5120 in 2 places, all below massif's threshold (1.00%)
+ n1: 289600 0x12FBF991: alloc_pool::add_memory_block() (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+  n2: 289600 0x12FBFBD6: alloc_pool::alloc_pool(unsigned long, int, bool) (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+   n1: 256000 0x12FBE672: ??? (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+    n1: 256000 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 256000 0x4006567: call_init (dl-init.c:33)
+      n1: 256000 0x4006567: _dl_init (dl-init.c:117)
+       n0: 256000 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+   n0: 33600 in 1 place, below massif's threshold (1.00%)
+ n0: 236074 in 217 places, all below massif's threshold (1.00%)
+ n1: 230400 0x115D26: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:267)
+  n0: 230400 0x10C8F3: main (program.cpp:21)
+ n2: 141824 0xF3CA992: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+  n1: 131072 0xF3CAE41: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+   n1: 131072 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 131072 0x4006567: call_init (dl-init.c:33)
+     n1: 131072 0x4006567: _dl_init (dl-init.c:117)
+      n0: 131072 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 10752 in 3 places, all below massif's threshold (1.00%)
+ n2: 91504 0x12A343DC: asn1_array2tree (in /usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2)
+  n1: 72656 0xEC9E4E7: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+   n1: 72656 0xEC6CCA2: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+    n1: 72656 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 72656 0x4006567: call_init (dl-init.c:33)
+      n1: 72656 0x4006567: _dl_init (dl-init.c:117)
+       n0: 72656 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 18848 in 1 place, below massif's threshold (1.00%)
+ n1: 73728 0xEE4E479: srt::CUDTUnited::CUDTUnited() (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+  n1: 73728 0xEE4C942: ??? (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+   n1: 73728 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 73728 0x4006567: call_init (dl-init.c:33)
+     n1: 73728 0x4006567: _dl_init (dl-init.c:117)
+      n0: 73728 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 72704 0x52C8939: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+  n1: 72704 0x400647D: call_init.part.0 (dl-init.c:70)
+   n1: 72704 0x4006567: call_init (dl-init.c:33)
+    n1: 72704 0x4006567: _dl_init (dl-init.c:117)
+     n0: 72704 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+#-----------
+snapshot=54
+#-----------
+time=937368705
+mem_heap_B=5840696
+mem_heap_extra_B=928304
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=945953850
+mem_heap_B=5840692
+mem_heap_extra_B=928284
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=955556128
+mem_heap_B=5840704
+mem_heap_extra_B=928344
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=964979233
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=973577413
+mem_heap_B=5840696
+mem_heap_extra_B=928304
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=982159756
+mem_heap_B=5840692
+mem_heap_extra_B=928284
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=991754637
+mem_heap_B=5840704
+mem_heap_extra_B=928344
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=1001175668
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=1009765363
+mem_heap_B=5840696
+mem_heap_extra_B=928304
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=63
+#-----------
+time=1018336290
+mem_heap_B=5840692
+mem_heap_extra_B=928284
+mem_stacks_B=0
+heap_tree=detailed
+n11: 5840692 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1650720 0xF1BB993: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1650720 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1650720 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1650720 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1650720 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1650720 0x4006567: call_init (dl-init.c:33)
+       n1: 1650720 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1650720 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 1629896 0xF1BBE71: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 1629896 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 1629896 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 1629896 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 1629896 0x400647D: call_init.part.0 (dl-init.c:70)
+      n1: 1629896 0x4006567: call_init (dl-init.c:33)
+       n1: 1629896 0x4006567: _dl_init (dl-init.c:117)
+        n0: 1629896 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n5: 727930 0xF1B953C: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+  n1: 248249 0xF1BB761: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 248249 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 248249 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 248249 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 248249 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 248249 0x4006567: call_init (dl-init.c:33)
+        n1: 248249 0x4006567: _dl_init (dl-init.c:117)
+         n0: 248249 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 202664 0xF1BB793: gdcm::Dict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 202664 0xF1BDF5C: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 202664 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 202664 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 202664 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 202664 0x4006567: call_init (dl-init.c:33)
+        n1: 202664 0x4006567: _dl_init (dl-init.c:117)
+         n0: 202664 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 145037 0xF1BBEA2: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 145037 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 145037 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 145037 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 145037 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 145037 0x4006567: call_init (dl-init.c:33)
+        n1: 145037 0x4006567: _dl_init (dl-init.c:117)
+         n0: 145037 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n1: 115137 0xF1BBD63: gdcm::PrivateDict::LoadDefault() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+   n1: 115137 0xF1BDF65: gdcm::Dicts::LoadDefaults() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+    n1: 115137 0xF1BE048: gdcm::Global::Global() (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+     n1: 115137 0xF1B8CBC: ??? (in /usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10)
+      n1: 115137 0x400647D: call_init.part.0 (dl-init.c:70)
+       n1: 115137 0x4006567: call_init (dl-init.c:33)
+        n1: 115137 0x4006567: _dl_init (dl-init.c:117)
+         n0: 115137 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 16843 in 10 places, all below massif's threshold (1.00%)
+ n2: 696320 0x10D0C2: Buffer::Buffer(int, int, int, int, bool, bool) (Buffer.cpp:20)
+  n1: 691200 0x10EDDB: GrayScaleLayer::GrayScaleLayer(int, int, int, int) (GrayScaleLayer.cpp:8)
+   n1: 691200 0x110883: make_unique<GrayScaleLayer, int&, int&, int&, int&> (unique_ptr.h:962)
+    n1: 691200 0x110883: Host::CannyEdge(unsigned char*, unsigned char, unsigned char) (Host.cpp:323)
+     n1: 691200 0x115D46: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:269)
+      n0: 691200 0x10C8F3: main (program.cpp:21)
+  n0: 5120 in 2 places, all below massif's threshold (1.00%)
+ n1: 289600 0x12FBF991: alloc_pool::add_memory_block() (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+  n2: 289600 0x12FBFBD6: alloc_pool::alloc_pool(unsigned long, int, bool) (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+   n1: 256000 0x12FBE672: ??? (in /usr/lib/x86_64-linux-gnu/libde265.so.0.1.1)
+    n1: 256000 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 256000 0x4006567: call_init (dl-init.c:33)
+      n1: 256000 0x4006567: _dl_init (dl-init.c:117)
+       n0: 256000 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+   n0: 33600 in 1 place, below massif's threshold (1.00%)
+ n0: 236066 in 217 places, all below massif's threshold (1.00%)
+ n1: 230400 0x115D26: memoryTestEmbedded(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (testing.cpp:267)
+  n0: 230400 0x10C8F3: main (program.cpp:21)
+ n2: 141824 0xF3CA992: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+  n1: 131072 0xF3CAE41: ??? (in /usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4)
+   n1: 131072 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 131072 0x4006567: call_init (dl-init.c:33)
+     n1: 131072 0x4006567: _dl_init (dl-init.c:117)
+      n0: 131072 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 10752 in 3 places, all below massif's threshold (1.00%)
+ n2: 91504 0x12A343DC: asn1_array2tree (in /usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2)
+  n1: 72656 0xEC9E4E7: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+   n1: 72656 0xEC6CCA2: ??? (in /usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0)
+    n1: 72656 0x400647D: call_init.part.0 (dl-init.c:70)
+     n1: 72656 0x4006567: call_init (dl-init.c:33)
+      n1: 72656 0x4006567: _dl_init (dl-init.c:117)
+       n0: 72656 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+  n0: 18848 in 1 place, below massif's threshold (1.00%)
+ n1: 73728 0xEE4E479: srt::CUDTUnited::CUDTUnited() (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+  n1: 73728 0xEE4C942: ??? (in /usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4)
+   n1: 73728 0x400647D: call_init.part.0 (dl-init.c:70)
+    n1: 73728 0x4006567: call_init (dl-init.c:33)
+     n1: 73728 0x4006567: _dl_init (dl-init.c:117)
+      n0: 73728 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+ n1: 72704 0x52C8939: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+  n1: 72704 0x400647D: call_init.part.0 (dl-init.c:70)
+   n1: 72704 0x4006567: call_init (dl-init.c:33)
+    n1: 72704 0x4006567: _dl_init (dl-init.c:117)
+     n0: 72704 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+#-----------
+snapshot=64
+#-----------
+time=1027924343
+mem_heap_B=5840704
+mem_heap_extra_B=928344
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=65
+#-----------
+time=1037332169
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=1045918967
+mem_heap_B=5840696
+mem_heap_extra_B=928304
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=1056376928
+mem_heap_B=5840700
+mem_heap_extra_B=928324
+mem_stacks_B=0
+heap_tree=empty

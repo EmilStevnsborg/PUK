@@ -25,7 +25,7 @@ CameraSim makeCameraSim(bool snapshot);
 void test(bool hasDevice, bool snapshot, 
           std::string functionType, std::string compressionType = "");
 
-void performanceTest(std::string functionType);
+void performanceTest(std::string functionType, std::string compression);
 
 void memoryTestEmbedded(std::string functionType);
 

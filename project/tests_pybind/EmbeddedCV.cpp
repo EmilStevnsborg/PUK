@@ -138,6 +138,13 @@ PYBIND11_MODULE(EmbeddedCV, m) {
             // Call the GaussianBlur method with the output buffer
             self.QOIencode(array.mutable_data());
             
+        })
+        .def("QOIdecode", [] (py::array_t<uint8_t>& input, 
+                              py::array_t<uint8_t>& output) {
+
+            // Call the GaussianBlur method with the output buffer
+            QOIdecoder(input.mutable_data(), output.mutable_data());
+            
         });
 }
 

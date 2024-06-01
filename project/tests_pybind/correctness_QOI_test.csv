@@ -1,0 +1,5 @@
+case,Algorithm,Max Diff,Avg Diff,Pixel Diff
+0,gaussian_blur,0,0.0,0.0
+0,median_blur,0,0.0,0.0
+0,sobel,0,0.0,0.0
+0,canny_edge,0,0.0,0.0

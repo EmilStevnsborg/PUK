@@ -5,7 +5,7 @@ Pixel::Pixel(int channels) : data(channels) {}
 
 Pixel::Pixel(std::vector<byte> data) {this->data = data;}
 
-Pixel::Pixel(int channels, int index,  byte* memory) 
+Pixel::Pixel(int channels, int index,  byte* memory)
     : data(channels)
 {
     for (int i = 0; i < channels; i++) {
@@ -32,15 +32,15 @@ std::vector<int> Pixel::operator-(const Pixel& other) const {
 
 // QOI
 
-QOI::QOI(Buffer* bufferPtr, byte* output) 
+QOI::QOI(Buffer* bufferPtr, byte* output)
     : seenPixels(64, Pixel(bufferPtr->channels)),
       prevPixel(Pixel(bufferPtr->channels))
 {
     this->bufferPtr = bufferPtr;
     this->output = output;
     this->writeIdx = 0;
-    this->lastPixelIdx = bufferPtr->channels * 
-                         bufferPtr->rows * 
+    this->lastPixelIdx = bufferPtr->channels *
+                         bufferPtr->rows *
                          bufferPtr->rows - bufferPtr->channels;
 
     this->run = 0;
@@ -58,7 +58,7 @@ void QOI::QOIheader() {
 
     int32toBytes(bufferPtr->rows, output, writeIdx);
     int32toBytes(bufferPtr->cols, output, writeIdx);
-    
+
     output[writeIdx++] = bufferPtr->channels;
 
     // sRGB??
@@ -70,16 +70,16 @@ void QOI::EncodeLine(int& line) {
     //
     int lastJ = bufferPtr->lineSize - bufferPtr->channels;
     int increment = bufferPtr->channels;
-    
+
     for (int j = 0; j <= lastJ; j+=increment) {
-        
+
         int index = bufferPtr->LineMemoryIndex(line) + j;
         Pixel currPixel(bufferPtr->channels, index, bufferPtr->Memory<byte>());
-        
+
         if (this->prevPixel == currPixel) {
             this->run++;
 
-            if (run == 62 || index == this->lastPixelIdx) {
+            if (run == 62 || (line + j) == this->lastPixelIdx) {
                 int runLength = run-1;
                 output[writeIdx++] = QOI_OP_RUN + runLength;
                 run = 0;
@@ -91,10 +91,10 @@ void QOI::EncodeLine(int& line) {
                 run = 0;
             }
             byte hash = hashFunction(currPixel);
-            
+
             if (currPixel == seenPixels[hash]) {
                 output[writeIdx++] = QOI_OP_INDEX + hash;
-            } 
+            }
             else {
                 this->seenPixels[hash] = currPixel;
 
@@ -110,7 +110,7 @@ void QOI::EncodeLine(int& line) {
                         int biasedDiffShift = (biasedDiff << currShift);
 
                         byteAcc += biasedDiffShift;
-                        
+
                         currShift = (currShift - 2);
 
                         if (currShift == -2) {
@@ -122,24 +122,15 @@ void QOI::EncodeLine(int& line) {
                     if (currShift != 6) {
                         output[writeIdx++] = byteAcc;
                     }
-                } 
+                }
                 else {
                     output[writeIdx++] = QOI_OP_CHANNELS;
                     writePixel(currPixel, output, writeIdx);
                 }
             }
         }
-        
+
         prevPixel = currPixel;
-    }
-    // end marker
-    if (line == bufferPtr->rows - 1) {
-        int zeros = 7;
-        while (zeros-- > 0) {
-            output[writeIdx++] = 0;
-        }
-        output[writeIdx++] = 1;
-        printf("size of the compressed data in bytes: %d\n", writeIdx);
     }
 }
 
@@ -177,7 +168,7 @@ void QOIdecoder(byte* input, byte* output) {
             seenPixels[hash] = newPixel;
         } else if ((input[readIdx] & QOI_1ST_2BIT_MASK) == QOI_OP_RUN) {
             byte runLength = (input[readIdx] & QOI_LAST_6BIT_MASK) + 1;
-            
+
             for (byte i = 0; i < runLength; i++) {
                 writePixel(prevPixel, output, writeIdx);
             }
@@ -218,12 +209,11 @@ void QOIdecoder(byte* input, byte* output) {
 
             prevPixel = newPixel;
             seenPixels[hash] = newPixel;
-            
+
             writePixel(newPixel, output, writeIdx);
             if (bitIdx != 0) {readIdx++;}
 
         }
-        // end marker (not necessarry due to loop condition on write)
     }
 }
 

@@ -62,11 +62,11 @@ CameraHS makeCameraHS() {
 
 CameraSim makeCameraSim(bool snapshot) {
     int channels = 3;
-    int rows = 576;
-    int cols = 768;
+    int rows = 360;
+    int cols = 640;
 
     CameraSim cameraSim(snapshot, channels, rows, cols);
-    std::string path = "qualititative/qualititative.png";
+    std::string path = "test.png";
     cv::Mat inputImage = cv::imread(path);
     std::vector<byte> vectorInputImage;
     for (int i = 0; i < inputImage.rows; i++) {
@@ -99,8 +99,8 @@ void test(bool hasDevice, bool snapshot,
     }
 }
 
-void performanceTest(std::string functionType) {
-    CameraSim cam = makeCameraSim(true);
+void performanceTest(std::string functionType, std::string compressionType) {
+    CameraSim cam = makeCameraSim(false);
     int channels = cam.Channels();
     int cols = cam.Cols();
     int rows = cam.Rows();
@@ -127,11 +127,21 @@ void performanceTest(std::string functionType) {
             double sigmaY = 0;
 
             // embedded
-            byte* output = (byte*) malloc(channels*rows*cols*sizeof(byte));
-            start_e = std::chrono::high_resolution_clock::now();
-            host.GaussianBlur(output, kernelHeight, kernelWidth, sigmaX, sigmaY, "");
-            stop_e = std::chrono::high_resolution_clock::now();
-            free(output);
+
+            if (compressionType == "QOI") {
+                byte* outputEncoding = (byte*) malloc(channels*rows*cols*sizeof(byte));
+
+                start_e = std::chrono::high_resolution_clock::now();
+                host.GaussianBlur(outputEncoding, kernelHeight, kernelWidth, sigmaX, sigmaY, 
+                                compressionType);
+                stop_e = std::chrono::high_resolution_clock::now();
+            } else {
+                byte* output = (byte*) malloc(channels*rows*cols*sizeof(byte));
+                start_e = std::chrono::high_resolution_clock::now();
+                host.GaussianBlur(output, kernelHeight, kernelWidth, sigmaX, sigmaY, "");
+                stop_e = std::chrono::high_resolution_clock::now();
+                free(output);
+            }
             
             // opencv
             start_ocv = std::chrono::high_resolution_clock::now();
@@ -143,14 +153,22 @@ void performanceTest(std::string functionType) {
             int kernelWidth = 3;
 
             // embedded
-            uint16_t* output_uint16 = (uint16_t*) malloc((channels*
-                                                        rows*
-                                                        cols*
-                                                        sizeof(uint16_t)));
-            start_e = std::chrono::high_resolution_clock::now();
-            host.MedianBlur(output_uint16, kernelHeight, kernelWidth);
-            stop_e = std::chrono::high_resolution_clock::now();
-            free(output_uint16);
+            if (compressionType == "QOI") {
+                byte* outputEncoding = (byte*) malloc(channels*rows*cols*sizeof(byte));
+
+                start_e = std::chrono::high_resolution_clock::now();
+                host.MedianBlur(outputEncoding, kernelHeight, kernelWidth, compressionType);
+                stop_e = std::chrono::high_resolution_clock::now();
+            } else {
+                uint16_t* output_uint16 = (uint16_t*) malloc((channels*
+                                                            rows*
+                                                            cols*
+                                                            sizeof(uint16_t)));
+                start_e = std::chrono::high_resolution_clock::now();
+                host.MedianBlur(output_uint16, kernelHeight, kernelWidth);
+                stop_e = std::chrono::high_resolution_clock::now();
+                free(output_uint16);
+            }
 
             // opencv
             start_ocv = std::chrono::high_resolution_clock::now();
@@ -159,14 +177,23 @@ void performanceTest(std::string functionType) {
         }
         if (functionType == "sobel") {
             // embedded
-            uint16_t* output_uint16 = (uint16_t*) malloc((channels*
-                                                        rows*
-                                                        cols*
-                                                        sizeof(uint16_t)));
-            start_e = std::chrono::high_resolution_clock::now();        
-            host.Sobel(output_uint16);
-            stop_e = std::chrono::high_resolution_clock::now();
-            free(output_uint16);
+
+            if (compressionType == "QOI") {
+                byte* outputEncoding = (byte*) malloc(channels*rows*cols*sizeof(byte));
+
+                start_e = std::chrono::high_resolution_clock::now();
+                host.Sobel(outputEncoding, compressionType);
+                stop_e = std::chrono::high_resolution_clock::now();
+            } else {
+                uint16_t* output_uint16 = (uint16_t*) malloc((channels*
+                                                            rows*
+                                                            cols*
+                                                            sizeof(uint16_t)));
+                start_e = std::chrono::high_resolution_clock::now();        
+                host.Sobel(output_uint16);
+                stop_e = std::chrono::high_resolution_clock::now();
+                free(output_uint16);
+            }
 
             // opencv
             start_ocv = std::chrono::high_resolution_clock::now();
@@ -188,11 +215,21 @@ void performanceTest(std::string functionType) {
             uint16_t highThreshold = 60;
         
             // embedded
-            byte* output = (byte*) malloc(1*rows*cols*sizeof(byte));
-            start_e = std::chrono::high_resolution_clock::now();
-            host.CannyEdge(output, lowThreshold, highThreshold);
-            stop_e = std::chrono::high_resolution_clock::now();
-            free(output);
+            if (compressionType == "QOI") {
+
+                byte* outputEncoding = (byte*) malloc((1+1)*rows*cols*sizeof(byte));
+
+                start_e = std::chrono::high_resolution_clock::now();
+                host.CannyEdge(outputEncoding, lowThreshold, highThreshold,
+                            compressionType);
+                stop_e = std::chrono::high_resolution_clock::now();
+            } else {
+                byte* output = (byte*) malloc(1*rows*cols*sizeof(byte));
+                start_e = std::chrono::high_resolution_clock::now();
+                host.CannyEdge(output, lowThreshold, highThreshold);
+                stop_e = std::chrono::high_resolution_clock::now();
+                free(output);
+            }
 
             // opencv
             start_ocv = std::chrono::high_resolution_clock::now();
@@ -201,6 +238,15 @@ void performanceTest(std::string functionType) {
             cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
             cv::Canny(img, edges, 40, 60); 
             stop_ocv = std::chrono::high_resolution_clock::now();
+        }
+        if (functionType == "") {
+            start_ocv = std::chrono::high_resolution_clock::now();
+            stop_ocv = std::chrono::high_resolution_clock::now();
+
+            byte* outputEncoding = (byte*) malloc(channels*rows*cols*sizeof(byte));
+            start_e = std::chrono::high_resolution_clock::now();
+            host.QOIencode(outputEncoding);
+            stop_e = std::chrono::high_resolution_clock::now();
         }
         auto duration_e = std::chrono::duration_cast<std::chrono::milliseconds>(stop_e - start_e);
         auto duration_ocv = std::chrono::duration_cast<std::chrono::microseconds>(stop_ocv - start_ocv);
@@ -277,15 +323,13 @@ void memoryTestEmbedded(std::string functionType) {
 }
 
 void memoryTestOCV(std::string functionType) {
-    cv::VideoCapture cam(2);
+    cv::VideoCapture cam;
     cv::Mat img;
 
     std::chrono::high_resolution_clock::time_point start;
     std::chrono::high_resolution_clock::time_point stop;
 
-    while (!cam.isOpened()) {
-        cam.open(2);
-    }
+    cam.open(2);
     cam >> img;
     cv::Mat output;
     if (functionType == "gaussianBlur") {

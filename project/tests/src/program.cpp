@@ -1,20 +1,20 @@
 #include "program.h"
 
 int main() {
-    bool performance_test = false;
-    bool memory_test = true;
-    bool memory_test_embedded = false;
+    bool performance_test = true;
+    bool memory_test = false;
+    bool memory_test_embedded = true;
 
     bool hasDevice = false;
     bool snapshot = true;
 
-    std::string functionType = "gaussianBlur";
+    // std::string functionType = "gaussianBlur";
     // std::string functionType = "medianBlur";
-    // std::string functionType = "cannyEdge";
+    std::string functionType = "cannyEdge";
     // std::string functionType = "sobel";
     // std::string functionType = "";
-    std::string compressionType = "";
-    // std::string compressionType = "QOI";
+    // std::string compressionType = "";
+    std::string compressionType = "QOI";
 
     if (memory_test) {
         if (memory_test_embedded) {
@@ -24,7 +24,7 @@ int main() {
         }
     } else {
         if (performance_test) {
-            performanceTest(functionType);
+            performanceTest(functionType, compressionType);
         } else {
             test(hasDevice, snapshot, functionType, compressionType);
         }
