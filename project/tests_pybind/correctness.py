@@ -237,3 +237,37 @@ def correctness_QOI_test(n, channels, rows, cols):
     
     df = pd.DataFrame(results)
     df.to_csv("correctness_QOI_test.csv", index=False)
+
+
+def QOI_compression_test(n, channels, rows, cols):
+    host = EmbeddedCV.Host()
+    cam = EmbeddedCV.CameraSim(True, channels, rows, cols)
+    host.Configure(cam)
+
+    results = []
+    
+    for i in range(n):
+        image = gen_image(channels, rows, cols)
+        flat_image = image.flatten()
+        cam.StoreData(flat_image)
+
+        QOI_output = np.zeros(shape=((channels+1)*rows*cols+22), dtype=np.uint8)
+        host.QOIencode(QOI_output)
+
+def QOI_compression_test_RGB():
+    channels = 3
+    rows = 600
+    cols = 800
+    host = EmbeddedCV.Host()
+    cam = EmbeddedCV.CameraSim(True, channels, rows, cols)
+    host.Configure(cam)
+
+    results = []
+    
+    for i in range(10):
+        image = cv2.imread(f"quantitative/RGB/{i}_3_600_800.png")
+        flat_image = image.flatten()
+        cam.StoreData(flat_image)
+
+        QOI_output = np.zeros(shape=((channels+1)*rows*cols+22), dtype=np.uint8)
+        host.QOIencode(QOI_output)

@@ -132,6 +132,9 @@ void QOI::EncodeLine(int& line) {
 
         prevPixel = currPixel;
     }
+    if (line == bufferPtr->rows - 1) {
+        printf("size of the compressed data in bytes: %d\n", writeIdx);
+    }
 }
 
 // DECODERS

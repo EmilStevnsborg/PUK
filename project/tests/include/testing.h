@@ -27,7 +27,7 @@ void test(bool hasDevice, bool snapshot,
 
 void performanceTest(std::string functionType, std::string compression);
 
-void memoryTestEmbedded(std::string functionType);
+void memoryTestEmbedded(std::string functionType, std::string compressionType);
 
 void memoryTestOCV(std::string functionType);
 

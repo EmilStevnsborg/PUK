@@ -105,20 +105,20 @@ def canny_edge(image, low_threshold, high_threshold):
             else: 
                 nmx[i,j] = np.floor(grads[i,j]).astype(np.uint16)
 
-    # # hysterisis
-    # for i in range(R):
-    #     for j in range(C):
-    #         if nmx[i,j] > high_threshold:
-    #             nmx[i,j] = 255
-    #         elif nmx[i,j] < low_threshold:
-    #             nmx[i,j] = 0
-    #         else:
-    #             start_i = max(i-1, 0)
-    #             start_j = max(j-1, 0)
-    #             if np.any(nmx[start_i:i+2, start_j:j+2] > high_threshold):
-    #                 nmx[i, j] = 255
-    #             else:
-    #                 nmx[i, j] = 0
+    # hysterisis
+    for i in range(R):
+        for j in range(C):
+            if nmx[i,j] > high_threshold:
+                nmx[i,j] = 255
+            elif nmx[i,j] < low_threshold:
+                nmx[i,j] = 0
+            else:
+                start_i = max(i-1, 0)
+                start_j = max(j-1, 0)
+                if np.any(nmx[start_i:i+2, start_j:j+2] > high_threshold):
+                    nmx[i, j] = 255
+                else:
+                    nmx[i, j] = 0
     
 
     return nmx.astype(np.uint8)
